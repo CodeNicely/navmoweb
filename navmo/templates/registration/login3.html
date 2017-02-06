@@ -1,0 +1,39 @@
+    <html>
+    <head><title>login</title></head>
+
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/style.css" media="all" />
+        
+    <body>
+    {% include "base_head.html" %}
+    {% block content %}
+
+        <div id="container">
+        
+        
+        <form method="post" action=".">{% csrf_token %}
+                 
+            <div class="form"> 
+               <h1>Navmo Login</h1>
+            
+            <table border="0">
+                <tr><th><label for="id_username">Username:</label>
+                </th><td>{{ form.username }}</td></tr>
+                <tr><th><label for="id_password">Password:</label></th><td>{{ form.password }}</td></tr>
+           
+          <tr><th><td><input class="button button2" type="submit" value="Login" /></td></th></tr>
+            <input type="hidden" name="next" value="/home" />
+         
+        <tr><th>  <td><p>Not Registered Yet ?</p></td></th></tr>
+        <tr><th>  <td><a href="/register">Register Now</a></td></th></tr>
+
+         </table>
+        </div>
+                 
+        </form>
+    </div>
+    
+    </body>
+    {% endblock content %}
+    {% include "base_foot.html" %}
+
+    </html>

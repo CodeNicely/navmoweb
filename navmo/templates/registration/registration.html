@@ -1,0 +1,623 @@
+  <html>
+  <head>
+  	<title>Register</title>
+  	
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  	
+  {% include "base_head.html" %}
+
+  {% block content %}
+
+        <!--Import Google Icon Font-->
+      <body>
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('select').material_select();
+//Validation for form
+      var error = 0;
+
+      $("#password").focusout(function() {
+          
+          if($("#password").val().length < 6) {
+              $('#password_error').html("Password should be atleast 6 characters long.");
+              $("#password_error").show();
+              error++;
+
+          } else { $("#password_error").hide(); }
+
+      });
+
+      $("#repassword").focusout(function() {
+          
+          if($("#repassword").val() != $("#password").val()) {
+              $('#repassword_error').html("Password doesn't match.");
+              $("#repassword_error").show();
+              error++;
+
+          } else { $("#repassword_error").hide(); }
+
+      });
+
+
+      $("#first_name").focusout(function() {
+
+        if($("#first_name").val().length == 0 ) {
+
+        $('#first_name_error').html("Firstname should not be empty.");
+              $("#first_name_error").show();
+              error++;
+
+      } else {  $("#first_name_error").hide();}
+      
+      } );
+
+      $("#last_name").focusout(function() {
+
+        if($("#last_name").val().length == 0 ) {
+
+        $('#last_name_error').html("Lastname should not be empty.");
+              $("#last_name_error").show();
+              error++;
+
+      } else {  $("#last_name_error").hide();}
+      
+      } );
+
+
+      $("#fathers_name").focusout(function() {
+
+        if($("#fathers_name").val().length == 0 ) {
+
+        $('#fathers_name_error').html("Father's name should not be empty.");
+              $("#fathers_name_error").show();
+              error++;
+      } else {  $("#fathers_name_error").hide();}
+      
+      } );
+
+      $("#mothers_name").focusout(function() {
+
+        if($("#mothers_name").val().length == 0 ) {
+
+        $('#mothers_name_error').html("Mother's name should not be empty.");
+              $("#mothers_name_error").show();
+              error++;
+      } else {  $("#mothers_name_error").hide();}
+      
+      } );
+
+      $("#email").focusout(function() {
+
+        if($("#email").val().length == 0 ) {
+
+        $('#email_error').html("Email should not be empty.");
+              $("#email_error").show();
+              error++;
+      } else {  $("#email_error").hide();}
+      
+      } );
+
+       $("#mobile").focusout(function() {
+
+        if($("#mobile").val().length == 0 ) {
+
+        $('#mobile_error').html("Mobile should not be empty.");
+              $("#mobile_error").show();
+              error++;
+      } else {  $("#mobile_error").hide();}
+      
+      } );
+
+        $("#gender").focusout(function() {
+
+        if($("#gender").val().length == 0 ) {
+
+        $('#gender_error').html("Select gender.");
+              $("#gender_error").show();
+              error++;
+      } else {  $("#gender_error").hide();}
+      
+      } );
+
+         $("#tsize").focusout(function() {
+
+        if($("#tsize").val().length == 0 ) {
+
+        $('#tsize_error').html("Select tshirt size.");
+              $("#tsize_error").show();
+              error++;
+      } else {  $("#tsize_error").hide();}
+      
+      } );
+
+          $("#address").focusout(function() {
+
+        if($("#address").val().length == 0 ) {
+
+        $('#adress_error').html("Please provide address.");
+              $("#adress_error").show();
+              error++;
+      } else {  $("#adress_error").hide();}
+      
+      } );
+
+           $("#dob").focusout(function() {
+
+        if($("#dob").val().length == 0 ) {
+
+        $('#dob_error').html("Please insert DOB.");
+              $("#dob_error").show();
+              error++;
+      } else {  $("#dob_error").hide();}
+      
+      } );
+            $("#schoolname").focusout(function() {
+
+        if($("#schoolname").val().length == 0 ) {
+
+        $('#school_error').html("Please provide school name.");
+              $("#school_error").show();
+              error++;
+      } else {  $("#school_error").hide();}
+      
+      } );
+
+
+            $("#btnSubmit").click(function(e) {
+             if(validate()==false)
+                 e.preventDefault();
+              
+
+
+            });
+
+
+
+
+
+
+    });
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+
+  function validate(){
+
+
+
+              var firstname=$("#first_name").val();
+              var lastname=$("#last_name").val();
+              var fathersname=$("#fathers_name").val();
+              var mothersname=$("#mothers_name").val();
+              var password = $("#password").val();
+              var confirmPassword = $("#repassword").val();
+              var pn = $("#password").val().length;
+              var mn=mobile.value.length;
+              var tsize=$("#tsize").val;
+
+              if(firstname==null || firstname== ""){
+                
+                return false;
+              }
+              if(lastname==null || lastname== ""){
+                return false;
+              }
+              if(mothersname==null || mothersname== ""){
+                return false;
+              }
+              if(fathersname==null || fathersname== ""){
+                return false;
+              }
+              if (pn<6) {
+                  document.registration_form.password.focus();
+                
+                  return false;
+              }
+              if (password != confirmPassword) {
+                  document.registration_form.confirmPassword.focus();
+                  return false;
+              }
+              if (mn!=10) {
+                  document.registration_form.pnum.focus();
+                  return false;
+              }
+              if(tsize=='null'){
+
+                alert("Please fill Tee-Shirt Size");
+                return false;
+              }
+              return true;
+    
+
+  }
+
+
+  </script>
+
+  <div class="row">
+  <div class="col s12 m3"></div>
+          <div class="col s12 m6">
+            <div class="card white lighten-10">
+              <div class="card-content black-text">
+                <span class="card-title black-text" ><h3><center>Navmo - Registration</center></h3></span>
+
+
+      <form id="registration_form" black-text action="." method="post"  enctype="multipart/form-data">{% csrf_token %}
+                
+           
+
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input  name="firstname" id="first_name" type="text" class="validate" required>
+             <label for="first_name" >First Name</label>
+        </div><div id="first_name_error"></div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="last_name" name="lastname" type="text" class="validate" required>
+            <label for="last_name" >Last Name</label>
+          </div><div id="last_name_error"></div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="fathers_name" name="fathername" type="text" class="validate" required>
+            <label for="fathers_name" >Father's Name</label>
+          </div><div id="fathers_name_error"></div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="mothers_name" name="mothername" type="text" class="validate" required>
+            <label for="mothers_name" >Mother's Name</label>
+          </div><div id="mothers_name_error"></div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="password" name="password" type="password" class="validate" required>
+            <label for="password" >Password ( Min Length - 6 )</label>
+          </div><div id="password_error"></div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="repassword" type="password" required>
+            <label  for="repassword">Re-enter Password</label>
+          </div><div id="repassword_error"></div>
+        </div>
+        <div id="divCheckPasswordMatch"></div>
+        <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="email" type="email" name="email" class="validate" required>
+            <label for="email" >Email</label>
+          </div><div id="email_error"></div>
+        </div>
+           <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input id="mobile" type="number" name="pnum" class="validate" required>
+            <label for="mobile" >Mobile:</label>
+          </div><div id="mobile_error"></div>
+        </div>
+        <div class="row">
+   <div class="input-field col s2"></div><div class="input-field col s8">
+      <select name="gender" id="gender" required oninvalid="setCustomValidity('Select Gender')">
+        <option value="None" disabled selected>Gender</option>
+        <option value="Male" >Male</option>
+        <option value="Female" >Female</option>
+        
+      </select>
+      <label>Gender</label>
+    </div><div id="gender_error"></div>
+  </div>
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+      <select id="tsize" name="tsize" required >
+        <option value='null' disabled selected>TShirt-Size</option>
+        <option value="24">24</option>
+        <option value="26">26</option>
+        <option value="28">28</option>
+        <option value="30">30</option>
+        <option value="32">32</option>
+        <option value="34">34</option>
+        <option value="36">36</option>
+        <option value="38">38</option>
+        <option value="40">40</option>
+        <option value="42">42</option>
+
+      </select>
+      <label>T-Shirt Size</label>
+    </div><div id="tsize_error"></div>
+  </div>
+<div class="row">
+  <div class="input-field col s2"></div>
+  <div class="input-field col s4">
+   <h3><label>Select 1<sup>st</sup> Preference</label></h3>
+ <br>
+       <p>
+        <input class="with-gap" name="first_school" type="radio" value="0" id="mpe" checked required/>
+        <label for="mpe">MPE School</label>
+      </p>
+      <p>
+        <input class="with-gap" name="first_school" type="radio" value="1" id="own"  required />
+        <label for="own">Own School</label>
+      </p>
+        </div>
+        </div>
+
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+      <select id="exam_center" name="exam_center" required >
+        <option value='null' disabled selected>Exam Center 1</option>
+        {{list_data|safe}}
+      </select>
+      <label>Exam Center 1</label>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="input-field col s2"></div>
+  <div class="input-field col s4">
+   <h3><label>Select 2<sup>nd</sup> Preference</label></h3>
+ <br>
+       <p>
+        <input class="with-gap" name="second_school" type="radio" value="0" id="mpe1" checked required/>
+        <label for="mpe1">MPE School</label>
+      </p>
+      <p>
+        <input class="with-gap" name="second_school" type="radio" value="1" id="own1"  required />
+        <label for="own1">Own School</label>
+      </p>
+        </div>
+        </div>
+
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+      <select id="exam_centerr" name="exam_centerr" required >
+        <option value='null' disabled selected>Exam Center 2</option>
+        {{list_data|safe}}
+       
+      </select>
+      <label>Exam Center 2</label>
+    </div>
+  </div>
+
+
+  
+  <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input name="address" id="address" type="text" class="validate" required >
+            <label for="address">Address:</label>
+          </div>
+  </div>       
+
+
+  <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+          DOB
+            <input  name="dob" id="dob" type="date" class="datepicker" required>
+            <!-- <label for="dob">DOB:</label> -->
+          </div>
+  </div>
+  <div class="row">
+          <div class="input-field col s2"></div><div class="input-field col s8">
+            <input  name="school" id="schoolname" type="text" class="validate" required>
+            <label for="schoolname">School:</label>
+          </div>
+  </div>       
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+      <select name="class" id="class" required >
+        <option value="None" disabled selected>Select Class</option>
+        <option value="LKG">LKG</option>
+        <option value="UKG">UKG</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+
+        <option value="6">6</option>
+        <option value="7">7</option>
+      <option value="8">8</option>
+        <option value="9">9</option>
+              <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+
+      </select>
+      <label for ="class">Class</label>
+    </div>
+  </div>
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+  <h3><label>MPE Student:</label></h3><br>
+
+       <p>
+        <input value="0" class="with-gap" name="mpe_student" type="radio" id="mpe_no" required />
+        <label for="mpe_no">No</label>
+      </p>
+      <p>
+        <input value="1" class="with-gap" name="mpe_student" type="radio" id="mpe_yes" checked required />
+        <label for="mpe_yes" >Yes</label>
+      </p>
+        </div>
+  </div>
+
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+  <h3><label>Select Exam Group</label></h3><br><div id="exam_group_error"></div>
+
+       <p>
+        <input class="with-gap" name="group_exam1" type="checkbox" value="1" id="gamma"/>
+        <label for="gamma">Gamma (Mind Magic open to all)</label>
+  </p>
+  </div>
+  </div>
+  <div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+
+      <select name="group_exam_field1" id="exam_group_field1">
+          <option value="None" disabled selected>Select Course Level for Gamma Exam Group</option>
+                 <option value="Gamma Group ( Mind Magic , Open to All ) - Mental Maths 1">Gamma Group ( Mind Magic , Open to All ) - Mental Maths 1</option>
+           <option value="Gamma Group ( Mind Magic , Open to All ) - Mental Maths 2">Gamma Group ( Mind Magic , Open to All ) - Mental Maths 2</option>
+            <option value="Gamma Group ( Mind Magic , Open to All ) - Mental Maths 3">Gamma Group ( Mind Magic , Open to All ) - Mental Maths 3</option>
+
+            <option value="Gamma Group ( Mind Magic , Open to All ) - Mental Maths 4">Gamma Group ( Mind Magic , Open to All ) - Mental Maths 4</option>
+            <option value="Gamma Group ( Mind Magic , Open to All ) - Mental Maths 5">Gamma Group ( Mind Magic , Open to All ) - Mental Maths 5</option>
+      
+      </select>
+      
+    </div>
+  </div>
+
+<div class="row">
+<div class="input-field col s2"></div><div class="input-field col s8">
+
+
+      <input class="with-gap" name="group_exam2" type="checkbox" value="1" id="alpha"/>
+        <label for="alpha">Alpha / Beta / Theta Group</label>
+</div>
+</div>    
+
+    <div class="row">
+<div class="input-field col s2"></div><div class="input-field col s8">
+
+      <select name="group_exam_field2" id="exam_group_field2">
+          <option value="None" disabled selected>Select Course Level for Alpha/Beta/Theta Exam Group</option>
+          <option value="Alpha Group (LKG class 1) - Junior Abacus">Alpha Group (LKG class 1) - Junior Abacus</option>
+           <option value="Beta Group ( Class II - V ) - Level 1 Abacus">Beta Group ( Class II Onwards ) - Level 1 Abacus</option>
+           <option value="Beta Group ( Class II - V ) - Level 2 Abacus">Beta Group ( Class II Onwards ) - Level 2 Abacus</option>
+           <option value="Beta Group ( Class II - V ) - Level 3 Abacus">Beta Group ( Class II Onwards ) - Level 3 Abacus</option>
+           <option value="Beta Group ( Class II - V ) - Level 4 Abacus">Beta Group ( Class II Onwards ) - Level 4 Abacus</option>
+           <option value="Beta Group ( Class II - V ) - Level 5 Abacus">Beta Group ( Class II Onwards ) - Level 5 Abacus</option>
+            <option value="Theta Group ( Class IV - XII ) - Level 1 Vedic Maths">Theta Group ( Class IV - XII ) - Level 1 Vedic Maths</option>
+            <option value="Theta Group ( Class IV - XII ) - Level 2 Vedic Maths">Theta Group ( Class IV - XII ) - Level 2 Vedic Maths</option>
+      </select>
+      
+    </div>
+  </div>
+
+      </p>
+        
+  </div>
+
+ <!-- 
+
+  This code belong to old center choice thing that was causing errors.
+
+
+  <div class="row" hidden>
+  <div class="input-field col s2"></div>
+  <div class="input-field col s4">
+  <h3><label>Select 1<sup>st</sup> Preference</label></h3>
+
+       <p>
+        <input class="with-gap" name="first_school" type="radio" value="0" id="mpe"  required/>
+        <label for="mpe">MPE School</label>
+      </p>
+      <p>
+        <input class="with-gap" name="first_school" type="radio" value="1" id="own"  required />
+        <label for="own">Own School</label>
+      </p>
+        </div>
+        </div>
+  -->
+  <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+  <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+  <!-- <div class="row">
+  <div class="input-field col s2"></div>
+  <div class="input-field col s4">
+   <h3><label>Select 2<sup>nd</sup> Preference</label></h3>
+ 
+       <p>
+        <input class="with-gap" name="second_school" value="0" type="radio" id="mpe2"  required/>
+        <label for="mpe2">MPE School</label>
+      </p>
+      <p>
+        <input class="with-gap" name="second_school" value="1" type="radio" id="own2"  />
+        <label for="own2">Own School</label>
+      </p>
+        </div>
+  <div class="row">
+  <div class="input-field col s4">
+<font color="black">
+
+      <select name="second_preference" id="second_preference"  required>
+       <br>
+          <option value="None" disabled selected>Select School</option>
+          <option value="Raipur">Raipur</option>
+          <option value="Nagpur">Nagpur</option>
+          <option value="Pune">Pune</option>
+      
+      </select>
+</font>      
+    </div>
+  </div></div>
+   --><div class="row">
+  <div class="input-field col s2"></div><div class="input-field col s8">
+  <h3><label>Ineterested in WorkShop :</label></h3><br>
+
+       <p>
+        <input value="0" class="with-gap" name="workshop" type="radio" id="workshop_no" required />
+        <label for="workshop_no">No</label>
+      </p>
+      <p>
+        <input value="1" class="with-gap" name="workshop" type="radio" id="workshop_yes" checked required  />
+
+        <label for="workshop_yes">Yes</label>
+      </p>
+        </div>
+  </div>
+  <div class="row">
+   <div class="input-field col s2"></div>
+   <div class="input-field col s8">
+  
+  <div class="file-field input-field" black>
+      <div class="btn">
+        <span>Upload Image</span>
+        <input type="file" name="pic" accept="image/*" required>
+      </div>
+      <font color="black">
+      <div blue class="file-path-wrapper">
+        <input class="file-path validate" type="text" >
+      </div></font>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+   <div class="input-field col s4"></div>
+   <div class="input-field col s4">
+   
+   <button class="btn waves-effect waves-light" id="btnSubmit" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button>
+
+    </div>
+          </div>
+<div class="row"></div>
+      </form>
+  </div>
+  </div>
+  </div>
+
+    </div>
+
+      </body>
+
+
+  {% include "base_foot.html" %}
+  {% endblock content %}
+
+
+  </html>

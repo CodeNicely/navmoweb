@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+<body background="">
+<form action="#" method="POST">{% csrf_token %}
+<table width="100%" style="max-height: 100%;overflow-y: hidden;"  align="center" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" valign="top" style="background-color:#FFD700;">
+    <table width="100%" height="100%" border="1" cellspacing="0" cellpadding="5" style="background-color: #E0FFFF">
+      <tr>
+        <td colspan="3"><img src="{{BASE_DIR}}/media/spr_header.png" width="100%" height="37%"></td></tr>
+      <tr>
+        <td colspan="3" align="center" width = 100% height="8%" style="font-family: sans-serif;background-color: #288DF3; color: #FFFFFF;font-size:30px; vertical-align: middle;">Student Performance Report
+          </td>
+      </tr>
+      <tr>
+        <td rowspan="10" align="top" width="30%"><img src="{{image}}" style="display: block; width: 100%; height:330px;"></td></img>
+        <td width="25%" style="padding-left: 10px">Reference Id :</td>
+        <td width="45%" style="font-weight: bold;font-family: serif; font-size: 18px; padding-left:1%">{{reference_id}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Name :</td>
+        <td style="font-weight: bold;font-family: serif; font-size: 18px; padding-left:1%">{{name}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Father :</td>
+        <td style="font-weight: bold;font-family: serif; font-size: 18px;padding-left:1%">{{father}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Class :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{class}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">School :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{school}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Group-Level :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{level}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Round :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{round}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Marks :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{marks}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">Time :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{time}}</td></tr>
+      <tr>
+        <td style="padding-left: 10px">NPI Score :</td>
+        <td style="font-weight: bold;font-family: serif;font-size: 18px;padding-left:1%">{{npi}}</td></tr>
+      <tr>
+        <td style="text-align: center;">Centre Group Rank</td>
+        <td style="text-align: center;">National Level Rank</td>
+        <td style="text-align: center;">National Group Rank</td>
+      </tr>
+      <tr>
+        <td style="text-align: center;font-weight: bold;font-family: sans-serif;font-size: 18px;padding-left:1%">{{centre_rank}}</td>
+        <td style="text-align: center;font-weight: bold;font-family: sans-serif;font-size: 18px;padding-left:1%">{{national_level_rank}}</td>
+        <td style="text-align: center;font-weight: bold;font-family: sans-serif;font-size: 18px;padding-left:1%">{{national_group_rank}}</td>
+      </tr>
+  </table></td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

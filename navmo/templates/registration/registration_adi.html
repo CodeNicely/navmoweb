@@ -1,0 +1,17 @@
+<html>
+<head><title>register</title>
+</head>
+<body>
+	<form action="." method="post">{% csrf_token %}
+		<table>
+			<tr>
+		<tr><td>password<input type="text" name="password"/></td></tr>
+		<tr><td>email<input type="text" name="email"/></td></tr>		
+		<td>first_name<input type="text" name="first_name"/></td></tr>
+		<tr><td>domain_type<input type="text" name="domain_type"/></td></tr>
+		<tr><td>number<input type="text" name="number"/></td></tr>
+		<tr><td><input type="submit" name="ok" value ="enter"/></td></tr>
+		</table>
+	</form>
+</body>
+</html>

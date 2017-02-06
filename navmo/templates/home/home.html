@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title></title>
+	
+     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+	<!-- <link rel="stylesheet" type="text/css" href="/static/admin/css/style.css" media="all" /> -->
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+	
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
+    <!-- <script type="text/javascript" src="/static/admin/js/jquery.inputfocus-0.9.min.js"></script> -->
+    <!--<script type="text/javascript" src="/static/admin/js/jquery.main.js"></script>-->
+</head>
+<body>
+{% include "base_head.html" %}
+{% block content %}
+
+<!--<section class="slider_wrapper">
+  <div id="camera_wrap" class="">
+    <div data-src="/static/general/images/slide.jpg"></div>
+    <div data-src="/static/general/images/slide1.jpg"></div>
+    <div data-src="/static/general/images/slide2.jpg"></div>  
+  </div>  
+</section>--> 
+	<div class="row">
+<div class="col s12 m3"></div>
+ 
+ <div class="col s12 m6">
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+          <p>   Mobile Verification - Done Successfully</p>
+            <br> 
+         <p>    <form method="post" action=".">{% csrf_token %}
+        Payment : <!-- 
+        <button class="btn waves-effect waves-light" value="{{payment_status}}" type="submit">
+     -->
+        <input class="btn waves-effect waves-light green" type="submit" value="{{payment_status}}"/>
+    </form>
+</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+<div class="col s12 m3"></div>
+ 
+ <div class="col s12 m6">
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+         <p>    
+         <!-- <form method="get" action="#">{% csrf_token %}
+          --><!-- 
+        <button class="btn waves-effect waves-light" value="{{payment_status}}" type="submit">
+     -->
+        <input class="btn waves-effect waves-light green {{admit_card}}" type="submit" value="Download Admit Card" 
+        onclick="window.open('/admit_card')" />
+   
+    <!-- </form> -->
+</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+ 
+
+    <div class="row">
+<div class="col s12 m3"></div>
+ 
+ <div class="col s12 m6">
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+
+	    <form action="#" method="post">
+	  <div id="home_details">
+                <h3>REGISTRATION DETAILS</h3>
+
+                <div class="form">
+                <br>
+                     <img src="{{image}}" height="60%" width="60%"></img>
+                    <br>
+                    <br> 
+                    <table>
+                        <tr><td>Name:</td><td>{{first_name}} {{last_name}}</td></tr>
+                        <tr><td>Father's Name:</td><td>{{parent_father}}</td></tr>
+                        <tr><td>Mother's Name:</td><td>{{parent_mother}}</td></tr>
+                        <tr><td>Gender:</td><td>{{gender}}</td></tr>
+                        <tr><td>T-shirt Size:</td><td>{{tshirt_size}}</td></tr>
+                        <tr><td>Email:</td><td>{{email}}</td></tr>
+                        <tr><td>Address:</td><td>{{address}}</td></tr>
+                        <tr><td>Phone Number:</td><td>{{number}}</td></tr>
+                        <tr><td>School Name:</td><td>{{school}}</td></tr>
+                        <tr><td>Class:</td><td>{{grade}}</td></tr>
+                        <tr><td>MPE:</td><td>{{flag_mpe_student}}</td></tr>
+                        <tr><td>Examination Group:</td><td>{{exam_group}}</td></tr>
+                        <tr><td>First prefrence:</td><td>{{exam_centre_1}}</td></tr>
+                        <tr><td>Second prefrence:</td><td>{{exam_centre_2}}</td></tr>
+                       
+                    </table>
+                    
+                </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+                <!-- 
+                <input class="send submit" type="submit" name="submit_fourth" id="submit_fourth" value="" /> -->           
+            </div>
+  </div>
+     </div>
+  </div>
+  </div>           
+        
+	</div>
+{% endblock content %}
+{% include "base_foot.html" %}
+</body>
+</html>

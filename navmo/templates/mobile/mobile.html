@@ -1,0 +1,46 @@
+<html>
+<head><title>Mobile Verification - Navmo</title>
+
+{% include "base_head.html" %}
+{% block content %}
+
+</head>
+
+   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+
+<body>
+<div class="row">
+<div class="col s12 m4"></div>
+        <div class="col s12 m4">
+          <div class="card white darken-1">
+            <div class="card-content black-text">
+              <span class="card-title black-text" ><h3><center>Mobile Verification {{error}}</center></h3></span>
+
+	 <form method="post" action=".">{% csrf_token %}
+		<table>
+		<tr><td>Number<input type="text" name="number" value={{number}} disabled></input></td>
+		<td><center><input class="btn" type="submit" name="send" value ="SEND"/></center></td></tr>
+		<tr><td>Verification Code<input type="text" name="code"></input></td><td><center><input class="btn" type="submit" name="verify" value ="VERIFY"/></center></td></tr>
+		</table>
+    </form>
+    </div>
+    </div>
+    </div>
+</div>
+
+</body>
+
+{% endblock content %}
+{% include "base_foot.html" %}
+</html>

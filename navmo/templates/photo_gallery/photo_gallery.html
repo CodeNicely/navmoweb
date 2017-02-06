@@ -1,0 +1,54 @@
+<html>
+<title>NAVMO</title>
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+{% include "base_head.html" %}
+{% block content %}
+
+<!-- <script type="text/javascript">
+	
+
+var json={{result_data|safe}}
+alert(json)
+var image_list=json['image_list']
+for(var i=0;i<image_list.length;i++){
+
+photo_data='<img class="materialboxed" width="650" src="'+image_list[i].image+'"  data-caption="'+image_list[i].caption+'" >'
+alert(photo_data)
+$("#images").append(photo_data);
+
+}
+
+</script>
+ -->
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+<script type="text/javascript">
+	
+$(document).ready(function(){
+    $('.materialboxed').materialbox();
+  });
+
+</script>
+
+
+<body bgcolor="#FFFFFF">
+
+
+
+{{image_list|safe}}
+
+
+{% endblock content %}
+{% include "base_foot.html" %}
+</body>
+</html>

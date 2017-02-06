@@ -1,0 +1,109 @@
+  <html>
+  <head onload="submitPayuForm()">
+
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+
+  <script type="text/javascript">
+    var hash = "{{ hash }}";
+    function submitPayuForm() {
+      if(hash =='') {
+        return;
+      }
+      var payuForm = document.forms.payuForm;
+      payuForm.submit();
+    }
+  </script>
+  </head>
+  <body>
+  {% include "base_head.html" %}
+  {% block content %}
+
+    <br/>
+    {% if error %}
+
+      <span style="color:red">Please fill all mandatory fields.</span>
+      <br/>
+      <br/>
+      {% endif %}
+     
+  <div class="row">
+  <div class="col s12 m3"></div>
+          <div class="col s12 m6">
+            <div class="card white lighten-10">
+              <div class="card-content black-text">
+                <span class="card-title black-text" ><h3><center>Pay Online Using PayUMoney</center></h3></span>
+
+
+      <table class="striped">
+     
+        <tbody>
+<br>
+          <tr>
+                      <td>Transaction Id</td>
+            <td>{{ txnid }}</td>
+          </tr>
+         <tr>
+            <td>Name</td>
+            <td>{{ firstname }}</td>
+          </tr>
+
+          <tr>
+            <td>Email</td>
+            <td>{{ email }}</td>
+          </tr>
+          <tr>
+            <td>Mobile</td>
+            <td>{{ phone }}</td>
+          </tr>
+
+          <tr>
+            <td>Amount</td>
+            <td>Rs. {{ amount }}</td>
+          </tr>
+          <tr>
+            <td>Merchant</td>
+            <td>PayUMoney</td>
+          </tr>
+        </tbody>
+      </table>
+
+<br>
+
+      <form action="{{url}}" method="post" name="payuForm">
+      <input type="hidden" name="key" value="{{ key }}" />
+      <input type="hidden" id="txnid" name="txnid" value="{{ txnid }}" >
+      <input type="hidden" name="amount" value="{{ amount }}"/>
+       <input type="hidden" name="posted" value="{{ posted }}"/>
+      <input type="hidden" name="productinfo" value="{{ productinfo }}" />
+      <input type="hidden" name="firstname" value="{{ firstname }}" />
+      <input type="hidden" name="email" value="{{ email }}" />
+      <input type="hidden" name="phone" value="{{ phone }}" />
+      <input type="hidden" name="surl" value="{{ surl }}" />
+      <input type="hidden" name="furl" value="{{ furl }}" />
+      <input type="hidden" name="hash" value="{{ hash }}" />
+      <input type="hidden" name="service_provider" value="{{ service_provider }}" />
+     <center> <input class="btn green" type="submit" value ="pay now">
+      </center>
+    </form>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+  {% endblock content %}
+  {% include "base_foot.html" %}
+  </body>
+  </html>
+

@@ -1,0 +1,34 @@
+<html>
+<head><title>login</title></head>
+
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/style.css" media="all" />
+
+<body>
+{% include "base_head.html" %}
+{% block content %}
+
+    <div id="container">
+    <form method="post" action=".">
+        
+                <h1>Navmo Login<span></span></h1>
+                <div class="form">
+                    <input type="text" name="firstname" id="firstname" value="first name" />
+                    <label for="firstname">Your First Name. </label>
+
+                    <input type="text" name="lastname" id="lastname" value="last name" />
+                    <label for="lastname">Your Last Name. </label>
+
+                    <input type="password" name="password" id="password" value="password" />
+                    <label for="password">At least 4 characters. Use a mix of upper and lowercase for a strong password.</label>
+            
+        <input type="submit" value="Login" />
+
+        <input type="hidden" name="next" value="/home" />
+    </form>
+    <p>Not Registered Yet ?</p><a href="/register">Register</a>
+
+{% endblock content %}
+{% include "base_foot.html" %}
+
+</body>
+</html>

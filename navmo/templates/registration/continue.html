@@ -1,0 +1,41 @@
+<html>
+<head><title>register</title>
+{% include "base_head.html" %}
+{% block content %}
+
+</head>
+
+ <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	    <!--Import materialize.css-->
+	    <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+	    <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+	    <!--Let browser know website is optimized for mobile-->
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	    <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+
+<body>
+
+<div class="col s12 m7">
+    <h2 class="header">Horizontal Card</h2>
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+	pls note the refrence number ,this token will be used for further logins
+	refrence_id:{{refrence_id}} Meghal
+	<div class="card-action">
+	<a href="/">continue</a>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+
+{% endblock content %}
+{% include "base_foot.html" %}
+</body>
+</html>

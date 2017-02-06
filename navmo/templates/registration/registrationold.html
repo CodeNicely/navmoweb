@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title></title>
+	
+	<link rel="stylesheet" type="text/css" href="/static/admin/css/style.css" media="all" />
+{% include "base_head.html" %}
+
+{% block content %}
+
+
+	
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.inputfocus-0.9.min.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.main.js"></script>
+
+	<div id="container_12">
+        <form action="" method="post" name="form">{% csrf_token %}
+	
+            <!-- #first_step -->
+            <div id="first_step">
+                <b><h3>PERSONAL DETAILS</h3></b>
+                <div class="form">
+                    <input type="text" name="firstname" id="firstname" value="first name" />
+                    <label for="firstname">Your First Name. </label>
+
+                    <input type="text" name="lastname" id="lastname" value="last name" />
+                    <label for="lastname">Your Last Name. </label>
+
+                    <input type="password" name="password" id="password" value="password" />
+                    <label for="password">At least 4 characters. Use a mix of upper and lowercase for a strong password.</label>
+                    
+                    <input type="password" name="cpassword" id="cpassword" value="password" />
+                    <label for="cpassword">Re Enter Your Password.</label>
+                    
+                    <input type="text" name="fathername" id="fathername" value="father's name" />
+                    <label for="fathername">Father's Name.</label>
+                    
+                    <input type="text" name="mothername" id="mothername" value="mother's name" />
+                    <label for="mothername">Mother's Name. </label>
+
+                    <input type="date" name="dob" id="dob" value="dd/mm/yy" />
+                    <label for="dob">Enter Your Date Of Birthday.</label>
+
+                    <select id="gender" name="gender">
+                        <option value="Male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <label for="gender">Your Gender. </label> <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+                    
+                    <select id="tsize" name="tsize">
+                        <option value="24">24</option>
+                        <option value="26">26</option>
+                        <option value="28">28</option>
+                        <option value="30">30</option>
+                        <option value="32">32</option>
+                        <option value="34">34</option>
+                        <option value="38">38</option>
+                        <option value="40">40</option>
+                        <option value="42">42</option>
+                        <option value="44">44</option>
+                    </select>
+                    <label for="tsize">Your T-shirt Size. </label> <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+
+                    <input type="file" name="simage" id="simage" value="student image" />
+                    <label for="simage">Upload Your Picture.</label>
+                    
+                   
+                </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+                <input class="submit" type="submit" name="submit_first" id="submit_first" value="" />
+            </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+
+
+            <!-- #second_step -->
+            <div id="second_step">
+                <h1><span>CONTACT DETAILS</span></h1>
+
+                <div class="form">
+                   
+                    <input type="text" name="email" id="email" value="email address" />
+                    <label for="email">Your email address. We send important administration notices to this address. </label>                    
+                    <textarea name="address" id="address"  value="address"></textarea>
+                    <label for="address">Enter Your Address</label>
+                    <input type="number" name="pnum" id="pnum" value="phone number"/>
+                    <label for="pnum">Enter Your Phone Number</label>
+                
+                
+                
+                </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+                <input class="submit" type="submit" name="submit_second" id="submit_second" value="" />
+            </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+
+
+            <!-- #third_step -->
+            <div id="third_step">
+                <h1>ACDEMIC DETAILS<span></span></h1>
+
+<div class="form">
+                    <input type="text" name="school" id="school" value="school name"/>
+                    <label for="school">Enter Your School Name.</label>
+
+                    <select id="sclass" name="sclass">
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="Class 1">1</option>
+                        <option value="Class 2">2</option>
+                        <option value="Class 3">3</option>
+                        <option value="Class 4">4</option>
+                        <option value="Class 5">5</option>
+                        <option value="Class 6">6</option>
+                        <option value="Class 7">7</option>
+                        <option value="Class 8">8</option>
+                        <option value="Class 9">9</option>
+                        <option value="Class 10">10</option>
+                        <option value="Class 11">11</option>
+                        <option value="Class 12">12</option>
+                    </select>
+                    <label for="sclass">Your Class. </label> <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+</div>
+                    <h3>MPE:</h3>
+                    <input type="radio" name="mpe" id="mpe" value="Yes" >Yes
+<!--                     <label for="mpe" class="radio">YES</label> -->
+                    <input type="radio" name="mpe" id="mpe" value="No"/>No
+<!--                     <label for="mpe" class="radio">NO</label> -->
+     
+      
+                    <input type="radio" name="exam_group" id="exam_group" value="0"/>
+<!--0 to be linked in db for gamma group -->
+
+                    <label for="exam_group" class="radio">Gamma Group(Mind Magic,Open TO All)</label> 
+                    <input type="radio" name="exam_group" id="exam_group" value="1"/>
+<!--1 to be linked in db for alpha group -->
+                    <label for="exam_group" class="radio">Alpha Group</label>
+        		    <input type="radio" name="exam_group" id="exam_group" value="2"/><br>
+<!--2 to be linked in db for beta group -->
+                    <label for="exam_group" class="radio">Beta Group</label>
+                    <input type="radio" name="exam_group" id="exam_group" value="3"/>
+<!--3 to be linked in db for theta group -->
+                    <label for="exam_group" class="radio">Theta Group</label>
+
+                    <h2>Exam Center</h2><br/>
+                    <h3>First Prefrence</h3><br/>
+                    <input type="radio" name="sname" id="sname" value="0" />
+                    <label for="sname" class="radio">Own School</label>
+                    <input type="radio" name="sname" id="sname" value="1" />
+                    <label for="sname" class="radio">MPE School/Center</label>
+                    <select id="choices" name="choices">
+                    {{list_data|safe}}</select>
+
+                    <h3>Second Prefrence</h3>
+                    <input type="radio" name="sec_name" id="sec_name" value="0" />
+                    <label for="sec_name" class="radio">Own School</label>
+                    <input type="radio" name="sec_name" id="sec_name" value="1" />
+                    <label for="sec_name" class="radio">MPE School/Center</label>
+                    <select id="choices1" name="choices1">
+                        {{list_data|safe}}
+                    </select>
+                  <input type="checkbox" name="workshop" id="workshop" value="1"/>
+                  <label for="workshop" class="radio">I am interested in signing up for a 10 days workshop at my school or nearest mind power Education Center</label>
+                 
+                       <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+                <input class="submit" type="submit" name="submit_third" id="submit_third" value="" />
+                
+               </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+            
+            
+            <!-- #fourth_step -->
+            <div id="fourth_step">
+                <h1>REGISTRATION DETAILS<span></span></h1>
+
+                <div class="form">
+                    <h2></h2>
+                    
+                    <table>
+                        <tr><td>Name:</td><td></td></tr>
+                        <tr><td>Father's Name:</td><td></td></tr>
+                        <tr><td>Mother's Name:</td><td></td></tr>
+                        <tr><td>Password:</td><td></td></tr>
+                        <tr><td>Gender:</td><td></td></tr>
+                        <tr><td>T-shirt Size:</td><td></td></tr>
+                        <tr><td>Email:</td><td></td></tr>
+                        <tr><td>Address:</td><td></td></tr>
+                        <tr><td>Phone Number:</td><td></td></tr>
+                        <tr><td>School Name:</td><td></td></tr>
+                        <tr><td>Class:</td><td></td></tr>
+                        <tr><td>MPE:</td><td></td></tr>
+                        <tr><td>Company Name:</td><td></td></tr>
+                        <tr><td>Examination Group:</td><td></td></tr>
+                        <tr><td>First prefrence:</td><td></td></tr>
+                        <tr><td>Second prefrence:</td><td></td></tr>
+                       
+                    </table>
+                </div>      <!-- clearfix --><div class="clear"></div><!-- /clearfix -->
+              <input type="submit" id="submit_fourth" name="submit_fourth" value ="enter"/>           
+           </div>
+              
+            
+        </form>
+        <div id="progress_bar">
+        <div id="progress"></div>
+        <div id="progress_text">0% Complete</div>
+	</div>
+	</div>
+    <br><br><br><br>    <br><br><br><br>
+    </body>
+{% endblock content %}
+
+
+</html>

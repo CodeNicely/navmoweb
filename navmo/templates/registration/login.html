@@ -1,0 +1,120 @@
+  <html>
+  <head>
+  	<title>Login - Navmo</title>
+  	
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  	
+  {% include "base_head.html" %}
+
+  {% block content %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+
+        <!--Import Google Icon Font-->
+      <body>
+        <!--Import jQuery before materialize.js-->
+        
+
+        
+ <!--    <form method="post" action=".">{% csrf_token %}
+                 
+               <h1>Navmo Login</h1>
+            <div class="row">
+              <div class="input-field col s4"></div><div class="input-field col s4">
+
+             <label for="id_username">Referrence Id ( Generated after Registration )</label>
+             {{ form.username }}
+           </div></div>
+           <div class="row">
+              <div class="input-field col s4"></div><div class="input-field col s4">           
+             <label for="id_password">Password:</label>
+             {{ form.password }}
+           </div></div>
+          <div class="row">
+              <div class="input-field col s4"></div><div class="input-field col s4">           
+           <button class="btn waves-effect waves-light" value="Login" type="submit">Submit
+    <i class="material-icons right">send</i>
+  </button>
+            <input type="hidden" name="next" value="/home" />
+         
+         
+        </div></div>
+                 
+        </form>
+         <div class="row">
+              <div class="input-field col s4"></div><div class="input-field col s4">           
+    <p>Not Registered Yet ?</p><a href="/register">Register</a></div></div>
+-->
+
+<div class="row">
+<div class="col s12 m3"></div>
+        <div class="col s12 m6">
+          <div class="card white darken-1">
+            <div class="card-content black-text">
+              <span class="card-title black-text" ><h3><center>Navmo - Login</center></h3></span>
+
+<font color="red">{% if form.errors %}Reference Id and password doesnt match.Please Try Again
+        {% endif %}</font>
+    <form method="post" action=".">{% csrf_token %}
+
+
+            <div class="row">
+             
+             <label for="id_username" >Referrence Id ( Generated after Registration )</label>
+             {{ form.username }}
+           </div>
+           <div class="row">
+             <label for="id_password">Password:</label>
+             {{ form.password }}
+           </div>
+          <div class="row">
+              <div class="input-field col s3"></div>    
+          
+           <button class="btn waves-effect waves-light" value="Login" type="submit">Login
+    <!-- <i class="material-icons right">send</i> -->
+  </button>
+            <input type="hidden" name="next" value="/home" />
+         
+         
+        </div>
+</form>
+      <div class="row">
+    <div class="input-field col s3"></div>    
+          
+    <p>Not Registered Yet ?</p>
+<div class="input-field col s3"></div>    
+          
+    <a href="/register">Register</a>
+          <br>
+          <br>
+<div class="input-field col s3"></div>    
+
+    <a href="/forgot_password">Forgot Password</a>
+
+   
+
+    </div>
+    </div>
+
+            </div>
+            <br>
+            <br>
+            
+        </div>
+      </div>
+
+
+      </body>
+
+
+  {% include "base_foot.html" %}
+  {% endblock content %}
+
+  </html>
