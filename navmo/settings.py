@@ -77,23 +77,23 @@ WSGI_APPLICATION = 'navmo.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
- }
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE':'django.db.backends.mysql',
-#         'NAME': 'navmo',
-#         'USER': 'root',
-#         'PASSWORD': 'Localcart@999123',
-#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
-# }
+#  }
+
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': 'navmo',
+        'USER': 'root',
+        'PASSWORD': 'Localcart@999123',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
