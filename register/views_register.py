@@ -696,6 +696,22 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td></tr>'
+
+				try:
+					if groups_data.current_round=="finals":
+						rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+						if rank_details.national_level_rank==1:
+							award_name="National Gold Medal & Champion's Champion Trophy"
+						elif rank_details.national_level_rank==2:
+							award_name="National Silver Medal & National Champion Trophy"
+						elif rank_details.national_level_rank==3:
+							award_name="National Bronze Medal & National Champion Trophy"
+						elif :
+							award_name="National Champion Trophy"
+
+						result_data+='<td id="td" width="30%">'+award_name+'</td></tr>'
+				except Exception,e:
+					print e
 				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
 				# rank_details.centre_rank=count
 				# rank_details.save()
@@ -750,6 +766,27 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td></tr>'
+				try:
+					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+					if groups_data.current_round=="finals":
+						if rank_details.national_level_rank==1:
+							award_name="National Gold Medal + Champion's Champion Trophy"
+						elif rank_details.national_level_rank==2:
+							award_name="National Silver Medal + National Champion Trophy"
+						elif rank_details.national_level_rank==3:
+							award_name="National Bronze Medal + National Champion Trophy"
+						elif :
+							award_name="National Champion Trophy"
+					if rank_details.centre_rank==1:
+						award_name.append(" + School Gold Medal")
+					elif rank_details.centre_rank==2:
+						award_name.append(" + School Silver Medal")
+					elif rank_details.centre_rank==3:
+						award_name.append(" + School Bronze Medal")
+					
+					result_data+='<td id="td" width="30%">'+award_name+'</td></tr>'
+				except Exception,e:
+					print e
 				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
 				# rank_details.centre_rank=count
 				# rank_details.save()					
