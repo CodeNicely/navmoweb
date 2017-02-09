@@ -675,8 +675,8 @@ def admin_results(request):
 
 				try:
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
-					result_data+='<td id="td">'+str(rank_details.national_rank_levelwise)+'</td>'
-					result_data+='<td id="td">'+str(rank_details.national_rank_groupwise)+'</td>'
+					result_data+='<td id="td">'+str(rank_details.national_level_rank)+'</td>'
+					result_data+='<td id="td">'+str(rank_details.national_group_rank)+'</td>'
 				except Exception,e:
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
@@ -728,8 +728,8 @@ def admin_results(request):
 
 				try:
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
-					result_data+='<td id="td">'+str(rank_details.national_rank_levelwise)+'</td>'
-					result_data+='<td id="td">'+str(rank_details.national_rank_groupwise)+'</td>'
+					result_data+='<td id="td">'+str(rank_details.national_level_rank)+'</td>'
+					result_data+='<td id="td">'+str(rank_details.national_group_rank)+'</td>'
 				except Exception,e:
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
