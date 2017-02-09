@@ -677,9 +677,10 @@ def admin_results(request):
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
 					result_data+='<td id="td">'+str(rank_details.national_rank_levelwise)+'</td>'
 					result_data+='<td id="td">'+str(rank_details.national_rank_groupwise)+'</td>'
-				except:
+				except Exception,e:
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
+					print e
 				try:
 					user_details=user_data.objects.get(refrence_id=groups_data.reference_id)
 					result_data+='<td id="td">'+str(user_details.first_name+" "+user_details.last_name)+'</td>'
@@ -729,11 +730,11 @@ def admin_results(request):
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
 					result_data+='<td id="td">'+str(rank_details.national_rank_levelwise)+'</td>'
 					result_data+='<td id="td">'+str(rank_details.national_rank_groupwise)+'</td>'
-				except:
+				except Exception,e:
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
-				
-
+					print e
+			
 				try:
 					user_details=user_data.objects.get(refrence_id=groups_data.reference_id)
 					result_data+='<td id="td">'+str(user_details.first_name+" "+user_details.last_name)+'</td>'
