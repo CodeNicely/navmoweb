@@ -700,7 +700,7 @@ def admin_results(request):
 				try:
 					award_name=""
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
-					if groups_data.current_round=="finals":
+					if groups_data.current_round=="Finals":
 						if rank_details.national_level_rank==1:
 							award_name="National Gold Medal + Champion's Champion Trophy"
 						elif rank_details.national_level_rank==2:
@@ -709,13 +709,20 @@ def admin_results(request):
 							award_name="National Bronze Medal + National Champion Trophy"
 						else:
 							award_name="National Champion Trophy"
-					if rank_details.centre_rank==1:
-						award_name+=" + School Gold Medal"
-					elif rank_details.centre_rank==2:
-						award_name+=" + School Silver Medal"
-					elif rank_details.centre_rank==3:
-						award_name+=" + School Bronze Medal"
-					
+					if rank_details.current_round=='Finals'
+						if rank_details.centre_rank==1:
+							award_name+=" + School Gold Medal"
+						elif rank_details.centre_rank==2:
+							award_name+=" + School Silver Medal"
+						elif rank_details.centre_rank==3:
+							award_name+=" + School Bronze Medal"
+					else:
+						if rank_details.centre_rank==1:
+							award_name+="School Gold Medal"
+						elif rank_details.centre_rank==2:
+							award_name+="School Silver Medal"
+						elif rank_details.centre_rank==3:
+							award_name+="School Bronze Medal"
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
@@ -776,7 +783,7 @@ def admin_results(request):
 				try:
 					award_name=""
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
-					if groups_data.current_round=="finals":
+					if groups_data.current_round=="Finals":
 						if rank_details.national_level_rank==1:
 							award_name="National Gold Medal + Champion's Champion Trophy"
 						elif rank_details.national_level_rank==2:
@@ -785,12 +792,20 @@ def admin_results(request):
 							award_name="National Bronze Medal + National Champion Trophy"
 						else :
 							award_name="National Champion Trophy"
-					if rank_details.centre_rank==1:
-						award_name+=" + School Gold Medal"
-					elif rank_details.centre_rank==2:
-						award_name+=" + School Silver Medal"
-					elif rank_details.centre_rank==3:
-						award_name+=" + School Bronze Medal"
+					if rank_details.current_round=='Finals'
+						if rank_details.centre_rank==1:
+							award_name+=" + School Gold Medal"
+						elif rank_details.centre_rank==2:
+							award_name+=" + School Silver Medal"
+						elif rank_details.centre_rank==3:
+							award_name+=" + School Bronze Medal"
+					else:
+						if rank_details.centre_rank==1:
+							award_name+="School Gold Medal"
+						elif rank_details.centre_rank==2:
+							award_name+="School Silver Medal"
+						elif rank_details.centre_rank==3:
+							award_name+="School Bronze Medal"
 					
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
