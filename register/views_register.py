@@ -687,7 +687,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+str(user_details.parent_father)+'</td>'
 					result_data+='<td id="td">'+str(user_details.email)+'</td>'
 					result_data+='<td id="td">'+str(user_details.school)+'</td>'
-					result_data+='<td id="td">'+str(user_details.grade)+'</td></tr>'
+					result_data+='<td id="td">'+str(user_details.grade)+'</td>'
 
 				except Exception,e:
 					print str(e)
@@ -716,7 +716,7 @@ def admin_results(request):
 					elif rank_details.centre_rank==3:
 						award_name.append(" + School Bronze Medal")
 					
-					result_data+='<td id="td" width="30%">'+award_name+'</td></tr>'
+					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
 				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
@@ -764,7 +764,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+str(user_details.parent_father)+'</td>'
 					result_data+='<td id="td">'+str(user_details.email)+'</td>'
 					result_data+='<td id="td">'+str(user_details.school)+'</td>'
-					result_data+='<td id="td">'+str(user_details.grade)+'</td></tr>'
+					result_data+='<td id="td">'+str(user_details.grade)+'</td>'
 
 				except Exception,e:
 					print str(e)
@@ -792,7 +792,7 @@ def admin_results(request):
 					elif rank_details.centre_rank==3:
 						award_name.append(" + School Bronze Medal")
 					
-					result_data+='<td id="td" width="30%">'+award_name+'</td></tr>'
+					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
 				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
