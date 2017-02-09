@@ -709,7 +709,7 @@ def admin_results(request):
 							award_name="National Bronze Medal + National Champion Trophy"
 						else:
 							award_name="National Champion Trophy"
-					if rank_details.current_round=='Finals'
+					if rank_details.current_round=="Finals"
 						if rank_details.centre_rank==1:
 							award_name+=" + School Gold Medal"
 						elif rank_details.centre_rank==2:
@@ -792,7 +792,7 @@ def admin_results(request):
 							award_name="National Bronze Medal + National Champion Trophy"
 						else :
 							award_name="National Champion Trophy"
-					if rank_details.current_round=='Finals'
+					if rank_details.current_round=="Finals"
 						if rank_details.centre_rank==1:
 							award_name+=" + School Gold Medal"
 						elif rank_details.centre_rank==2:
