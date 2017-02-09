@@ -710,11 +710,11 @@ def admin_results(request):
 						else:
 							award_name="National Champion Trophy"
 					if rank_details.centre_rank==1:
-						award_name.append(" + School Gold Medal")
+						award_name.append+=" + School Gold Medal"
 					elif rank_details.centre_rank==2:
-						award_name.append(" + School Silver Medal")
+						award_name.append+=" + School Silver Medal"
 					elif rank_details.centre_rank==3:
-						award_name.append(" + School Bronze Medal")
+						award_name.append+=" + School Bronze Medal"
 					
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
@@ -786,11 +786,11 @@ def admin_results(request):
 						else :
 							award_name="National Champion Trophy"
 					if rank_details.centre_rank==1:
-						award_name.append(" + School Gold Medal")
+						award_name.append+=" + School Gold Medal"
 					elif rank_details.centre_rank==2:
-						award_name.append(" + School Silver Medal")
+						award_name.append+=" + School Silver Medal"
 					elif rank_details.centre_rank==3:
-						award_name.append(" + School Bronze Medal")
+						award_name.append+=" + School Bronze Medal"
 					
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
