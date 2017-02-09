@@ -624,7 +624,7 @@ def admin_results(request):
 			result_data+='Rank List '
 			result_data+=str(center[0])+' '
 			result_data+=str(group[0])+' '
-			result_data+='</h4></li></center><div class="responsive-table"><table id="table"><thead><tr><th id="th" data-field="Rank">Rank</th><th id="th" data-field="Id">Roll Number</th><th id="th" data-field="Id">Group-Level</th><th id="th" data-field="Id">Marks</th><th id="th" data-field="Id">Time</th><th id="th" data-field="Id">NPI Score</th><th id="th" data-field="Id">Current Round</th><th id="th" data-field="Id">National Level Rank</th><th id="th" data-field="Id">National Group Rank</th><th id="th" data-field="Id">Name</th><th id="th" data-field="Id">Father</th><th id="th" data-field="Id">Email</th><th id="th" data-field="Id">School</th><th id="th" data-field="Id">Class</th></tr></thead>'
+			result_data+='</h4></li></center><div class="responsive-table"><table id="table"><thead><tr><th id="th" data-field="Rank">Rank</th><th id="th" data-field="Id">Roll Number</th><th id="th" data-field="Id">Group-Level</th><th id="th" data-field="Id">Marks</th><th id="th" data-field="Id">Time</th><th id="th" data-field="Id">NPI Score</th><th id="th" data-field="Id">Current Round</th><th id="th" data-field="Id">National Level Rank</th><th id="th" data-field="Id">National Group Rank</th><th id="th" data-field="Id">Name</th><th id="th" data-field="Id">Father</th><th id="th" data-field="Id">Email</th><th id="th" data-field="Id">School</th><th id="th" data-field="Id">Class</th><th id="th" data-field="Id">Awards</th></tr></thead>'
 			result_data+='<tbody id="'+str(group[0])+'">'
 			print group[0]
 			# for groups_data in marks_data.objects.filter(center=center[0],group=group[0],current_round='Finals' | current_round='').order_by('-npi_semi'):
@@ -698,6 +698,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td></tr>'
 
 				try:
+					award_name=""
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
 					if groups_data.current_round=="finals":
 						if rank_details.national_level_rank==1:
@@ -773,6 +774,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td></tr>'
 				try:
+					award_name=""
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
 					if groups_data.current_round=="finals":
 						if rank_details.national_level_rank==1:
