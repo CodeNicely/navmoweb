@@ -312,9 +312,9 @@ def national_all_rank_levelwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_final)+'</td></tr>'
-				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# rank_details.national_level_rank=count
-				# rank_details.save()
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.national_level_rank=count
+				rank_details.save()
 				count+=1
 				print groups_data.reference_id
 		#-----------------------------------------------------------------------
@@ -335,9 +335,9 @@ def national_all_rank_levelwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# rank_details.national_level_rank=count
-				# rank_details.save()
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.national_level_rank=count
+				rank_details.save()
 				count+=1
 				print groups_data.reference_id
 		#------------------------------------------------------------------------
@@ -355,9 +355,9 @@ def national_all_rank_levelwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-			# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-			# rank_details.national_level_rank=count
-			# rank_details.save()
+			rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+			rank_details.national_level_rank=count
+			rank_details.save()
 			count+=1
 			print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(level=level[0],current_round='First-Round').order_by('-npi_first'):
@@ -374,9 +374,9 @@ def national_all_rank_levelwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_first)+'</td></tr>'
-			# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-			# rank_details.national_level_rank=count
-			# rank_details.save()
+			rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+			rank_details.national_level_rank=count
+			rank_details.save()
 			count+=1
 			print groups_data.reference_id
 		result_data+='</tbody></table></div></ul></div></div></div></div>'
@@ -502,13 +502,13 @@ def national_all_rank_groupwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_final)+'</td></tr>'
-				# try:
-				# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# 	rank_details.national_group_rank=count
-				# 	rank_details.save()
-				# except Exception,e:
-				# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-				# 	b.save()
+				try:
+					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+					rank_details.national_group_rank=count
+					rank_details.save()
+				except Exception,e:
+					b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+					b.save()
 				count+=1
 				print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='Finals').order_by('-npi_semi'):
@@ -527,13 +527,13 @@ def national_all_rank_groupwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-				# try:
-				# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# 	rank_details.national_group_rank=count
-				# 	rank_details.save()
-				# except Exception,e:
-				# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-				# 	b.save()
+				try:
+					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+					rank_details.national_group_rank=count
+					rank_details.save()
+				except Exception,e:
+					b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+					b.save()
 				count+=1
 				print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='Semi-Finals').order_by('-npi_semi'):
@@ -551,13 +551,13 @@ def national_all_rank_groupwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-			# try:
-			# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-			# 	rank_details.national_group_rank=count
-			# 	rank_details.save()
-			# except Exception,e:
-			# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-			# 	b.save()
+			try:
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.national_group_rank=count
+				rank_details.save()
+			except Exception,e:
+				b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+				b.save()
 			count+=1
 			print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='First-Round').order_by('-npi_first'):
@@ -575,13 +575,13 @@ def national_all_rank_groupwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_first)+'</td></tr>'
-			# try:
-			# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-			# 	rank_details.national_group_rank=count
-			# 	rank_details.save()
-			# except Exception,e:
-			# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-			# 	b.save()
+			try:
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.national_group_rank=count
+				rank_details.save()
+			except Exception,e:
+				b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+				b.save()
 			count+=1
 			print groups_data.reference_id
 		result_data+='</tbody></table></div></ul></div></div></div></div>'
