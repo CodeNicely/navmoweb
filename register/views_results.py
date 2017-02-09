@@ -646,9 +646,10 @@ def spr_report(request):
 		
 		result_data+='<tr><td id ="td" style="width:35%">'+"Group-Level  :"+'</td>'
 		result_data+='<td id ="td"><strong>'+str(rank_details.level)+'</strong></td></tr>'
-		
-		marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-		
+		try:
+			marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+		except Exception,e:
+			print e
 		result_data+='<tr><td id ="td" style="width:35%">'+"Current-Round  :"+'</td>'
 		if marks_details.current_round=='Finals':
 			if marks_details.npi_final!=0:
