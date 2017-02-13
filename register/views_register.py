@@ -500,118 +500,94 @@ def admin_results(request):
 	group_list=marks_data.objects.order_by().values_list('group').distinct()
 	level_list=marks_data.objects.order_by().values_list('level').distinct()
 	
-	for center in center_list:
-		print center[0]
-		for group in marks_data.objects.filter(center=center[0]).order_by().values_list('group').distinct():
-			print group[0]
-			for level in marks_data.objects.filter(center=center[0],group=group[0]).order_by().values_list('level').distinct():
-				print level[0]
-				marks_data_list=marks_data.objects.filter(level=level[0])
-				topper_marks_first=marks_data_list.aggregate(Max('marks_first'))
-				topper_marks_semi=marks_data_list.aggregate(Max('marks_semi'))
-				topper_marks_final=marks_data_list.aggregate(Max('marks_final'))
+	# for center in center_list:
+	# 	print center[0]
+	# 	for group in marks_data.objects.filter(center=center[0]).order_by().values_list('group').distinct():
+	# 		print group[0]
+	# 		for level in marks_data.objects.filter(center=center[0],group=group[0]).order_by().values_list('level').distinct():
+	# 			print level[0]
+	# 			marks_data_list=marks_data.objects.filter(level=level[0])
+	# 			topper_marks_first=marks_data_list.aggregate(Max('marks_first'))
+	# 			topper_marks_semi=marks_data_list.aggregate(Max('marks_semi'))
+	# 			topper_marks_final=marks_data_list.aggregate(Max('marks_final'))
 				
-				print topper_marks_first
-				print topper_marks_semi
-				print topper_marks_final
+	# 			print topper_marks_first
+	# 			print topper_marks_semi
+	# 			print topper_marks_final
 
 
-				topper_marks_first= topper_marks_first['marks_first__max']
-				topper_marks_semi= topper_marks_semi['marks_semi__max']
-				topper_marks_final= topper_marks_final['marks_final__max']
+	# 			topper_marks_first= topper_marks_first['marks_first__max']
+	# 			topper_marks_semi= topper_marks_semi['marks_semi__max']
+	# 			topper_marks_final= topper_marks_final['marks_final__max']
 
-				print topper_marks_first
-				print topper_marks_semi
-				print topper_marks_final
+	# 			print topper_marks_first
+	# 			print topper_marks_semi
+	# 			print topper_marks_final
 
-				for marks_details in marks_data_list:
-					# if topper_marks_final!=0.0 and marks_details.marks_final!=0.0:
-					# 	try:
-					# 		temp=marks_details.marks_final/topper_marks_final
-					# 		minutes=int(marks_details.time_final)
-					# 		seconds=marks_details.time_final-minutes
-					# 		time=(minutes*60)+(seconds*100)
-					# 		time=time/60
-					# 		temp=temp/time
-					# 		temp=temp*250
-					# 		if(group[0]=='alpha'):
-					# 			temp=temp*2
-					# 		elif(group[0]=='thetha'):
-					# 			temp=temp*4	
+	# 			for marks_details in marks_data_list:
+			
+	# 				if topper_marks_final!=0.0 and marks_details.marks_final!=0.0:
+	# 					try:
+	# 						temp=marks_details.marks_semi/topper_marks_semi
+	# 						minutes=int(marks_details.time_semi)
+	# 						seconds=marks_details.time_semi-minutes
+	# 						time=(minutes*60)+(seconds*100)
+	# 						time=time/60
+	# 						temp=temp/time# marks_details.npi_semi=temp
+	# 						temp=temp*250
 
-					# 		print marks_details.time_final
-					# 		print minutes
-					# 		print seconds
-					# 		print time
-					# 		# marks_details.npi_final=temp
-					# 		setattr(marks_details,'npi_final',"%.2f" % temp)
-					# 		marks_details.save()
-					# 	except Exception,e:
-					# 		print e
-					# 	print 'Final Round'
-
-					if topper_marks_final!=0.0 and marks_details.marks_final!=0.0:
-						try:
-							temp=marks_details.marks_semi/topper_marks_semi
-							minutes=int(marks_details.time_semi)
-							seconds=marks_details.time_semi-minutes
-							time=(minutes*60)+(seconds*100)
-							time=time/60
-							temp=temp/time# marks_details.npi_semi=temp
-							temp=temp*250
-
-							if(group[0]=='alpha'):
-								temp=temp*2
-							elif(group[0]=='thetha'):
-								temp=temp*4							
-							setattr(marks_details,'npi_semi',"%.2f" % temp)
-							marks_details.save()
-						except Exception,e:
-							print e
-						print 'Final Round'
+	# 						if(group[0]=='alpha'):
+	# 							temp=temp*2
+	# 						elif(group[0]=='thetha'):
+	# 							temp=temp*4							
+	# 						setattr(marks_details,'npi_semi',"%.2f" % temp)
+	# 						marks_details.save()
+	# 					except Exception,e:
+	# 						print e
+	# 					print 'Final Round'
 
 
-					if topper_marks_semi!=0.0 and marks_details.marks_semi!=0.0:
-						try:
-							temp1=marks_details.marks_semi/topper_marks_semi
-							minutes=int(marks_details.time_semi)
-							seconds=marks_details.time_semi-minutes
-							time=(minutes*60)+(seconds*100)
-							time=time/60
-							temp1=temp1/time# marks_details.npi_semi=temp1
-							temp1=temp1*250
+	# 				if topper_marks_semi!=0.0 and marks_details.marks_semi!=0.0:
+	# 					try:
+	# 						temp1=marks_details.marks_semi/topper_marks_semi
+	# 						minutes=int(marks_details.time_semi)
+	# 						seconds=marks_details.time_semi-minutes
+	# 						time=(minutes*60)+(seconds*100)
+	# 						time=time/60
+	# 						temp1=temp1/time# marks_details.npi_semi=temp1
+	# 						temp1=temp1*250
 
-							if(group[0]=='alpha'):
-								temp1=temp1*2
-							elif(group[0]=='thetha'):
-								temp1=temp1*4							
-							setattr(marks_details,'npi_semi',"%.2f" % temp1)
-							marks_details.save()
-						except Exception,e:
-							print e
-						print 'SemiFinal Round'
+	# 						if(group[0]=='alpha'):
+	# 							temp1=temp1*2
+	# 						elif(group[0]=='thetha'):
+	# 							temp1=temp1*4							
+	# 						setattr(marks_details,'npi_semi',"%.2f" % temp1)
+	# 						marks_details.save()
+	# 					except Exception,e:
+	# 						print e
+	# 					print 'SemiFinal Round'
 						
-					elif topper_marks_first!=0.0 and marks_details.marks_first!=0.0:
-						try:
-							temp2=marks_details.marks_first/topper_marks_first
-							minutes=int(marks_details.time_first)
-							seconds=marks_details.time_first-minutes
-							time=(minutes*60)+(seconds*100)
-							time=time/60
-							temp2=temp2/time# marks_details.npi_first=temp2
-							temp2=temp2*250
+	# 				elif topper_marks_first!=0.0 and marks_details.marks_first!=0.0:
+	# 					try:
+	# 						temp2=marks_details.marks_first/topper_marks_first
+	# 						minutes=int(marks_details.time_first)
+	# 						seconds=marks_details.time_first-minutes
+	# 						time=(minutes*60)+(seconds*100)
+	# 						time=time/60
+	# 						temp2=temp2/time# marks_details.npi_first=temp2
+	# 						temp2=temp2*250
 							
-							if(group[0]=='alpha'):
-								temp2=temp2*2
-							elif(group[0]=='thetha'):
-								temp2=temp2*4
+	# 						if(group[0]=='alpha'):
+	# 							temp2=temp2*2
+	# 						elif(group[0]=='thetha'):
+	# 							temp2=temp2*4
 
-							setattr(marks_details,'npi_first',"%.2f" % temp2)
-							marks_details.save()
+	# 						setattr(marks_details,'npi_first',"%.2f" % temp2)
+	# 						marks_details.save()
 
-						except Exception,e:
-							print e
-						print 'First Round'
+	# 					except Exception,e:
+	# 						print e
+	# 					print 'First Round'
 	result_data=''
 	for center in center_list:
 		# result_data+='<div class="row"><div class="col s12 m2"></div><div class="col s12 m8"><div class="card white darken-1" background-color="#FFD700"><div class="card-content black-text">'
@@ -624,7 +600,7 @@ def admin_results(request):
 			result_data+='Rank List '
 			result_data+=str(center[0])+' '
 			result_data+=str(group[0])+' '
-			result_data+='</h4></li></center><div class="responsive-table"><table id="table"><thead><tr><th id="th" data-field="Rank">Rank</th><th id="th" data-field="Id">Roll Number</th><th id="th" data-field="Id">Group-Level</th><th id="th" data-field="Id">Marks</th><th id="th" data-field="Id">Time</th><th id="th" data-field="Id">NPI Score</th><th id="th" data-field="Id">Current Round</th><th id="th" data-field="Id">National Level Rank</th><th id="th" data-field="Id">National Group Rank</th><th id="th" data-field="Id">Name</th><th id="th" data-field="Id">Father</th><th id="th" data-field="Id">Email</th><th id="th" data-field="Id">School</th><th id="th" data-field="Id">Class</th><th id="th" data-field="Id">Awards</th></tr></thead>'
+			result_data+='</h4></li></center><div class="responsive-table"><table id="table"><thead><tr><th id="th" data-field="Rank">Rank</th><th id="th" data-field="Id">Roll Number</th><th id="th" data-field="Id">Group-Level</th><th id="th" data-field="Id">NPI Score</th><th id="th" data-field="Id">Current Round</th><th id="th" data-field="Id">National Level Rank</th><th id="th" data-field="Id">National Group Rank</th><th id="th" data-field="Id">Name</th><th id="th" data-field="Id">Father</th><th id="th" data-field="Id">Email</th><th id="th" data-field="Id">School</th><th id="th" data-field="Id">Class</th><th id="th" data-field="Id">Awards</th></tr></thead>'
 			result_data+='<tbody id="'+str(group[0])+'">'
 			print group[0]
 			# for groups_data in marks_data.objects.filter(center=center[0],group=group[0],current_round='Finals' | current_round='').order_by('-npi_semi'):
@@ -668,8 +644,8 @@ def admin_results(request):
 				result_data+='<tr><td id="td">'+str(count)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.reference_id)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.level)+'</td>'
-				result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
-				result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
+				# result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
+				# result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.current_round)+'</td>'
 
@@ -751,8 +727,8 @@ def admin_results(request):
 				result_data+='<tr><td id="td">'+str(count)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.reference_id)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.level)+'</td>'
-				result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
-				result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
+				# result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
+				# result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_first)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.current_round)+'</td>'
 
