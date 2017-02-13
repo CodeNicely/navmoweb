@@ -671,7 +671,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
-					result_data+='<td id="td">'+"N A"+'</td></tr>'
+					result_data+='<td id="td">'+"N A"+'</td>'
 
 				try:
 					award_name=""
@@ -755,7 +755,7 @@ def admin_results(request):
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
 					result_data+='<td id="td">'+"N A"+'</td>'
-					result_data+='<td id="td">'+"N A"+'</td></tr>'
+					result_data+='<td id="td">'+"N A"+'</td>'
 				try:
 					award_name=""
 					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
