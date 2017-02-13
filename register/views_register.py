@@ -710,25 +710,25 @@ def admin_results(request):
 						else:
 							award_name="National Champion Trophy"
 					if groups_data.current_round=="Finals":
-						if rank_details.centre_rank==1:
+						if count==1:
 							award_name+=" + School Gold Medal"
-						elif rank_details.centre_rank==2:
+						elif count==2:
 							award_name+=" + School Silver Medal"
-						elif rank_details.centre_rank==3:
+						elif count==3:
 							award_name+=" + School Bronze Medal"
 					else:
-						if rank_details.centre_rank==1:
+						if count==1:
 							award_name+="School Gold Medal"
-						elif rank_details.centre_rank==2:
+						elif count==2:
 							award_name+="School Silver Medal"
-						elif rank_details.centre_rank==3:
+						elif count==3:
 							award_name+="School Bronze Medal"
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
-				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# rank_details.centre_rank=count
-				# rank_details.save()
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.centre_rank=count
+				rank_details.save()
 				count+=1
 
 				print groups_data.reference_id
@@ -810,10 +810,9 @@ def admin_results(request):
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
-				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				# rank_details.centre_rank=count
-				# rank_details.save()					
-
+				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				rank_details.centre_rank=count
+				rank_details.save()
 				count+=1
 
 				print groups_data.reference_id
