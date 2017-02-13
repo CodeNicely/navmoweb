@@ -702,9 +702,9 @@ def admin_results(request):
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
-				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				rank_details.centre_rank=count
-				rank_details.save()
+				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				# rank_details.centre_rank=count
+				# rank_details.save()
 				count+=1
 
 				print groups_data.reference_id
@@ -786,9 +786,9 @@ def admin_results(request):
 					result_data+='<td id="td">'+award_name+'</td></tr>'
 				except Exception,e:
 					print e
-				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				rank_details.centre_rank=count
-				rank_details.save()
+				# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				# rank_details.centre_rank=count
+				# rank_details.save()
 				count+=1
 
 				print groups_data.reference_id
