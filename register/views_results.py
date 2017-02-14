@@ -830,3 +830,62 @@ def generate_marks(request):
 	except Exception,e:
 		return JsonResponse({'success':False},e)
 		print e
+
+@csrf_exempt
+def send_email(request):
+	if(request.method=="GET"):
+		#return HttpResponseRedirect('/email/get_content.html')
+		return render(request,"email/get_content.html")
+	json={}
+	data={}
+	json['BASE_DIR']=BASE_DIR
+	attach_file=""
+	if(request.method=="POST"):
+		try:
+			email_to=str(request.POST.get('email_to'))
+			print email_to
+			email_msg_head=str(request.POST.get('email_msg_head'))
+			print email_msg_head
+			email_msg=str(request.POST.get('email_msg'))
+			print email_msg
+			data['msg']=email_msg
+			data['msg_head']=email_msg_head
+			try:
+				image=request.FILES.get('pic').name
+				attach_file='/media/email_images/'+image
+				folder = 'media/email_images/'
+				print "image=",image
+				fout = open(folder+image, 'w')
+				file_content = request.FILES.get('pic').read()
+				fout.write(file_content)
+				fout.close()
+			except Exception,e:
+				print "Exception on Image",e
+			try:
+				#===========================Send Email===========================
+				from_email = 'noreplycodenicely@gmail.com'
+				template = get_template('email/email_content.html')
+				path=str(request.scheme+"://"+request.get_host())
+				text_content = 'This is an important message.'
+				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, [email_to])
+				data['url_path']=path
+				html_content  = template.render(RequestContext(request,data,))
+				msg.attach_alternative(html_content, "text/html")
+				msg.mixed_subtype='related'
+				for f in [attach_file]:
+					fp = open(BASE_DIR+f, 'rb')
+					msg_img = MIMEImage(fp.read())
+					fp.close()
+					msg_img.add_header('Content-ID', "inline".format(f), filename=str(image))
+					msg.attach(msg_img)
+				msg.send()
+				print "Email Sent"
+				#================================================================
+			except Exception,e:
+				image='image'
+				print e
+			#return JsonResponse({'success':True})
+			return render(request,"email/email_content.html",data)
+		except Exception,e:
+			print e
+			return HttpResponse("Email not Sent")

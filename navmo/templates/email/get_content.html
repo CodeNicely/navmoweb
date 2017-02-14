@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+  	<title>Email</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  	<body>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+  		<div class="row">
+  			<div class="col s12 m3"></div>
+  			<div class="col s12 m6">
+				<div class="card white lighten-10">
+					<div class="card-content black-text">
+						<span class="card-title black-text" ><h3><center>Email Form</center></h3></span>
+
+		<form id="registration_form" black-text action="." method="POST"  enctype="multipart/form-data">
+	        <div class="row">
+	          <div class="input-field col s2"></div><div class="input-field col s8">
+	            <input  name="email_to" id="email_to" type="email" required>
+	             <label for="email_to" >To</label>
+	        </div>
+	        </div>
+	        <div class="row">
+	          <div class="input-field col s2"></div><div class="input-field col s8">
+	            <input id="email_msg_head" name="email_msg_head" type="text" required>
+	            <label for="email_msg_head" >Message Heading</label>
+	          </div>
+	        </div>
+	        <div class="row">
+	          <div class="input-field col s2"></div><div class="input-field col s8">
+	            <!-- <input id="email_msg" name="email_msg" type="text" required> -->
+	            <textarea id="email_msg" name="email_msg" cols="5" rows="10"></textarea>
+	            <label for="email_msg" >Message</label>
+	          </div>
+	        </div>
+	        <div class="row">
+   				<div class="input-field col s2"></div>
+   				<div class="input-field col s8">
+  					<div class="file-field input-field" black>
+      					<div class="btn">
+        					<span>Upload Image</span>
+        					<input type="file" name="pic" accept="image/*" >
+      					</div>
+      					<font color="black">
+      					<div blue class="file-path-wrapper">
+        				<input class="file-path validate" type="text" >
+      					</div></font>
+    				</div>
+  				</div>
+  			</div>
+		  	<div class="row">
+		   		<div class="input-field col s4"></div>
+		   		<div class="input-field col s4">
+		   			<button class="btn waves-effect waves-light" id="btnsend" type="submit" name="action">Send
+		      			<i class="material-icons right">send</i>
+		    		</button>
+				</div>
+			</div>
+	    </form>
+	</div></div></div></div>
+  	</body>
+  </head>
+</html>

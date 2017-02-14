@@ -30,6 +30,7 @@ from register.views_results import national_all_rank_levelwise
 from register.views_results import national_all_rank_groupwise
 from register.views_results import spr_report,generate_marks
 from register.views_results import convert_to_pdf
+from register.views_results import send_email
 
 
 urlpatterns = [
@@ -76,7 +77,7 @@ urlpatterns = [
     url(r'^spr_report/$',spr_report),
     url(r'^generate_marks/$',generate_marks),
     url(r'^convert_to_pdf/$',convert_to_pdf),
-    
+    url(r'^send_email/$',send_email),
 
 ]
 from django.conf import settings
