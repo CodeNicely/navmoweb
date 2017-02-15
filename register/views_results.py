@@ -842,8 +842,8 @@ def send_email(request):
 	attach_file=""
 	if(request.method=="POST"):
 		try:
-			email_to=str(request.POST.get('email_to'))
-			print email_to
+			# email_to=str(request.POST.get('email_to'))
+			# print email_to
 			email_msg_head=str(request.POST.get('email_msg_head'))
 			print email_msg_head
 			email_msg=str(request.POST.get('email_msg'))
@@ -871,7 +871,7 @@ def send_email(request):
 				template = get_template('email/email_content.html')
 				path=str(request.scheme+"://"+request.get_host())
 				text_content = 'This is an important message.'
-				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, [email_to])
+				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, ['bhirendra2014@gmail.com'])
 				data['url_path']=path
 				html_content  = template.render(RequestContext(request,data,))
 				msg.attach_alternative(html_content, "text/html")
