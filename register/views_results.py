@@ -847,11 +847,14 @@ def send_email(request):
 			email_msg_head=str(request.POST.get('email_msg_head'))
 			print email_msg_head
 			email_msg=str(request.POST.get('email_msg'))
+			email_msg.replace(u"\u2018", "'").replace(u"\u2019", "'")
 			print email_msg
 			data['msg']=email_msg
 			data['msg_head']=email_msg_head
+			verify_img=0
 			try:
 				image=request.FILES.get('pic').name
+				print str(image)
 				attach_file='/media/email_images/'+image
 				folder = 'media/email_images/'
 				print "image=",image
@@ -860,6 +863,7 @@ def send_email(request):
 				fout.write(file_content)
 				fout.close()
 			except Exception,e:
+				verify_img=1
 				print "Exception on Image",e
 			try:
 				#===========================Send Email===========================
@@ -872,12 +876,13 @@ def send_email(request):
 				html_content  = template.render(RequestContext(request,data,))
 				msg.attach_alternative(html_content, "text/html")
 				msg.mixed_subtype='related'
-				for f in [attach_file]:
-					fp = open(BASE_DIR+f, 'rb')
-					msg_img = MIMEImage(fp.read())
-					fp.close()
-					msg_img.add_header('Content-ID', "inline".format(f), filename=str(image))
-					msg.attach(msg_img)
+				if verify_img==0:
+					for f in [attach_file]:
+						fp = open(BASE_DIR+f, 'rb')
+						msg_img = MIMEImage(fp.read())
+						fp.close()
+						msg_img.add_header('Content-ID', "inline".format(f), filename=str(image))
+						msg.attach(msg_img)
 				msg.send()
 				print "Email Sent"
 				#================================================================
