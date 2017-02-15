@@ -26,7 +26,7 @@ SECRET_KEY = '-pvvmb(2t%tfvxhkqftpt%u4&bihrow!+ic9&$3k42yi_lmtg='
 DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.116']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
-ALLOWED_HOSTS = ['127.0.0.1']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
+#ALLOWED_HOSTS = ['127.0.0.1']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,23 +77,23 @@ WSGI_APPLICATION = 'navmo.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
- }
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE':'django.db.backends.mysql',
-#         'NAME': 'navmo',
-#         'USER': 'root',
-#         'PASSWORD': 'Localcart@999123',
-#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
-# }
+#  }
+
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': 'navmo',
+        'USER': 'root',
+        'PASSWORD': 'Localcart@999123',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
