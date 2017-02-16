@@ -1,0 +1,94 @@
+<html>
+<title>NAVMO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/materialize/css/colour.css"  media="screen,projection"/>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<body>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/materialize/js/materialize.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js">
+    
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('select').selectpicker();
+      }
+      </script>
+  {% include "base_head.html" %}
+{% block content %}
+
+  <style>
+/*#table, #td, #th {    
+    border: 1px solid #ddd;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#table {
+    border-collapse: collapse;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+#th, #td {
+    padding: 15px;
+    max-width: 45px;
+    word-wrap: break-word;
+}*/
+</style>
+
+{% endblock content %}
+<form id="spr_filter_form" black-text action="." method="POST"  enctype="multipart/form-data">{% csrf_token %}
+<div class="row">
+  <div class="col s12 m1"></div>
+    <div class="col s12 m10">
+      <div class="card white lighten-10">
+          <div class="card-content black-text">
+          <b>Select Centre</b>&emsp;&emsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+          <b>Select Group</b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+          <br>
+            <select class = "selectpicker" id="centre" name="centre" required >
+              <option value='all' selected>All</option>
+              <!-- {{centre_list|safe}} -->
+              <option value="NH Goel">NH Goel</option>
+              <option value="MPE Odisha">MPE Odisha</option>
+              <option value="MPE Ranchi">MPE Ranchi</option>
+              <option value="ICIS">ICIS</option>
+              <option value="MPE Raipur">MPE Raipur</option>
+              <option value="B K Birla">B K Birla</option>
+              <option value="NPPS , Rajnandgaon">NPPS, Rajnandgaon</option>
+              <option value="NBIS , Rajnandgaon">NBIS, Rajnandgaon</option>
+              <option value="Atelier School Magarpatta">Atelier School Magarpatta</option>
+              <option value="MPE AMRAVATI">MPE AMRAVATI</option>
+              <option value="MPE KHARADI">MPE KHARADI</option>
+              <option value="MPE KOTA">MPE KOTA</option>
+            </select>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <select class="selectpicker" id="group" name="group" required >
+            <!-- {{group_list|safe}} -->
+              <option value='all' selected>All</option>
+              <option value="alpha">alpha</option>
+              <option value="beta">beta</option>
+              <option value="gamma">gamma</option>
+              <option value="thetha">theta</option>
+            </select>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <button class="btn waves-effect waves-light" id="btnshow" type="submit" name="action">Show
+            </button>
+</div></div></div></div>
+</form>
+
+{{result_data|safe}}
+
+{% include "base_foot.html" %}
+</body>
+</html>

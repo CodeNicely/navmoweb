@@ -386,7 +386,6 @@ def national_all_rank_levelwise(request):
 	except Exception,e:
 		print e
 		return render(request,'results/admin_results.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
-
 #---------------------------------------------------------------------------------------------
 def national_all_rank_groupwise(request):
 	if request.user.is_authenticated():
@@ -601,92 +600,143 @@ def spr_report(request):
 	else:
 		login_display=''
 		login_display2='<li class="tab col s3"><a target="_self" href="/login">Login</a></li>'
-	#for group in rank_data.objects.order_by('group').values_list('group').distinct():
 
-	result_data=''
+	# json={}
+	# centre_list=''
+	# group_list=''
+	# level_list=''
+	# for details in marks_data.objects.all():
+	# 	centre_list+='<option value="'+details.CENTER_CHOICES.center+'">'+details.CENTER_CHOICES.center+'</option>'
+	# 	group_list+='<option value="'+details.group+'">'+details.group+'</option>'
+	# 	level_list+='<option value="'+details.level+'">'+details.level+'</option>'
+	# 	print details,details.center
+	# 	print centre_list
+	# json['centre_list']=centre_list
+	# json['group_list']=group_list
+	# json['level_list']=level_list
+	# return render(request,'spr_report/spr_main.html',json)
+	if(request.method=="GET"):
+		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
 
-	for rank_details in rank_data.objects.order_by('group','national_group_rank'):	
-		result_data+='<div class="row"><div class="col s12 m3 "></div><div class="col s12 m6"><div class="card white darken-1" background-color="#FFD700"><div class="card-content black-text">'
-		result_data+='<div class="responsive-table"><table id="table"><th id="th" colspan=3><img src="/media/mpe_logo.jpg" width="120" height="50" style="float:left"></img><img src="/media/navmo.jpg" width="100" height="50" style="float:right"></img><h5 style="text-align:center">Student Performance Report</h5></th>'
-		result_data+='<tr><td id ="td" rowspan="8" style="width:30%"><center><img src="'
-		# Image path
-		try:
-			user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
-			result_data+="/media/"+str(user_details.image)
-		except Exception,e:
-			print e
-		
-		result_data+='" height="176" width="132"></img></center></td>'
-		
-		result_data+='<td id ="td" style="width:35%">'+"Reference Id :"+'</td>'
-		result_data+='<td id ="td"><strong>'+str(rank_details.reference_id)+'</strong></td></tr>'
-		try:
-			user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
-			result_data+='<tr><td id ="td" style="width:35%">'+"Name  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+(str(user_details.first_name+' '+user_details.last_name)).title()+'</strong></td></tr>'
-			
-			result_data+='<tr><td id ="td" style="width:35%">'+"Father  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+(str(user_details.parent_father)).title()+'</strong></td></tr>'
+	if(request.method=="POST"):
+		get_centre=str(request.POST.get('centre'))
+		print get_centre
+		get_group=str(request.POST.get('group'))
+		print get_group		
 
-			result_data+='<tr><td id ="td" style="width:35%">'+"Grade  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+str(user_details.grade)+'</strong></td></tr>'
+		# if get_centre!="all":
+		# 	if get_group!="all":
+		# 		marks_list= marks_data.objects.get(center=get_centre)
+		# 		centre_list=marks_details.get(group=get_group)
+		# 		rank_list=rank_data.objects.get(reference_id=centre_group_details.reference_id,group=get_group)
+		# 	else:
+		# 		marks_list= marks_data.objects.get(center=get_centre)
+		# 		centre_list= marks_details.objects.all()
+		# 		rank_list= rank_data.objects.get(reference_id=centre_details.reference_id).order_by('group')
+		# else:
+		# 	if get_group!="all":
+		# 		marks_list= marks_data.objects.all()
+		# 		centre_list= marks_details.objects.get(group=get_group)
+		# 		rank_list= rank_data.objects.get(reference_id=centre_group_details.reference_id,group=get_group)
+		# 	else:
+		# 		marks_list= marks_data.objects.all()
+		# 		centre_list= marks_data.objects.all()
+		# 		rank_list= rank_data.objects.order_by('group','national_group_rank')
 
-			result_data+='<tr><td id ="td" style="width:35%">'+"School  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+(str(user_details.school)).title()+'</strong></td></tr>'
-		except Exception,e:
-			print e
-			result_data+='<tr><td id ="td" style="width:35%">'+"Name  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
-			result_data+='<tr><td id ="td" style="width:35%">'+"Father  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
-			result_data+='<tr><td id ="td" style="width:35%">'+"Grade  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
-			result_data+='<tr><td id ="td" style="width:35%">'+"School  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
-		
-		result_data+='<tr><td id ="td" style="width:35%">'+"Group-Level  :"+'</td>'
-		result_data+='<td id ="td"><strong>'+str(rank_details.level)+'</strong></td></tr>'
-		try:
-			marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-		except Exception,e:
-			print e
-		result_data+='<tr><td id ="td" style="width:35%">'+"Current-Round  :"+'</td>'
-		if marks_details.current_round=='Finals':
-			if marks_details.npi_final!=0:
-				result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
-				result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
-				result_data+='<td id ="td"><strong>'+str(marks_details.npi_final)+'</strong></td></tr>'
+		if get_centre!="all":
+			if get_group!="all":
+				marks_list =marks_data.objects.filter(center=get_centre, group=get_group).order_by().distinct()
 			else:
-				result_data+='<td id ="td"><strong>'+"Semi-Finals"+'</strong></td></tr>'
-				result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
-				result_data+='<td id ="td"><strong>'+str(marks_details.npi_semi)+'</strong></td></tr>'
-		elif marks_details.current_round=='Semi-Finals':
-			result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
-			result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+str(marks_details.npi_semi)+'</strong></td></tr>'
-		elif marks_details.current_round=='First-Round':
-			result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
-			result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
-			result_data+='<td id ="td"><strong>'+str(marks_details.npi_first)+'</strong></td></tr>'
+				marks_list =marks_data.objects.filter(center=get_centre).order_by('group').distinct()
+		else:
+			if get_group!="all":
+				marks_list =marks_data.objects.filter(group=get_group).order_by('center').distinct()	
+			else:
+				marks_list =marks_data.objects.all()
 
-		result_data+='<tr><td id ="td"><center><strong>'+"Centre Rank"+'</strong></center></td>'
-		result_data+='<td id ="td" ><center><strong>'+"National Group Rank"+'</strong></center></td>'
-		result_data+='<td id ="td" ><center><strong>'+"National Level Rank"+'</strong></center></td></tr>'
-
-		result_data+='<tr><td id ="td"><center><strong>'+str(rank_details.centre_rank)+'</strong></center></td>'
-		result_data+='<td id ="td"><center><strong>'+str(rank_details.national_group_rank)+'</strong></center></td>'
-		result_data+='<td id ="td"><center><strong>'+str(rank_details.national_level_rank)+'</strong></td></center></tr>'
+		result_data=''
+		try :
+			for marks_details in marks_list:
+				for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
+					result_data+='<div class="row"><div class="col s12 m3 "></div><div class="col s12 m6"><div class="card white darken-1" background-color="#FFD700"><div class="card-content black-text">'
+					result_data+='<div class="responsive-table"><table id="table"><th id="th" colspan=3><img src="/media/mpe_logo.jpg" width="120" height="50" style="float:left"></img><img src="/media/navmo.jpg" width="100" height="50" style="float:right"></img><h5 style="text-align:center">Student Performance Report</h5></th>'
+					result_data+='<tr><td id ="td" rowspan="8" style="width:30%"><center><img src="'
 		
-		result_data+='</table></div></div></div></div></div>'
-	try:
-		return render(request,'results/admin_results.html',{"result_data":result_data,"login_display":login_display,"login_display2":login_display2})
+					# Image path
+					try:
+						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+						result_data+="/media/"+str(user_details.image)
+					except Exception,e:
+						print e
+					
+					result_data+='" height="176" width="132"></img></center></td>'
+					
+					result_data+='<td id ="td" style="width:35%">'+"Reference Id :"+'</td>'
+					result_data+='<td id ="td"><strong>'+str(rank_details.reference_id)+'</strong></td></tr>'
+					try:
+						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+						result_data+='<tr><td id ="td" style="width:35%">'+"Name  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+(str(user_details.first_name+' '+user_details.last_name)).title()+'</strong></td></tr>'
+						
+						result_data+='<tr><td id ="td" style="width:35%">'+"Father  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+(str(user_details.parent_father)).title()+'</strong></td></tr>'
 
-	except Exception,e:
-		print e
-		return render(request,'results/admin_results.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
+						result_data+='<tr><td id ="td" style="width:35%">'+"Grade  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+str(user_details.grade)+'</strong></td></tr>'
+
+						result_data+='<tr><td id ="td" style="width:35%">'+"School  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+(str(user_details.school)).title()+'</strong></td></tr>'
+					except Exception,e:
+						print e
+						result_data+='<tr><td id ="td" style="width:35%">'+"Name  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
+						result_data+='<tr><td id ="td" style="width:35%">'+"Father  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
+						result_data+='<tr><td id ="td" style="width:35%">'+"Grade  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
+						result_data+='<tr><td id ="td" style="width:35%">'+"School  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+"N A"+'</strong></td></tr>'
+					
+					result_data+='<tr><td id ="td" style="width:35%">'+"Group-Level  :"+'</td>'
+					result_data+='<td id ="td"><strong>'+str(rank_details.level)+'</strong></td></tr>'
+					try:
+						marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+					except Exception,e:
+						print e
+					result_data+='<tr><td id ="td" style="width:35%">'+"Current-Round  :"+'</td>'
+					if marks_details.current_round=='Finals':
+						if marks_details.npi_final!=0:
+							result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
+							result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
+							result_data+='<td id ="td"><strong>'+str(marks_details.npi_final)+'</strong></td></tr>'
+						else:
+							result_data+='<td id ="td"><strong>'+"Semi-Finals"+'</strong></td></tr>'
+							result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
+							result_data+='<td id ="td"><strong>'+str(marks_details.npi_semi)+'</strong></td></tr>'
+					elif marks_details.current_round=='Semi-Finals':
+						result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
+						result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+str(marks_details.npi_semi)+'</strong></td></tr>'
+					elif marks_details.current_round=='First-Round':
+						result_data+='<td id ="td"><strong>'+str(marks_details.current_round)+'</strong></td></tr>'
+						result_data+='<tr><td id ="td" style="width:35%">'+"NPI Score  :"+'</td>'
+						result_data+='<td id ="td"><strong>'+str(marks_details.npi_first)+'</strong></td></tr>'
+
+					result_data+='<tr><td id ="td"><center><strong>'+"Centre Rank"+'</strong></center></td>'
+					result_data+='<td id ="td" ><center><strong>'+"National Group Rank"+'</strong></center></td>'
+					result_data+='<td id ="td" ><center><strong>'+"National Level Rank"+'</strong></center></td></tr>'
+
+					result_data+='<tr><td id ="td"><center><strong>'+str(rank_details.centre_rank)+'</strong></center></td>'
+					result_data+='<td id ="td"><center><strong>'+str(rank_details.national_group_rank)+'</strong></center></td>'
+					result_data+='<td id ="td"><center><strong>'+str(rank_details.national_level_rank)+'</strong></td></center></tr>'
+					
+					result_data+='</table></div></div></div></div></div>'
+			return render(request,'spr_report/spr_main.html',{"result_data":result_data,"login_display":login_display,"login_display2":login_display2})
+		except Exception,e:
+			print e
+			return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
 
 def generate(max_first,max_semi,get_group):	
-	
 	set_id=1700376
 	if get_group=="thetha":
 		# for i in range(1,int(max_first)):
@@ -838,7 +888,7 @@ def send_email(request):
 		return render(request,"email/get_content.html")
 	json={}
 	data={}
-	json['BASE_DIR']=BASE_DIR
+	json['BASE_DIR']=str(request.scheme+"://"+request.get_host())
 	attach_file=""
 	if(request.method=="POST"):
 		try:
@@ -847,7 +897,7 @@ def send_email(request):
 			email_msg_head=str(request.POST.get('email_msg_head'))
 			print email_msg_head
 			email_msg=str(request.POST.get('email_msg'))
-			email_msg.replace(u"\u2018", "'").replace(u"\u2019", "'")
+			email_msg= email_msg.replace("newline","\n")
 			print email_msg
 			data['msg']=email_msg
 			data['msg_head']=email_msg_head
