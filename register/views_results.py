@@ -501,14 +501,14 @@ def national_all_rank_groupwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_final)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_final)+'</td></tr>'
-				try:
-					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-					rank_details.national_group_rank=count
-					rank_details.save()
-				except Exception,e:
-					b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-					b.save()
-				count+=1
+				# try:
+				# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				# 	rank_details.national_group_rank=count
+				# 	rank_details.save()
+				# except Exception,e:
+				# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+				# 	b.save()
+				# count+=1
 				print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='Finals').order_by('-npi_semi'):
 			if groups_data.npi_final==0.0:
@@ -526,13 +526,13 @@ def national_all_rank_groupwise(request):
 				result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 				result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-				try:
-					rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-					rank_details.national_group_rank=count
-					rank_details.save()
-				except Exception,e:
-					b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-					b.save()
+				# try:
+				# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+				# 	rank_details.national_group_rank=count
+				# 	rank_details.save()
+				# except Exception,e:
+				# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+				# 	b.save()
 				count+=1
 				print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='Semi-Finals').order_by('-npi_semi'):
@@ -550,13 +550,13 @@ def national_all_rank_groupwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td></tr>'
-			try:
-				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				rank_details.national_group_rank=count
-				rank_details.save()
-			except Exception,e:
-				b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-				b.save()
+			# try:
+			# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+			# 	rank_details.national_group_rank=count
+			# 	rank_details.save()
+			# except Exception,e:
+			# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+			# 	b.save()
 			count+=1
 			print groups_data.reference_id
 		for groups_data in marks_data.objects.filter(group=group[0],current_round='First-Round').order_by('-npi_first'):
@@ -574,13 +574,13 @@ def national_all_rank_groupwise(request):
 			result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
 			result_data+='<td id="td">'+str(groups_data.npi_first)+'</td></tr>'
-			try:
-				rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
-				rank_details.national_group_rank=count
-				rank_details.save()
-			except Exception,e:
-				b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
-				b.save()
+			# try:
+			# 	rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+			# 	rank_details.national_group_rank=count
+			# 	rank_details.save()
+			# except Exception,e:
+			# 	b=rank_data(reference_id=groups_data.reference_id,group=groups_data.group,level=groups_data.level,national_group_rank=count)
+			# 	b.save()
 			count+=1
 			print groups_data.reference_id
 		result_data+='</tbody></table></div></ul></div></div></div></div>'
@@ -944,3 +944,42 @@ def send_email(request):
 		except Exception,e:
 			print e
 			return HttpResponse("Email not Sent")
+
+def register_raj(request):
+	with open('raj_reg_data.json') as data_file:
+		data = json.load(data_file)
+		print data
+	for o in data:
+		try:
+			print 'refrence_id',o['refrence_id']
+			print 'first_name',o['firstname']
+			try:
+				b=user_data(refrence_id=o['refrence_id'],first_name=o['firstname'],last_name=o['lastname'],parent_father=o['fathername'],school=o['school'],email=o['email'],address=o['address'],number=o['number'],grade=o['grade'],exam_centre_1=o['exam_center_1'],exam_centre_2=o['exam_centre_2'],exam_group_1=o['exam_group_1'],exam_group_2=o['exam_group_2'],flag_exam_group_1=o['flag_exam_group_1'],flag_exam_group_2=o['flag_exam_group_2'],flag_workshop=o['flag_workshop'])
+				b.save()
+				print 'Done for Reference id - '+str(o['refrence_id'])
+			except Exception,e:
+				print 'Exception for Reference id - '+str(o['refrence_id']),e
+		except Exception,e:
+			print e
+			print 'Exception for Reference id - '+str(o['refrence_id']),e
+
+	#==============Updating Temporary Reference id to new generated Reference id =========================== 
+	#========================= For Rajnandgaon Only=========================================================
+	with open('raj_id_data.json') as data_file:
+		data = json.load(data_file)
+		print data
+	for o in data:
+		try:
+			print '\nOld reference_id = ',o['reference_id_old']
+			print 'New reference_id = ',o['reference_id_new']
+			try:
+				marks_details=marks_data.objects.get(reference_id=o['reference_id_old'])
+				marks_details.reference_id=o['reference_id_new']
+				marks_details.save()
+				print 'Done for Reference id - '+str(o['reference_id_old'])
+			except Exception,e:
+				print 'Exception for Reference id - '+str(o['reference_id_old']),e
+		except Exception,e:
+			print e
+			print 'Exception for Reference id - '+str(o['reference_id_old']),e
+	return JsonResponse({})
