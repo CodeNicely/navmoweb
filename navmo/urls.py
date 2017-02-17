@@ -31,6 +31,7 @@ from register.views_results import national_all_rank_groupwise
 from register.views_results import spr_report,generate_marks
 from register.views_results import convert_to_pdf
 from register.views_results import send_email,register_raj
+from register.views_results import data_panel_login,data_panel_logout, data_panel_home
 
 
 urlpatterns = [
@@ -78,7 +79,11 @@ urlpatterns = [
     url(r'^generate_marks/$',generate_marks),
     url(r'^convert_to_pdf/$',convert_to_pdf),
     url(r'^send_email/$',send_email),
-    url(r'^register_raj/$',register_raj),
+    # url(r'^register_raj/$',register_raj),
+    url(r'^data_panel/$',data_panel_login),
+    url(r'^data_panel_logout/$',data_panel_logout),
+    url(r'^data_panel_home/$',data_panel_home),
+
 ]
 from django.conf import settings
 from django.conf.urls.static import static

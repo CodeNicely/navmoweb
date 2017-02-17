@@ -14,6 +14,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.views import login,logout
+from django.contrib.auth import authenticate
 from otp.models import otp_data
 from payment.models import payment_data
 import random
@@ -45,8 +46,10 @@ def convert_to_pdf(request):
 	json={}
 	json['BASE_DIR']=BASE_DIR
 	#===putting data in html====
-	for rank_details in rank_data.objects.order_by('group','national_group_rank'):
-		if(rank_details.reference_id=='1600106'):
+	#for rank_details in rank_data.objects.order_by('group','national_group_rank'):
+	for marks_details in marks_data.objects.filter(center='Atelier School Magarpatta'):
+		for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
+		# if(rank_details.reference_id==group.):
 			try:
 				filename="navmo_spr_"+rank_details.reference_id+".pdf"
 				print rank_details.reference_id
@@ -64,9 +67,10 @@ def convert_to_pdf(request):
 					father=(user_details.parent_father+" "+user_details.last_name).title()
 				json['father']=father
 				json['class']=(str(user_details.grade)).title()
-				if "icis" or "cadet" in (user_details.school).lower():
+				school=""
+				if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
 					school="Intelligent Cadet International School"
-				elif "goel" or "n h" or "nh" or "n.h." in (user_details.school).lower():
+				elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
 					school="N H Goel World School"
 				elif "birla" in (user_details.school).lower():
 					school="B K Birla Centre For Education"
@@ -74,7 +78,7 @@ def convert_to_pdf(request):
 					school="Atelier International Preschool"
 				elif "vibgyor" in (user_details.school).lower():
 					school="Vibgyor High School"
-				elif "tree" or "house" in (user_details.school).lower():
+				elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
 					school="Tree House High School"
 				elif "gumla" in (user_details.school).lower():
 					school="D.A.V.Public School"
@@ -118,49 +122,54 @@ def convert_to_pdf(request):
 			json['centre_rank']=rank_details.centre_rank
 			json['national_level_rank']=rank_details.national_level_rank
 			json['national_group_rank']=rank_details.national_group_rank
-	#===================send html to PDF form =======================
-	options = {
-	# 'page-width':'656.166667',
-	# 'page-height':'928.158333',
-	'margin-left':'0',
-	'margin-right':'0',
-	'margin-top':'0',
-	'margin-bottom':'0'}
-	template=get_template("spr_report/spr_a4.html")
-	#print json
-	context = Context(json)  # data is the context data that is sent to the html file to render the output. 
-	#print context
-	html = template.render(context)  # Renders the template with the context data.
-	pdf=pdfkit.from_string(html, False,options=options)
-	#pdf=pdfkit.from_file(render(request,"spr_report/spr_template.html",json), False)
-	response = HttpResponse(content_type='application/pdf')
-	response['Content-Disposition'] = 'attachment; filename=filename'
-	#EmailMsg=EmailMessage("NAVMO Student Performance Report ","Here we are Attaching your SPR Report of NAVMO 2016-17 ",'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com'])
-	#EmailMsg.attach('spr_demo.pdf',pdf,'application/pdf')
-	#EmailMsg.send()
-	#print "Email Sent"	
-	#======Email-Message in HTML form==============
-	data={}
-	subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
-	text_content = 'This is an important message.'
-	template = get_template('spr_report/spr_message.html')
-	path=str(request.scheme+"://"+request.get_host())
-	msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com'])
-	#-----Inline Image------------
-	# msg.mixed_subtype='related'
-	# for f in ['/media/top1.jpg', '/navmo/templates/spr_report/divider.png']:
-	#     fp = open(BASE_DIR+f, 'rb')
-	#     msg_img = MIMEImage(fp.read())
-	#     fp.close()
-	#     msg_img.add_header('Content-ID', "inline".format(f))
-	    #msg.attach(msg_img)
-	#-----------------------------
-	data['url_path']=path
-	html_content  = template.render(RequestContext(request,data,))
-	msg.attach_alternative(html_content, "text/html")
-	msg.attach(filename,pdf,'application/pdf')
-	msg.send()
-	#print "Email Sent"
+			#===================send html to PDF form =======================
+			options = {
+			# 'page-width':'656.166667',
+			# 'page-height':'928.158333',
+			'margin-left':'0',
+			'margin-right':'0',
+			'margin-top':'0',
+			'margin-bottom':'0'}
+			template=get_template("spr_report/spr_a4.html")
+			#print json
+			context = Context(json)  # data is the context data that is sent to the html file to render the output. 
+			#print context
+			html = template.render(context)  # Renders the template with the context data.
+			pdf=pdfkit.from_string(html, False,options=options)
+			#pdf=pdfkit.from_file(render(request,"spr_report/spr_template.html",json), False)
+			response = HttpResponse(content_type='application/pdf')
+			response['Content-Disposition'] = 'attachment; filename=filename'
+			#EmailMsg=EmailMessage("NAVMO Student Performance Report ","Here we are Attaching your SPR Report of NAVMO 2016-17 ",'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com'])
+			#EmailMsg.attach('spr_demo.pdf',pdf,'application/pdf')
+			#EmailMsg.send()
+			#print "Email Sent"	
+			#======Email-Message in HTML form==============
+			data={}
+			path=str(request.scheme+"://"+request.get_host())
+			data['msg']="This is message section."
+			data['msg_head']="This is a Heading"
+			data['url_path']=path
+			print path
+			subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
+			text_content = 'This is an important message.'
+			template = get_template('email/email_content.html')
+			path=str(request.scheme+"://"+request.get_host())
+			msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
+			#-----Inline Image------------
+			# msg.mixed_subtype='related'
+			# for f in ['/media/top1.jpg', '/navmo/templates/spr_report/divider.png']:
+			#     fp = open(BASE_DIR+f, 'rb')
+			#     msg_img = MIMEImage(fp.read())
+			#     fp.close()
+			#     msg_img.add_header('Content-ID', "inline".format(f))
+			    #msg.attach(msg_img)
+			#-----------------------------
+			data['url_path']=path
+			html_content  = template.render(RequestContext(request,data,))
+			msg.attach_alternative(html_content, "text/html")
+			msg.attach(filename,pdf,'application/pdf')
+			msg.send()
+			print "Email Sent for - ",rank_details.reference_id
 	return render(request,"spr_report/spr_message.html",json)
 
 
@@ -601,20 +610,6 @@ def spr_report(request):
 		login_display=''
 		login_display2='<li class="tab col s3"><a target="_self" href="/login">Login</a></li>'
 
-	# json={}
-	# centre_list=''
-	# group_list=''
-	# level_list=''
-	# for details in marks_data.objects.all():
-	# 	centre_list+='<option value="'+details.CENTER_CHOICES.center+'">'+details.CENTER_CHOICES.center+'</option>'
-	# 	group_list+='<option value="'+details.group+'">'+details.group+'</option>'
-	# 	level_list+='<option value="'+details.level+'">'+details.level+'</option>'
-	# 	print details,details.center
-	# 	print centre_list
-	# json['centre_list']=centre_list
-	# json['group_list']=group_list
-	# json['level_list']=level_list
-	# return render(request,'spr_report/spr_main.html',json)
 	if(request.method=="GET"):
 		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
 
@@ -623,26 +618,6 @@ def spr_report(request):
 		print get_centre
 		get_group=str(request.POST.get('group'))
 		print get_group		
-
-		# if get_centre!="all":
-		# 	if get_group!="all":
-		# 		marks_list= marks_data.objects.get(center=get_centre)
-		# 		centre_list=marks_details.get(group=get_group)
-		# 		rank_list=rank_data.objects.get(reference_id=centre_group_details.reference_id,group=get_group)
-		# 	else:
-		# 		marks_list= marks_data.objects.get(center=get_centre)
-		# 		centre_list= marks_details.objects.all()
-		# 		rank_list= rank_data.objects.get(reference_id=centre_details.reference_id).order_by('group')
-		# else:
-		# 	if get_group!="all":
-		# 		marks_list= marks_data.objects.all()
-		# 		centre_list= marks_details.objects.get(group=get_group)
-		# 		rank_list= rank_data.objects.get(reference_id=centre_group_details.reference_id,group=get_group)
-		# 	else:
-		# 		marks_list= marks_data.objects.all()
-		# 		centre_list= marks_data.objects.all()
-		# 		rank_list= rank_data.objects.order_by('group','national_group_rank')
-
 		if get_centre!="all":
 			if get_group!="all":
 				marks_list =marks_data.objects.filter(center=get_centre, group=get_group).order_by().distinct()
@@ -920,6 +895,7 @@ def send_email(request):
 				from_email = 'noreplycodenicely@gmail.com'
 				template = get_template('email/email_content.html')
 				path=str(request.scheme+"://"+request.get_host())
+				print path
 				text_content = 'This is an important message.'
 				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, ['bhirendra2014@gmail.com'])
 				data['url_path']=path
@@ -946,42 +922,42 @@ def send_email(request):
 			return HttpResponse("Email not Sent")
 
 def register_raj(request):
-	# with open('raj_reg_data.json') as data_file:
-	# 	data = json.load(data_file)
-	# 	print data
-	# for o in data:
-	# 	try:
-	# 		print 'refrence_id',o['refrence_id']
-	# 		print 'first_name',o['firstname']
-	# 		try:
-	# 			b=user_data(refrence_id=o['refrence_id'],first_name=o['firstname'],last_name=o['lastname'],parent_father=o['fathername'],school=o['school'],email=o['email'],address=o['address'],number=o['number'],grade=o['grade'],exam_centre_1=o['exam_center_1'],exam_centre_2=o['exam_centre_2'],exam_group_1=o['exam_group_1'],exam_group_2=o['exam_group_2'],flag_exam_group_1=o['flag_exam_group_1'],flag_exam_group_2=o['flag_exam_group_2'],flag_workshop=o['flag_workshop'])
-	# 			b.save()
-	# 			print 'Done for Reference id - '+str(o['refrence_id'])
-	# 		except Exception,e:
-	# 			print 'Exception for Reference id - '+str(o['refrence_id']),e
-	# 	except Exception,e:
-	# 		print e
-	# 		print 'Exception for Reference id - '+str(o['refrence_id']),e
+	with open('raj_reg_data.json') as data_file:
+		data = json.load(data_file)
+		print data
+	for o in data:
+		try:
+			print 'refrence_id',o['refrence_id']
+			print 'first_name',o['firstname']
+			try:
+				b=user_data(refrence_id=o['refrence_id'],first_name=o['firstname'],last_name=o['lastname'],parent_father=o['fathername'],school=o['school'],email=o['email'],address=o['address'],number=o['number'],grade=o['grade'],exam_centre_1=o['exam_center_1'],exam_centre_2=o['exam_centre_2'],exam_group_1=o['exam_group_1'],exam_group_2=o['exam_group_2'],flag_exam_group_1=o['flag_exam_group_1'],flag_exam_group_2=o['flag_exam_group_2'],flag_workshop=o['flag_workshop'])
+				b.save()
+				print 'Done for Reference id - '+str(o['refrence_id'])
+			except Exception,e:
+				print 'Exception for Reference id - '+str(o['refrence_id']),e
+		except Exception,e:
+			print e
+			print 'Exception for Reference id - '+str(o['refrence_id']),e
 
-	# #==============Updating Temporary Reference id to new generated Reference id =========================== 
-	# #========================= For Rajnandgaon Only--- in Marks Data========================================
-	# with open('raj_id_data.json') as data_file:
-	# 	data = json.load(data_file)
-	# 	print data
-	# for o in data:
-	# 	try:
-	# 		print '\nOld reference_id = ',o['reference_id_old']
-	# 		print 'New reference_id = ',o['reference_id_new']
-	# 		try:
-	# 			marks_details=marks_data.objects.get(reference_id=o['reference_id_old'])
-	# 			marks_details.reference_id=o['reference_id_new']
-	# 			marks_details.save()
-	# 			print 'Done for Reference id - '+str(o['reference_id_old'])
-	# 		except Exception,e:
-	# 			print 'Exception for Reference id - '+str(o['reference_id_old']),e
-	# 	except Exception,e:
-	# 		print e
-	# 		print 'Exception for Reference id - '+str(o['reference_id_old']),e
+	#==============Updating Temporary Reference id to new generated Reference id =========================== 
+	#========================= For Rajnandgaon Only--- in Marks Data========================================
+	with open('raj_id_data.json') as data_file:
+		data = json.load(data_file)
+		print data
+	for o in data:
+		try:
+			print '\nOld reference_id = ',o['reference_id_old']
+			print 'New reference_id = ',o['reference_id_new']
+			try:
+				marks_details=marks_data.objects.get(reference_id=o['reference_id_old'])
+				marks_details.reference_id=o['reference_id_new']
+				marks_details.save()
+				print 'Done for Reference id - '+str(o['reference_id_old'])
+			except Exception,e:
+				print 'Exception for Reference id - '+str(o['reference_id_old']),e
+		except Exception,e:
+			print e
+			print 'Exception for Reference id - '+str(o['reference_id_old']),e
 
 	# #==============Updating Temporary Reference id to new generated Reference id =========================== 
 	# #========================= For Rajnandgaon Only----in Rank_data=========================================
@@ -1003,3 +979,55 @@ def register_raj(request):
 			print e
 			print 'Exception for Reference id - '+str(o['reference_id_old']),e
 	return JsonResponse({})
+
+def data_panel_login(request):
+	if(request.method=="GET"):
+		if request.user.is_authenticated():
+			return HttpResponseRedirect('/data_panel_home/',json)
+		else:
+			return render(request,'data_panel/panel_login.html')
+		
+	if(request.method=="POST"):
+		username=str(request.POST.get('username'))
+		password=str(request.POST.get('password'))
+		print username
+		print password
+		user=authenticate(username=username,password=password)
+		if user is not None:
+			print "Authenticated"
+			return HttpResponseRedirect('/data_panel_home/')
+		else:
+			print "Wrong username or password"
+			return HttpResponseRedirect('/data_panel')
+
+@login_required
+def data_panel_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/data_panel_login')
+
+@csrf_exempt
+def data_panel_home(request):
+	if(request.method=="GET"):
+		logout_true='<p style="margin-right: 20%; text-align: right; font-size: 20px"><a href="/data_panel_logout">Logout</a></p>'
+		json={
+		'logout_true':logout_true
+		}
+		return render(request,'data_panel/panel_home.html',json)
+
+	if (request.method=="POST"):
+		if 'admin_results' in request.POST:
+			print "Redirect to admin result"
+			return HttpResponseRedirect('/admin_results')
+		elif 'national_level_rank' in request.POST:
+			print "Redirect to national_all_rank_levelwise"
+			return HttpResponseRedirect('/national_all_rank_levelwise')
+		elif 'national_group_rank' in request.POST:
+			print "Redirect to national_all_rank_groupwise"
+			return HttpResponseRedirect('/national_all_rank_groupwise')
+		elif 'spr_report' in request.POST:
+			print "Redirect to spr_report"
+			return HttpResponseRedirect('/spr_report')
+
+
+		
+
