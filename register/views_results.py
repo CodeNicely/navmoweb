@@ -198,7 +198,6 @@ def convert_to_pdf(request):
 
 # National Rank List
 #=============================================================================================
-
 def national_all_rank_levelwise(request):
 	if request.user.is_authenticated():
 		login_display='<li><a href="/logout">Logout</a></li>'
@@ -867,8 +866,8 @@ def send_email(request):
 	attach_file=""
 	if(request.method=="POST"):
 		try:
-			# email_to=str(request.POST.get('email_to'))
-			# print email_to
+			email_to=str(request.POST.get('email_to'))
+			print email_to
 			email_msg_head=str(request.POST.get('email_msg_head'))
 			print email_msg_head
 			email_msg=str(request.POST.get('email_msg'))
@@ -897,7 +896,7 @@ def send_email(request):
 				path=str(request.scheme+"://"+request.get_host())
 				print path
 				text_content = 'This is an important message.'
-				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, ['bhirendra2014@gmail.com'])
+				msg = EmailMultiAlternatives(email_msg_head, text_content, from_email, [email_to])
 				data['url_path']=path
 				html_content  = template.render(RequestContext(request,data,))
 				msg.attach_alternative(html_content, "text/html")
@@ -983,7 +982,7 @@ def register_raj(request):
 def data_panel_login(request):
 	if(request.method=="GET"):
 		if request.user.is_authenticated():
-			return HttpResponseRedirect('/data_panel_home/',json)
+			return HttpResponseRedirect('/data_panel_home/')
 		else:
 			return render(request,'data_panel/panel_login.html')
 		
@@ -994,25 +993,25 @@ def data_panel_login(request):
 		print password
 		user=authenticate(username=username,password=password)
 		if user is not None:
+			login(request,user)
 			print "Authenticated"
 			return HttpResponseRedirect('/data_panel_home/')
 		else:
 			print "Wrong username or password"
-			return HttpResponseRedirect('/data_panel')
+			return render(request,'data_panel/panel_login.html',{"invalid":True})
 
 @login_required
 def data_panel_logout(request):
     logout(request)
-    return HttpResponseRedirect('/data_panel_login')
+    return HttpResponseRedirect('/data_panel')
 
-@csrf_exempt
+
 def data_panel_home(request):
 	if(request.method=="GET"):
-		logout_true='<p style="margin-right: 20%; text-align: right; font-size: 20px"><a href="/data_panel_logout">Logout</a></p>'
-		json={
-		'logout_true':logout_true
-		}
-		return render(request,'data_panel/panel_home.html',json)
+		if request.user.is_authenticated():
+			return render(request,'data_panel/panel_home.html')
+		else:
+			return HttpResponseRedirect('/data_panel')
 
 	if (request.method=="POST"):
 		if 'admin_results' in request.POST:

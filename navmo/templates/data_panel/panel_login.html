@@ -15,14 +15,21 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
 </head>
-<body>
+{% if invalid %}
+    <script type="text/javascript">alert("Wrong Username or Password. Please Try Again");</script>
+{% endif %}
+<body bgcolor="#e5e6eb">
+<br>
+<br>
+<br>
+<br>
 <form id="login_form" black-text action="." method="POST"  enctype="multipart/form-data">{% csrf_token %}
 	<div class="row">
 	 	<div class="col s12 m3"></div>
 	    <div class="col s12 m6">
 	    	<div class="card white lighten-10">
 	        	<div class="card-content black-text">
-	                <span class="card-title black-text" ><h4><center>Login </center></h4></span>{{logout_true|safe}}
+	                <span class="card-title black-text" ><h4><center>Login </center></h4></span>
 	        <div class="row">
 	          <div class="input-field col s2"></div><div class="input-field col s8">
 	            <input  name="username" id="username" type="text" class="validate" required>
