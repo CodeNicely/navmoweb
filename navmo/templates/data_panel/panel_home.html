@@ -24,7 +24,7 @@
     <a href="/data_panel_logout">Logout</a></p>
 {% endif %}
 </form>
-<form id="table_form" black-text action="." method="POST"  enctype="multipart/form-data">
+<form id="table_form" black-text action="." method="POST"  enctype="multipart/form-data">{%csrf_token%}
 	<div class="row">
 	 	<div class="col s12 m3"></div>
 	    <div class="col s12 m6">
