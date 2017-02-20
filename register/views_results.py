@@ -1027,6 +1027,193 @@ def data_panel_home(request):
 			print "Redirect to spr_report"
 			return HttpResponseRedirect('/spr_report')
 
+def admin_results(request):
+	if request.user.is_authenticated():
+		login_display='<li><a href="/logout">Logout</a></li>'
+		login_display2=''
+	
+	else:
+		login_display=''
+		login_display2='<li class="tab col s3"><a target="_self" href="/login">Login</a></li>'
+	
+	if(request.method=="GET"):
+		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
 
-		
+	if(request.method=="POST"):
+		get_centre=str(request.POST.get('centre'))
+		print get_centre
+		get_group=str(request.POST.get('group'))
+		print get_group		
+		if get_centre!="all":
+			if get_group!="all":
+				center_list=marks_data.objects.filter(center=get_centre).values_list('center').distinct()
+				group_list=marks_data.objects.filter(center=get_centre,group=get_group).values_list('group').distinct()
+			else:
+				center_list=marks_data.objects.filter(center=get_centre).values_list('center').distinct()
+				group_list=marks_data.objects.filter(center=get_centre).order_by().values_list('group').distinct()
+		else:
+			center_list=marks_data.objects.order_by().values_list('center').distinct()
+		try :
+			# group_list=marks_data.objects.order_by().values_list('group').distinct()
+			# level_list=marks_data.objects.order_by().values_list('level').distinct()
+			result_data=''
+			for center in center_list:
+				if get_centre=="all":
+					if get_group!="all":
+						group_list=marks_data.objects.filter(center=center[0],group=get_group).values_list('group').distinct()
+					else:
+						group_list=marks_data.objects.filter(center=center[0]).order_by().values_list('group').distinct()
+				for group in group_list:
+					count=1
+					result_data+='<div class="row"><div class="col s12 m0 "></div><div class="col s12 m12"><div class="card white darken-1" background-color="#FFD700"><div class="card-content black-text"><ul class="collection with-header"><center><li class="collection-header"><h4>'
+					result_data+='Rank List '
+					result_data+=str(center[0])+' '
+					result_data+=str(group[0])+' '
+					result_data+='</h4></li></center><div class="responsive-table"><table id="table"><thead><tr><th id="th" data-field="Rank">Rank</th><th id="th" data-field="Id">Roll Number</th><th id="th" data-field="Id">Group-Level</th><th id="th" data-field="Id">NPI Score</th><th id="th" data-field="Id">Current Round</th><th id="th" data-field="Id">National Level Rank</th><th id="th" data-field="Id">National Group Rank</th><th id="th" data-field="Id">Name</th><th id="th" data-field="Id">Father</th><th id="th" data-field="Id">Email</th><th id="th" data-field="Id">School</th><th id="th" data-field="Id">Class</th><th id="th" data-field="Id">Awards</th></tr></thead>'
+					result_data+='<tbody id="'+str(group[0])+'">'
+					print group[0]
+					for groups_data in marks_data.objects.filter(Q(current_round='Finals') | Q(current_round='Semi-Finals') ,center=center[0],group=group[0]).order_by('-npi_semi'):
+						result_data+='<tr><td id="td">'+str(count)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.reference_id)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.level)+'</td>'
+						# result_data+='<td id="td">'+str(groups_data.marks_semi)+'</td>'
+						# result_data+='<td id="td">'+str(groups_data.time_semi)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.npi_semi)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.current_round)+'</td>'
 
+						try:
+							rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+							result_data+='<td id="td">'+str(rank_details.national_level_rank)+'</td>'
+							result_data+='<td id="td">'+str(rank_details.national_group_rank)+'</td>'
+						except Exception,e:
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							print e
+						try:
+							user_details=user_data.objects.get(refrence_id=groups_data.reference_id)
+							result_data+='<td id="td">'+str(user_details.first_name+" "+user_details.last_name)+'</td>'
+							result_data+='<td id="td">'+str(user_details.parent_father)+'</td>'
+							result_data+='<td id="td">'+str(user_details.email)+'</td>'
+							result_data+='<td id="td">'+str(user_details.school)+'</td>'
+							result_data+='<td id="td">'+str(user_details.grade)+'</td>'
+
+						except Exception,e:
+							print str(e)
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+
+						try:
+							award_name=""
+							rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+							if groups_data.current_round=="Finals":
+								if rank_details.national_level_rank==1:
+									award_name="National Gold Medal + Champion's Champion Trophy"
+								elif rank_details.national_level_rank==2:
+									award_name="National Silver Medal + National Champion Trophy"
+								elif rank_details.national_level_rank==3:
+									award_name="National Bronze Medal + National Champion Trophy"
+								else:
+									award_name="National Champion Trophy"
+							if groups_data.current_round=="Finals":
+								if count==1:
+									award_name+=" + School Gold Medal"
+								elif count==2:
+									award_name+=" + School Silver Medal"
+								elif count==3:
+									award_name+=" + School Bronze Medal"
+							else:
+								if count==1:
+									award_name+="School Gold Medal"
+								elif count==2:
+									award_name+="School Silver Medal"
+								elif count==3:
+									award_name+="School Bronze Medal"
+							result_data+='<td id="td">'+award_name+'</td></tr>'
+						except Exception,e:
+							print e
+						# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+						# rank_details.centre_rank=count
+						# rank_details.save()
+						count+=1
+
+						print groups_data.reference_id
+					for groups_data in marks_data.objects.filter(center=center[0],group=group[0],current_round='First-Round').order_by('-npi_first'):
+						result_data+='<tr><td id="td">'+str(count)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.reference_id)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.level)+'</td>'
+						# result_data+='<td id="td">'+str(groups_data.marks_first)+'</td>'
+						# result_data+='<td id="td">'+str(groups_data.time_first)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.npi_first)+'</td>'
+						result_data+='<td id="td">'+str(groups_data.current_round)+'</td>'
+
+						try:
+							rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+							result_data+='<td id="td">'+str(rank_details.national_level_rank)+'</td>'
+							result_data+='<td id="td">'+str(rank_details.national_group_rank)+'</td>'
+						except Exception,e:
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							print e
+					
+						try:
+							user_details=user_data.objects.get(refrence_id=groups_data.reference_id)
+							result_data+='<td id="td">'+str(user_details.first_name+" "+user_details.last_name)+'</td>'
+							result_data+='<td id="td">'+str(user_details.parent_father)+'</td>'
+							result_data+='<td id="td">'+str(user_details.email)+'</td>'
+							result_data+='<td id="td">'+str(user_details.school)+'</td>'
+							result_data+='<td id="td">'+str(user_details.grade)+'</td>'
+
+						except Exception,e:
+							print str(e)
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+							result_data+='<td id="td">'+"N A"+'</td>'
+						try:
+							award_name=""
+							rank_details=rank_data.objects.get(reference_id=groups_data.reference_id ,level=groups_data.level)
+							if groups_data.current_round=="Finals":
+								if rank_details.national_level_rank==1:
+									award_name="National Gold Medal + Champion's Champion Trophy"
+								elif rank_details.national_level_rank==2:
+									award_name="National Silver Medal + National Champion Trophy"
+								elif rank_details.national_level_rank==3:
+									award_name="National Bronze Medal + National Champion Trophy"
+								else :
+									award_name="National Champion Trophy"
+							if groups_data.current_round=="Finals":
+								if rank_details.centre_rank==1:
+									award_name+=" + School Gold Medal"
+								elif rank_details.centre_rank==2:
+									award_name+=" + School Silver Medal"
+								elif rank_details.centre_rank==3:
+									award_name+=" + School Bronze Medal"
+							else:
+								if rank_details.centre_rank==1:
+									award_name+="School Gold Medal"
+								elif rank_details.centre_rank==2:
+									award_name+="School Silver Medal"
+								elif rank_details.centre_rank==3:
+									award_name+="School Bronze Medal"
+							
+							result_data+='<td id="td">'+award_name+'</td></tr>'
+						except Exception,e:
+							print e
+						# rank_details=rank_data.objects.get(reference_id=groups_data.reference_id,level=groups_data.level)
+						# rank_details.centre_rank=count
+						# rank_details.save()
+						count+=1
+						print groups_data.reference_id
+					result_data+='</tbody></table></div></ul></div></div></div></div>'
+		except Exception,e:
+			print "Exception : ",e
+	try:
+		return render(request,'spr_report/spr_main.html',{"result_data":result_data,"login_display":login_display,"login_display2":login_display2})
+
+	except Exception,e:
+		print e
+		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})

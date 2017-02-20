@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from register.views_register import faqs,overview,registration,home,login_check,logout_page,start,contactus,send_message
-from register.views_register import logout_and_register,message,syllabus,exam_centers,results,admin_results,admin_results1
+from register.views_register import logout_and_register,message,syllabus,exam_centers,results,admin_results1
 from otp.views import verify_mobile
 from payment.views import payment,payment_faliure,payment_success
 from forgot_password.views import forgot_password
@@ -32,6 +32,7 @@ from register.views_results import spr_report,generate_marks
 from register.views_results import convert_to_pdf
 from register.views_results import send_email,register_raj
 from register.views_results import data_panel_login,data_panel_logout, data_panel_home
+from register.views_results import admin_results
 
 
 urlpatterns = [
