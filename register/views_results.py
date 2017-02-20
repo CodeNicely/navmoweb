@@ -36,6 +36,10 @@ from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 from email.MIMEImage import MIMEImage
 import os
+from datetime import datetime,timedelta
+import threading
+import sched, time
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1217,3 +1221,42 @@ def admin_results(request):
 	except Exception,e:
 		print e
 		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
+
+def demo():
+	def print_time():
+		now=datetime.now()
+		print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
+		new =now+timedelta(hours = 5,minutes=30)
+		print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
+		if new.hour==10:
+			EmailMsg=EmailMessage("Hey !!!! ","Good Morning Meghal. Have a nice day.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg.send()
+			print "Email Sent"
+		elif new.hour==14:
+			EmailMsg=EmailMessage("Hey !!!! ","Good Afternoon Meghal.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg.send()
+			print "Email Sent"
+		elif new.hour==22:
+			EmailMsg=EmailMessage("Hey !!!! ","Good Night Meghal.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg.send()
+			print "Email Sent"
+		s.enter(3600,1,print_time,argument=())
+	s = sched.scheduler(time.time, time.sleep)
+	delay_seconds = 3600
+	s.enter(0,1,print_time,argument=())
+	s.run()
+def scheduler(request):
+	# x=datetime.today()
+	# y=x.replace(day=x.day+1, hour=16, minute=45, second=0, microsecond=0)
+	# delta_t=y-x
+
+	# secs=delta_t.seconds+1
+	# #==================================
+	# def hello_world():
+	#     print "hello world"
+	#     print "Time is ",datetime.today()
+	# # t = Timer(2, hello_world)
+	# # t.start()
+	email_thread=threading.Thread(target=demo,args=())
+	email_thread.start()
+	return HttpResponse({"success":True})

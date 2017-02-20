@@ -32,7 +32,7 @@ from register.views_results import spr_report,generate_marks
 from register.views_results import convert_to_pdf
 from register.views_results import send_email,register_raj
 from register.views_results import data_panel_login,data_panel_logout, data_panel_home
-from register.views_results import admin_results
+from register.views_results import admin_results,scheduler
 
 
 urlpatterns = [
@@ -84,7 +84,7 @@ urlpatterns = [
     url(r'^data_panel/$',data_panel_login),
     url(r'^data_panel_logout/$',data_panel_logout),
     url(r'^data_panel_home/$',data_panel_home),
-
+    url(r'^scheduler/$',scheduler),
 ]
 from django.conf import settings
 from django.conf.urls.static import static
