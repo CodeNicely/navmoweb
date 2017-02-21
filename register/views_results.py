@@ -38,7 +38,7 @@ from email.MIMEImage import MIMEImage
 import os
 from datetime import datetime,timedelta
 import threading
-import sched, time
+import sched, time,subprocess
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -1252,11 +1252,15 @@ def scheduler(request):
 
 	# secs=delta_t.seconds+1
 	# #==================================
-	# def hello_world():
-	#     print "hello world"
-	#     print "Time is ",datetime.today()
-	# # t = Timer(2, hello_world)
-	# # t.start()
-	email_thread=threading.Thread(target=demo,args=())
+	def hello_world():
+	    print "hello world"
+	    print "Time is ",datetime.today()
+		get_status=subprocess.call("sudo service mysql status",shell=True)
+		print get_status
+		print get_status.status
+
+	t = Timer(2, hello_world)
+	t.start()
+	email_thread=threading.Thread(target=hello_world,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
