@@ -162,7 +162,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
 					text_content = 'This is an important message.'
 					template = get_template('email/email_content.html')
-					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com'])
+					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','m3gh4l@gmail.com','ritu.agrawal@mindpowereducation.com'])
 					data['url_path']=url_path
 					html_content  = template.render(RequestContext(request,data,))
 					msg.attach_alternative(html_content, "text/html")
