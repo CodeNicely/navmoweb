@@ -42,126 +42,145 @@ from threading import Timer
 import sched, time,subprocess
 import smtplib
 from email.mime.text import MIMEText
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-@csrf_exempt
-def convert_to_pdf(request):
+
+def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 	filename=""
 	json={}
 	json['BASE_DIR']=BASE_DIR
+	json['url_path']=url_path
 	#===putting data in html====
 	#for rank_details in rank_data.objects.order_by('group','national_group_rank'):
-	for marks_details in marks_data.objects.filter(center='NH Goel'):
-		for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
-		# if(rank_details.reference_id==group.):
-			try:
-				filename="navmo_spr_"+rank_details.reference_id+".pdf"
-				print rank_details.reference_id
-				user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+	if get_centre_name!="all":
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(center=get_centre_name,group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.filter(center=get_centre_name)
+	else:
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.all()
+	try:	
+		for marks_details in marks_filter:
+			for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
+			# if(rank_details.reference_id==group.):
 				try:
-					path=BASE_DIR+"/media/"+str(user_details.image)
-					json['image']=path
+					filename="navmo_spr_"+rank_details.reference_id+".pdf"
+					print rank_details.reference_id
+					user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+					try:
+						path=url_path+"/media/"+str(user_details.image)
+						json['image']=path
+					except Exception,e:
+						print "Exception on image :",e
+					json['reference_id']=rank_details.reference_id
+					json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
+					if (user_details.last_name).lower() in (user_details.parent_father).lower():
+						father=(user_details.parent_father).title()
+					else:
+						father=(user_details.parent_father+" "+user_details.last_name).title()
+					json['father']=father
+					json['class']=(str(user_details.grade)).title()
+					school=""
+					if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+						school="Intelligent Cadet International School"
+					elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
+						school="N H Goel World School"
+					elif "birla" in (user_details.school).lower():
+						school="B K Birla Centre For Education"
+					elif "atelier" in (user_details.school).lower():
+						school="Atelier International Preschool"
+					elif "vibgyor" in (user_details.school).lower():
+						school="Vibgyor High School"
+					elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
+						school="Tree House High School"
+					elif "gumla" in (user_details.school).lower():
+						school="D.A.V.Public School"
+					elif "podar" in (user_details.school).lower():
+						school="Podar International School"
+					else:
+						school=str(user_details.school).title()
+					json['school']=school
 				except Exception,e:
 					print e
-				json['reference_id']=rank_details.reference_id
-				json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
-				if (user_details.last_name).lower() in (user_details.parent_father).lower():
-					father=(user_details.parent_father).title()
-				else:
-					father=(user_details.parent_father+" "+user_details.last_name).title()
-				json['father']=father
-				json['class']=(str(user_details.grade)).title()
-				school=""
-				if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
-					school="Intelligent Cadet International School"
-				elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
-					school="N H Goel World School"
-				elif "birla" in (user_details.school).lower():
-					school="B K Birla Centre For Education"
-				elif "atelier" in (user_details.school).lower():
-					school="Atelier International Preschool"
-				elif "vibgyor" in (user_details.school).lower():
-					school="Vibgyor High School"
-				elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
-					school="Tree House High School"
-				elif "gumla" in (user_details.school).lower():
-					school="D.A.V.Public School"
-				elif "podar" in (user_details.school).lower():
-					school="Podar International School"
-				else:
-					school=str(user_details.school).title()
-				json['school']=school
-			except Exception,e:
-				print e
-				json['name']="Not Available"
-				json['father']="Not Available"
-				json['class']="Not Available"
-				json['school']="Not Available"
-			json['level']=rank_details.level
-			marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-			json['round']=marks_details.current_round
-			if marks_details.current_round=='Finals':
-				if marks_details.npi_final!=0:
+					json['name']="Not Available"
+					json['father']="Not Available"
+					json['class']="Not Available"
+					json['school']="Not Available"
+				json['level']=rank_details.level
+				marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+				json['round']=marks_details.current_round
+				if marks_details.current_round=='Finals':
+					if marks_details.npi_final!=0:
+						json['round']=marks_details.current_round
+						json['marks']=marks_details.marks_final
+						json['time']=marks_details.time_final
+						json['npi']=marks_details.npi_final
+					else:
+						json['round']=""
+						json['marks']=marks_details.marks_semi
+						json['time']=marks_details.time_semi
+						json['npi']=marks_details.npi_semi
+				elif marks_details.current_round=='Semi-Finals':
 					json['round']=marks_details.current_round
-					json['marks']=marks_details.marks_final
-					json['time']=marks_details.time_final
-					json['npi']=marks_details.npi_final
-				else:
-					json['round']=""
 					json['marks']=marks_details.marks_semi
 					json['time']=marks_details.time_semi
 					json['npi']=marks_details.npi_semi
-			elif marks_details.current_round=='Semi-Finals':
-				json['round']=marks_details.current_round
-				json['marks']=marks_details.marks_semi
-				json['time']=marks_details.time_semi
-				json['npi']=marks_details.npi_semi
-			elif marks_details.current_round=='First-Round':
-				json['round']=marks_details.current_round
-				json['marks']=marks_details.marks_first
-				json['time']=marks_details.time_first
-				json['npi']=marks_details.npi_first		
+				elif marks_details.current_round=='First-Round':
+					json['round']=marks_details.current_round
+					json['marks']=marks_details.marks_first
+					json['time']=marks_details.time_first
+					json['npi']=marks_details.npi_first		
 
-			marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-			json['centre_rank']=rank_details.centre_rank
-			json['national_level_rank']=rank_details.national_level_rank
-			json['national_group_rank']=rank_details.national_group_rank
-			#===================send html to PDF form =======================
-			options = {
-			# 'page-width':'656.166667',
-			# 'page-height':'928.158333',
-			'margin-left':'0',
-			'margin-right':'0',
-			'margin-top':'0',
-			'margin-bottom':'0'}
-			template=get_template("spr_report/spr_a4.html")
-			#print json
-			context = Context(json)  # data is the context data that is sent to the html file to render the output. 
-			#print context
-			html = template.render(context)  # Renders the template with the context data.
-			pdf=pdfkit.from_string(html, False,options=options)
-			#pdf=pdfkit.from_file(render(request,"spr_report/spr_template.html",json), False)
-			response = HttpResponse(content_type='application/pdf')
-			response['Content-Disposition'] = 'attachment; filename=filename'
-			#EmailMsg=EmailMessage("NAVMO Student Performance Report ","Here we are Attaching your SPR Report of NAVMO 2016-17 ",'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com'])
-			#EmailMsg.attach('spr_demo.pdf',pdf,'application/pdf')
-			#EmailMsg.send()
-			#print "Email Sent"	
-			#======Email-Message in HTML form==============
-			data={}
-			path=str(request.scheme+"://"+request.get_host())
-			data['msg']="Centre = "+marks_details.center
-			data['msg_head']="Group = "+rank_details.group
-			data['url_path']=path
-			print path
-			subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
-			text_content = 'This is an important message.'
-			template = get_template('email/email_content.html')
-			path=str(request.scheme+"://"+request.get_host())
-			msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com','bhirendra2014@gmail.com'])
-			#-----Inline Image------------
+				marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+				json['centre_rank']=rank_details.centre_rank
+				json['national_level_rank']=rank_details.national_level_rank
+				json['national_group_rank']=rank_details.national_group_rank
+				try:
+					#===================send html to PDF form =======================
+					options = {
+					# 'page-width':'656.166667',
+					# 'page-height':'928.158333',
+					'margin-left':'0',
+					'margin-right':'0',
+					'margin-top':'0',
+					'margin-bottom':'0'}
+					template=get_template("spr_report/spr_a4.html")
+					context = Context(json)  # data is the context data that is sent to the html file to render the output. 
+					html = template.render(context)  # Renders the template with the context data.
+					pdf=pdfkit.from_string(html, False,options=options)
+					response = HttpResponse(content_type='application/pdf')
+					response['Content-Disposition'] = 'attachment; filename=filename'
+					data={}
+					data['msg']="Group = "+marks_details.group
+					data['msg_head']="Centre = "+marks_details.center
+					subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
+					text_content = 'This is an important message.'
+					template = get_template('email/email_content.html')
+					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com'])
+					data['url_path']=url_path
+					html_content  = template.render(RequestContext(request,data,))
+					msg.attach_alternative(html_content, "text/html")
+					msg.attach(filename,pdf,'application/pdf')
+					msg.send()
+					print "Email Sent for - ",rank_details.reference_id
+					return "success"
+				except Exception,e:
+					print "Exception on SPR Report : \n",e
+					return "Exception Occured"
+		else:
+			print "No Data Available"
+			return "failure"
+	except Exception,e:
+		print "Outer Catch ",e
+		return "Exception Occured"
+	#return render(request,"spr_report/spr_message.html",json)
+	#-----Inline Image------------
 			# msg.mixed_subtype='related'
 			# for f in ['/media/top1.jpg', '/navmo/templates/spr_report/divider.png']:
 			#     fp = open(BASE_DIR+f, 'rb')
@@ -170,15 +189,6 @@ def convert_to_pdf(request):
 			#     msg_img.add_header('Content-ID', "inline".format(f))
 			    #msg.attach(msg_img)
 			#-----------------------------
-			data['url_path']=path
-			html_content  = template.render(RequestContext(request,data,))
-			msg.attach_alternative(html_content, "text/html")
-			msg.attach(filename,pdf,'application/pdf')
-			msg.send()
-			print "Email Sent for - ",rank_details.reference_id
-	return render(request,"spr_report/spr_message.html",json)
-
-
 	# #===================================================
 	# #=======Convert to pdf and Send to email============
 	# #===================================================
@@ -1018,7 +1028,6 @@ def data_panel_home(request):
 			return render(request,'data_panel/panel_home.html')
 		else:
 			return HttpResponseRedirect('/data_panel')
-
 	if (request.method=="POST"):
 		if 'admin_results' in request.POST:
 			print "Redirect to admin result"
@@ -1032,6 +1041,33 @@ def data_panel_home(request):
 		elif 'spr_report' in request.POST:
 			print "Redirect to spr_report"
 			return HttpResponseRedirect('/spr_report')
+		elif 'send_spr_report' in request.POST:
+			print "Redirect to spr_report"
+			return HttpResponseRedirect('/send_spr_panel')
+
+@csrf_exempt
+def send_spr_panel(request):
+	if(request.method=="GET"):
+		if request.user.is_authenticated():
+			return render(request,'data_panel/panel_send_spr.html')
+		else:
+			return HttpResponseRedirect('/data_panel')
+
+	if (request.method=="POST"):
+		get_centre=str(request.POST.get('centre'))
+		print get_centre
+		get_group=str(request.POST.get('group'))
+		print get_group		
+		url_path=str(request.scheme+"://"+request.get_host())
+		print url_path
+		get_result=convert_to_pdf(request,get_centre,get_group,url_path)
+		if get_result=="success":
+			result="Email has been Sent."	
+		elif get_result=="failure":
+			result="No Data Availbale."
+		else:
+			result="Exception Occured."
+		return render(request,'data_panel/panel_send_spr.html',{"done":True,"result":result})	
 
 def admin_results(request):
 	if request.user.is_authenticated():
@@ -1266,16 +1302,39 @@ def scheduler(request):
 	email_thread.start()
 	return HttpResponse({"success":True})
 def mysql_status(request):
+	# def repeat():
+	# 	def sendMessage(errorBuffer):
+	# 		msg = MIMEText("MySQL down.\nError: " + errorBuffer)
+	# 		msg['Subject'] = 'MySQL Down'
+	# 		s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
+	# 	statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	# 	outputBuffer = statusProc.stdout.read().strip()
+	# 	errorBuffer = statusProc.stderr.read().strip()
+	# 	print "Output Buffer = ",str(outputBuffer.lower())
+	# 	if 'uptime' not in outputBuffer.lower() or len(errorBuffer) > 0:
+	# 		print "Status : Error"
+	# 		print "Output Buffer = ",str(outputBuffer.lower())
+	# 		print "Length of Error Buffer =",str(errorBuffer)
+	# 		sendMessage(errorBuffer)
+	# 		s = sched.scheduler(time.time, time.sleep)
+	# 		delay_seconds = 3600
+	# 		s.enter(0,1,repeat,argument=())
+	# 		s.run()
+	# 	else:
+	# 		sendMessage("Status = Running")
+	# 		print "Status : Running"
 	def repeat():
-		statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		outputBuffer = statusProc.stdout.read().strip()
-		errorBuffer = statusProc.stderr.read().strip()
-		print "Output Buffer = ",str(outputBuffer.lower())
-		if 'uptime' not in outputBuffer.lower() or len(errorBuffer) > 0:
+		def sendMessage(print_status):
+			msg = MIMEText("MySQL Status :-.\n" + print_status)
+			msg['Subject'] = 'MySQL Status Report'
+			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
+		print "Time is ",datetime.today()
+		get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
+		get_status=subprocess.call("Localcart@999123",shell=False)
+		print get_status
+		if get_status!="mysqld is alive":
 			print "Status : Error"
-			print "Output Buffer = ",str(outputBuffer.lower())
-			print "Length of Error Buffer =",str(errorBuffer)
-			sendMessage(errorBuffer)
+			sendMessage(get_status)
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
 			s.enter(0,1,repeat,argument=())
@@ -1283,11 +1342,6 @@ def mysql_status(request):
 		else:
 			sendMessage("Status = Running")
 			print "Status : Running"
-		def sendMessage(errorBuffer):
-			msg = MIMEText("MySQL down.\nError: " + errorBuffer)
-			msg['Subject'] = 'MySQL Down'
-			s = smtplib.SMTP('localhost')
-			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})

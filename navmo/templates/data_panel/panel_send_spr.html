@@ -1,0 +1,74 @@
+<html>
+<title>NAVMO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+  
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<body>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js">
+    
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('select').selectpicker();}
+</script>
+<form method="GET" enctype="multipart/form-data">
+{% if user.is_authenticated %}
+    <p style="margin-right: 26%; text-align: right; font-size: 20px">
+    Welcome {{ user.username }} |
+    <a href="/data_panel_logout">Logout</a></p>
+{% endif %}
+</form>
+<br>
+<br>
+<br>
+<br>
+<form id="spr_filter_form" black-text action="." method="POST"  enctype="multipart/form-data">{% csrf_token %}
+<center>
+<div class="row">
+  <div class="col s12 m1"></div>
+    <div class="col s12 m10">
+      <div class="card white lighten-10">
+          <div class="card-content black-text">
+          <b>Select Centre</b>
+            <select class = "selectpicker" id="centre" name="centre" required >
+              <option value='all' selected>All</option>
+              <!-- {{centre_list|safe}} -->
+              <option value="NH Goel">NH Goel</option>
+              <option value="MPE Odisha">MPE Odisha</option>
+              <option value="MPE Ranchi">MPE Ranchi</option>
+              <option value="ICIS">ICIS</option>
+              <option value="MPE Raipur">MPE Raipur</option>
+              <option value="B K Birla">B K Birla</option>
+              <option value="NPPS , Rajnandgaon">NPPS, Rajnandgaon</option>
+              <option value="NBIS , Rajnandgaon">NBIS, Rajnandgaon</option>
+              <option value="Atelier School Magarpatta">Atelier School Magarpatta</option>
+              <option value="MPE AMRAVATI">MPE AMRAVATI</option>
+              <option value="MPE KHARADI">MPE KHARADI</option>
+              <option value="MPE KOTA">MPE KOTA</option>
+            </select><br><br>
+          <b>Select Group</b>
+            <select class="selectpicker" id="group" name="group" required >
+            <!-- {{group_list|safe}} -->
+              <option value='all' selected>All</option>
+              <option value="alpha">alpha</option>
+              <option value="beta">beta</option>
+              <option value="gamma">gamma</option>
+              <option value="thetha">theta</option>
+            </select>
+            <br><br>
+            <button class="btn waves-effect waves-light" id="btnsend" type="submit" name="action">Send
+            </button>
+</div></div></div></div>
+</center>
+{% if done %}
+    <script type="text/javascript">alert("{{result}}");</script>
+{% endif %}
+</form>
+</body>
+</html>
