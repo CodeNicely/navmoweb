@@ -40,7 +40,8 @@ from datetime import datetime,timedelta
 import threading
 from threading import Timer
 import sched, time,subprocess
-
+import smtplib
+from email.mime.text import MIMEText
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1223,29 +1224,6 @@ def admin_results(request):
 		print e
 		return render(request,'spr_report/spr_main.html',{"result_data":{},"login_display":login_display,"login_display2":login_display2})
 
-def demo():
-	def print_time():
-		now=datetime.now()
-		print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
-		new =now+timedelta(hours = 5,minutes=30)
-		print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
-		if new.hour==10:
-			EmailMsg=EmailMessage("Hey!!! ","Good Morning. Have a nice day.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
-			EmailMsg.send()
-			print "Email Sent"
-		elif new.hour==14:
-			EmailMsg=EmailMessage("Hey!!!! ","Good Afternoon.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
-			EmailMsg.send()
-			print "Email Sent"
-		elif new.hour==22:
-			EmailMsg=EmailMessage("Hey!!!! ","Good Night.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
-			EmailMsg.send()
-			print "Email Sent"
-		s.enter(3600,1,print_time,argument=())
-	s = sched.scheduler(time.time, time.sleep)
-	delay_seconds = 3600
-	s.enter(0,1,print_time,argument=())
-	s.run()
 def scheduler(request):
 	# x=datetime.today()
 	# y=x.replace(day=x.day+1, hour=16, minute=45, second=0, microsecond=0)
@@ -1253,15 +1231,60 @@ def scheduler(request):
 
 	# secs=delta_t.seconds+1
 	# #==================================
-	def hello_world():
-		print "hello world"
-		print "Time is ",datetime.today()
-		get_status=subprocess.call("sudo service mysql status",shell=True)
-		print get_status
-		print get_status.status
-
-	t = Timer(2, hello_world)
-	t.start()
-	email_thread=threading.Thread(target=hello_world,args=())
+	# def hello_world():
+	# 	print "hello world"
+	# 	print "Time is ",datetime.today()
+	# 	get_status=subprocess.call("sudo service mysql status",shell=True)
+	# 	print get_status
+	# 	print get_status.status
+	# t = Timer(2, hello_world)
+	# t.start()
+	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
+	def repeat():
+		def print_time():
+			now=datetime.now()
+			print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
+			new =now+timedelta(hours = 5,minutes=30)
+			print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
+			if new.hour==10:
+				EmailMsg=EmailMessage("Hey!!! ","Good Morning. Have a nice day.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
+				EmailMsg.send()
+				print "Email Sent"
+			elif new.hour==14:
+				EmailMsg=EmailMessage("Hey!!!! ","Good Afternoon.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
+				EmailMsg.send()
+				print "Email Sent"
+			elif new.hour==22:
+				EmailMsg=EmailMessage("Hey!!!! ","Good Night.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
+				EmailMsg.send()
+				print "Email Sent"
+			s.enter(3600,1,print_time,argument=())
+		s = sched.scheduler(time.time, time.sleep)
+		delay_seconds = 3600
+		s.enter(0,1,print_time,argument=())
+		s.run()
+def mysql_status(request):
+	email_thread=threading.Thread(target=repeat,args=())
+	email_thread.start()
+	return HttpResponse({"success":True})
+	def repeat():
+		statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		outputBuffer = statusProc.stdout.read().strip()
+		errorBuffer = statusProc.stderr.read().strip()
+		if 'uptime' not in outputBuffer.lower() or len(errorBuffer) > 0:
+			print "Output Buffer = ",outputBuffer.lower()
+			print "Length of Error Buffer =",errorBuffer
+			sendMessage(errorBuffer)
+			s = sched.scheduler(time.time, time.sleep)
+			delay_seconds = 3600
+			s.enter(0,1,repeat,argument=())
+			s.run()
+		else:
+			sendMessage("Status = Running")
+		def sendMessage(errorBuffer):
+			msg = MIMEText("MySQL down.\nError: " + errorBuffer)
+			msg['Subject'] = 'MySQL Down'
+			s = smtplib.SMTP('localhost')
+			s.sendmail(noreplycodenicely@gmail.com, ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
