@@ -1273,9 +1273,11 @@ def mysql_status(request):
 		statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		outputBuffer = statusProc.stdout.read().strip()
 		errorBuffer = statusProc.stderr.read().strip()
+		print "Output Buffer = ",str(outputBuffer.lower())
 		if 'uptime' not in outputBuffer.lower() or len(errorBuffer) > 0:
-			print "Output Buffer = ",outputBuffer.lower()
-			print "Length of Error Buffer =",errorBuffer
+			print "Status : Error"
+			print "Output Buffer = ",str(outputBuffer.lower())
+			print "Length of Error Buffer =",str(errorBuffer)
 			sendMessage(errorBuffer)
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
@@ -1283,8 +1285,9 @@ def mysql_status(request):
 			s.run()
 		else:
 			sendMessage("Status = Running")
+			print "Status : Running"
 		def sendMessage(errorBuffer):
 			msg = MIMEText("MySQL down.\nError: " + errorBuffer)
 			msg['Subject'] = 'MySQL Down'
 			s = smtplib.SMTP('localhost')
-			s.sendmail(noreplycodenicely@gmail.com, ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
+			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
