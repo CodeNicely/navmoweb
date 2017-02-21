@@ -1239,9 +1239,6 @@ def scheduler(request):
 	# 	print get_status.status
 	# t = Timer(2, hello_world)
 	# t.start()
-	email_thread=threading.Thread(target=repeat,args=())
-	email_thread.start()
-	return HttpResponse({"success":True})
 	def repeat():
 		def print_time():
 			now=datetime.now()
@@ -1265,10 +1262,10 @@ def scheduler(request):
 		delay_seconds = 3600
 		s.enter(0,1,print_time,argument=())
 		s.run()
-def mysql_status(request):
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
+def mysql_status(request):
 	def repeat():
 		statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		outputBuffer = statusProc.stdout.read().strip()
@@ -1291,3 +1288,6 @@ def mysql_status(request):
 			msg['Subject'] = 'MySQL Down'
 			s = smtplib.SMTP('localhost')
 			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
+	email_thread=threading.Thread(target=repeat,args=())
+	email_thread.start()
+	return HttpResponse({"success":True})
