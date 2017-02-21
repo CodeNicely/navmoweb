@@ -51,7 +51,7 @@ def convert_to_pdf(request):
 	json['BASE_DIR']=BASE_DIR
 	#===putting data in html====
 	#for rank_details in rank_data.objects.order_by('group','national_group_rank'):
-	for marks_details in marks_data.objects.filter(center='Atelier School Magarpatta'):
+	for marks_details in marks_data.objects.filter(center='NH Goel'):
 		for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
 		# if(rank_details.reference_id==group.):
 			try:
@@ -150,15 +150,15 @@ def convert_to_pdf(request):
 			#======Email-Message in HTML form==============
 			data={}
 			path=str(request.scheme+"://"+request.get_host())
-			data['msg']="This is message section."
-			data['msg_head']="This is a Heading"
+			data['msg']="Centre = "+marks_details.center
+			data['msg_head']="Group = "+rank_details.group
 			data['url_path']=path
 			print path
 			subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
 			text_content = 'This is an important message.'
 			template = get_template('email/email_content.html')
 			path=str(request.scheme+"://"+request.get_host())
-			msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
+			msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com','bhirendra2014@gmail.com'])
 			#-----Inline Image------------
 			# msg.mixed_subtype='related'
 			# for f in ['/media/top1.jpg', '/navmo/templates/spr_report/divider.png']:
@@ -1229,15 +1229,15 @@ def demo():
 		new =now+timedelta(hours = 5,minutes=30)
 		print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
 		if new.hour==10:
-			EmailMsg=EmailMessage("Hey !!!! ","Good Morning Meghal. Have a nice day.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg=EmailMessage("Hey!!! ","Good Morning. Have a nice day.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
 			EmailMsg.send()
 			print "Email Sent"
 		elif new.hour==14:
-			EmailMsg=EmailMessage("Hey !!!! ","Good Afternoon Meghal.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg=EmailMessage("Hey!!!! ","Good Afternoon.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
 			EmailMsg.send()
 			print "Email Sent"
 		elif new.hour==22:
-			EmailMsg=EmailMessage("Hey !!!! ","Good Night Meghal.",'bhirendra2014@gmail.com@gmail.com',['m3gh4l@gmail.com'])
+			EmailMsg=EmailMessage("Hey!!!! ","Good Night.",'bhirendra2014@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com','shanu.rathi99@gmail.com'])
 			EmailMsg.send()
 			print "Email Sent"
 		s.enter(3600,1,print_time,argument=())
