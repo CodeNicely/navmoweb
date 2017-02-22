@@ -1333,8 +1333,8 @@ def mysql_status(request):
 		print "Time is ",datetime.today()
 		try:
 			p = Popen(['service', 'mysql','status'], stdout=subprocess.PIPE, stderr=STDOUT) 
+			get_status=p.communicate[0]
 			p.kill()
-			get_status=stdout
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
 				# p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
