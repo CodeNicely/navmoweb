@@ -1332,14 +1332,18 @@ def mysql_status(request):
 			EmailMsg.send()
 		print "Time is ",datetime.today()
 		try:
+			p = Popen(["mysqladmin", "-u", "root", "-p",'Localcart@999123'],stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+			get_status=p.communicate()
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
-			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-			print "Input Password" 
-			get_status = p.communicate(input='Localcart@999123\n')[0]
+				# p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
+				# output = p.communicate()[0]
+				# p2 = Popen(, shell=True, stdout=subprocess.PIPE)
+				# get_status = p.communicate("Localcart@999123\n")
+				# p.stdin.write('Localcart@999123\n')
 			#get_status=p.communicate("Localcart@999123\n")
 			#get_status=p.stdin.write('Localcart@999123\n')
-			p.stdin.flush() 
+				# p.stdin.flush() 
 			# get_status = p.communicate()[0]
 			#print get_status.decode()
 			print get_status
