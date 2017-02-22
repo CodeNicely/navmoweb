@@ -40,6 +40,7 @@ from datetime import datetime,timedelta
 import threading
 from threading import Timer
 import sched, time,subprocess
+from subprocess import Popen, PIPE, STDOUT
 import smtplib
 from email.mime.text import MIMEText
 import sys
@@ -68,7 +69,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 	try:	
 		for marks_details in marks_filter:
 			for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
-			# if(rank_details.reference_id==group.):
+				# if(rank_details.reference_id==.):
 				try:
 					filename="navmo_spr_"+rank_details.reference_id+".pdf"
 					print rank_details.reference_id
@@ -162,7 +163,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
 					text_content = 'This is an important message.'
 					template = get_template('email/email_content.html')
-					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','m3gh4l@gmail.com','ritu.agrawal@mindpowereducation.com'])
+					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com'])
 					data['url_path']=url_path
 					html_content  = template.render(RequestContext(request,data,))
 					msg.attach_alternative(html_content, "text/html")
@@ -1329,9 +1330,16 @@ def mysql_status(request):
 			msg['Subject'] = 'MySQL Status Report'
 			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
 		print "Time is ",datetime.today()
-		get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
-		get_status=subprocess.call("Localcart@999123",shell=False)
-		print get_status
+		try:
+			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
+			# get_status=subprocess.call("Localcart@999123",shell=False)
+			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+			time.sleep(0.5)    
+			p.stdin.write('Localcart@999123')
+			get_status = p.communicate()[0]
+			print get_status
+		except Exception,e:
+			print "Exception on command process :",e
 		if get_status!="mysqld is alive":
 			print "Status : Error"
 			sendMessage(get_status)

@@ -4,7 +4,7 @@
 <title>SPR Report</title>
 <style>
 div.table1 table, div.table2 table{
-  box-shadow: 8px 10px 6px grey;
+  /*box-shadow: 8px 10px 6px grey;*/
   margin-top: 20px;
   background-color: #ffffff;
   border: 1px solid black;
@@ -31,11 +31,11 @@ p.info{
 div.table2 table tr th{
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   font-size: 20px;
-  background-color: #651F00;;
+  background-color: #286169;;
   color: #FFFFFF;
 }
 div.table1 table tr td p b,div.table2 table tr td p b{
-  color:#651F00;
+  color:#1D464B;
 }
 p.message{
   font-family: Arial, Helvetica, sans-serif;
@@ -43,6 +43,12 @@ p.message{
   margin: 30px;
   font-size: 18px;
   color: #000000;
+}
+p.address{
+  font-size: 15px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
 }
 hr {
   margin-top: 40px;
@@ -56,10 +62,15 @@ hr {
   
 </style>
 </head>
-<body style="background-image: url('{{BASE_DIR}}/media/pattern1.jpg');
-    background-repeat: repeat;" width="793px" height="1122px">
+<!-- <body style="background-image: url('{{BASE_DIR}}/media/pattern1.jpg'); -->
+    <!-- background-repeat: repeat;" width="793px" height="1122px"> -->
+<body bgcolor="#FFFFFF">
 <form action="#" method="POST">{% csrf_token %}
-  <img src="{{BASE_DIR}}/media/header_spr_low.jpg" style=" width: 100%;">
+  <!-- <img src="{{BASE_DIR}}/media/header_spr_low.jpg" style=" width: 100%;"> -->
+  <div class="row" width="100%" style="background-color: #FAC80F;" align="center">
+    <img src="{{url_path}}/media/navmo_main.png" width="480px" style="vertical-align: middle;display: inline-block;"></img>
+    <img src="{{url_path}}/media/SPR.png" width="480px" style="vertical-align: middle;display: inline-block;"></img>
+  </div>
   <br>
   <div class="table1">
     <table  width="94%" align="center" border="1px" cellpadding="0px" cellspacing="0px">
@@ -91,26 +102,26 @@ hr {
         <th colspan="4">Performance Report</th>
       </tr>
       <tr>
-        <td colspan="2" width="50%" bgcolor="#FFDAB9" align="center"><p>Group-Level</p></td>
-        <td colspan="2" width="50%" bgcolor="#FFDAB9" align="center"><p>Round</p></td>
+        <td colspan="2" width="50%" bgcolor="#FDF0BD" align="center"><p>Group-Level</p></td>
+        <td colspan="2" width="50%" bgcolor="#FDF0BD" align="center"><p>Round</p></td>
       </tr>
       <tr>
         <td colspan="2" width="50%" align="center"><p><b>{{level}}</b></p></td>
         <td colspan="2" width="50%" align="center"><p><b>{{round}}</b></p></td>
       </tr>
       <tr>
-        <td colspan="2" width="50%" bgcolor="#FFDAB9" align="center"><p>Marks</p></td>
-        <td colspan="2" width="50%" bgcolor="#FFDAB9" align="center"><p>Time</p></td>
+        <td colspan="2" width="50%" bgcolor="#FDF0BD" align="center"><p>Marks</p></td>
+        <td colspan="2" width="50%" bgcolor="#FDF0BD" align="center"><p>Time</p></td>
       </tr>
       <tr>
         <td colspan="2" width="50%" align="center"><p><b>{{marks}}</b></p></td>
         <td colspan="2" width="50%" align="center"><p><b>{{time}}</b></p></td>
       </tr>
       <tr>
-        <td width="25%" bgcolor="#FFDAB9" align="center"><p>NPI Score</p></td>
-        <td width="25%" bgcolor="#FFDAB9" align="center"><p>Centre Group Rank</p></td>
-        <td width="25%" bgcolor="#FFDAB9" align="center"><p>National Level Rank</p></td>
-        <td width="25%" bgcolor="#FFDAB9" align="center"><p>National Group Rank</p></td>
+        <td width="25%" bgcolor="#FDF0BD" align="center"><p>NPI Score</p></td>
+        <td width="25%" bgcolor="#FDF0BD" align="center"><p>Centre Group Rank</p></td>
+        <td width="25%" bgcolor="#FDF0BD" align="center"><p>National Level Rank</p></td>
+        <td width="25%" bgcolor="#FDF0BD" align="center"><p>National Group Rank</p></td>
       </tr>
       <tr>
         <td width="25%" align="center"><p><b>{{npi}}</b></p></td>
@@ -121,8 +132,11 @@ hr {
     </table> 
   </div>
   <hr>
-  <p align="center" style="font-size: 15px;text-align: center;">With Best Wishes<br><br>
-  <b style="font-size: 20px;color: #651F00;">Mind Power Education</b>
+  <p class="address" align="center"><!-- With Best Wishes<br> -->
+  <img src="{{url_path}}/media/mpe_logo.jpg" width="200px" style="vertical-align: middle;display: inline-block;"></img>
+  <img src="{{url_path}}/media/navmo.jpg" width="120px" style="vertical-align: middle;display: inline-block;"></img>
+  <br>
+  <b style="font-size: 20px;color: #286169;">Mind Power Education</b>
   <br>Sector 4, Sant Nagar Opp. Traffic Park, Pradhikaran, Moshi, Pune 412105<br>Ph: 9049019312, 8446019312, 8149019312</p>
 </form>
 </body>
