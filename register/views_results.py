@@ -1337,12 +1337,12 @@ def mysql_status(request):
 			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 			print "Input Password" 
 			#get_status = p.communicate(input=b'Localcart@999123\n')[0]
-			get_status=p.communicate('Localcart@999123\n')
-			#get_status=p.stdin.write('Localcart@999123\n')
-			#p.stdin.flush() 
+			#get_status=p.communicate('Localcart@999123\n')
+			get_status=p.stdin.write('Localcart@999123\n')
+			p.stdin.flush() 
 			# get_status = p.communicate()[0]
 			#print get_status.decode()
-			print get_status
+			print get_status.decode()
 		except Exception,e:
 			print "Exception on command process :",e
 		if "mysqld is alive" not in str(get_status):
