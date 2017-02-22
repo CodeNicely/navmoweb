@@ -1334,19 +1334,20 @@ def mysql_status(request):
 		try:
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
-			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
+			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+			print "Input Password" 
 			#get_status = p.communicate(input=b'Localcart@999123\n')[0]
-			print p.communicate('Localcart@999123\n')
+			get_status=p.communicate('Localcart@999123\n')
 			#get_status=p.stdin.write('Localcart@999123\n')
 			#p.stdin.flush() 
 			# get_status = p.communicate()[0]
 			#print get_status.decode()
-			print stdout
+			print get_status
 		except Exception,e:
 			print "Exception on command process :",e
-		if "mysqld is alive" not in str(stdout):
+		if "mysqld is alive" not in str(get_status):
 			print "Status : Error"
-			sendMessage(stdout)
+			sendMessage(get_status)
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
 			s.enter(delay_seconds,1,repeat,argument=())
