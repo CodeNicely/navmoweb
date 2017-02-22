@@ -1351,7 +1351,7 @@ def mysql_status(request):
 		except Exception,e:
 			print "Exception on command process :",e
 		status_good=-2
-		if get_status!=status_good
+		if get_status!=status_good:
 			print "Status : Failed"
 			sendMessage("Failed")
 			s = sched.scheduler(time.time, time.sleep)
