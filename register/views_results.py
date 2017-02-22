@@ -113,7 +113,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					json['father']="Not Available"
 					json['class']="Not Available"
 					json['school']="Not Available"
-				json['level']=rank_details.level
+				json['level']=(rank_details.level).title()
 				marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
 				json['round']=marks_details.current_round
 				if marks_details.current_round=='Finals':
@@ -1327,16 +1327,14 @@ def mysql_status(request):
 	def repeat():
 		def sendMessage(print_status):
 			msg = MIMEText("MySQL Status :-.\n" + print_status)
-			msg['Subject'] = 'MySQL Status Report'
-			s = sched.scheduler(time.time, time.sleep)
-			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
+			subject = 'MySQL Status Report'
+			EmailMsg=EmailMessage(subject,str(msg),'noreplycodenicely@gmail.com',['m3gh4l@gmail.com','bhirendra2014@gmail.com'])
+			EmailMsg.send()
 		print "Time is ",datetime.today()
 		try:
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
-			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-			time.sleep(0.5)    
-			p.stdin.write('Localcart@999123\n')
+			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
 			get_status = p.communicate(input=b'Localcart@999123\n')[0]
 			# p.stdin.write('Localcart@999123\n')
 			# get_status = p.communicate()[0]
@@ -1348,7 +1346,7 @@ def mysql_status(request):
 			sendMessage(get_status)
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
-			s.enter(0,1,repeat,argument=())
+			s.enter(delay_seconds,1,repeat,argument=())
 			s.run()
 		else:
 			print "Status : Running"
