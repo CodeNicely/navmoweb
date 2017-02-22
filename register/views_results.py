@@ -1336,15 +1336,17 @@ def mysql_status(request):
 			# get_status=subprocess.call("Localcart@999123",shell=False)
 			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
 			#get_status = p.communicate(input=b'Localcart@999123\n')[0]
-			p.stdin.write('Localcart@999123\n')
-			p.stdin.flush() 
+			print p.communicate('Localcart@999123\n')
+			#get_status=p.stdin.write('Localcart@999123\n')
+			#p.stdin.flush() 
 			# get_status = p.communicate()[0]
-			print get_status.decode()
+			#print get_status.decode()
+			print stdout
 		except Exception,e:
 			print "Exception on command process :",e
-		if "mysqld is alive" not in str(get_status):
+		if "mysqld is alive" not in str(stdout):
 			print "Status : Error"
-			sendMessage(get_status)
+			sendMessage(stdout)
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
 			s.enter(delay_seconds,1,repeat,argument=())
