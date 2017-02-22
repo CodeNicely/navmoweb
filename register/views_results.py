@@ -1334,7 +1334,8 @@ def mysql_status(request):
 		try:
 			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE) 
 			get_status=p.communicate[0]
-			p.kill()
+			print get_status
+			# p.kill()
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
 				# p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
@@ -1347,7 +1348,6 @@ def mysql_status(request):
 				# p.stdin.flush() 
 			# get_status = p.communicate()[0]
 			#print get_status.decode()
-			print get_status
 		except Exception,e:
 			print "Exception on command process :",e
 		status_good=-2
