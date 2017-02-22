@@ -1333,7 +1333,7 @@ def mysql_status(request):
 		print "Time is ",datetime.today()
 		try:
 			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE) 
-			get_status=p.communicate[0]
+			get_status=p.communicate()[0]
 			print get_status
 			# p.kill()
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
