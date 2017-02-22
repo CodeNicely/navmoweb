@@ -1328,6 +1328,7 @@ def mysql_status(request):
 		def sendMessage(print_status):
 			msg = MIMEText("MySQL Status :-.\n" + print_status)
 			msg['Subject'] = 'MySQL Status Report'
+			s = sched.scheduler(time.time, time.sleep)
 			s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
 		print "Time is ",datetime.today()
 		try:
@@ -1335,9 +1336,11 @@ def mysql_status(request):
 			# get_status=subprocess.call("Localcart@999123",shell=False)
 			p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 			time.sleep(0.5)    
-			p.stdin.write('Localcart@999123')
-			get_status = p.communicate()[0]
-			print get_status
+			p.stdin.write('Localcart@999123\n')
+			get_status = p.communicate(input=b'Localcart@999123\n')[0]
+			# p.stdin.write('Localcart@999123\n')
+			# get_status = p.communicate()[0]
+			print get_status.decode()
 		except Exception,e:
 			print "Exception on command process :",e
 		if get_status!="mysqld is alive":
@@ -1348,8 +1351,8 @@ def mysql_status(request):
 			s.enter(0,1,repeat,argument=())
 			s.run()
 		else:
-			sendMessage("Status = Running")
 			print "Status : Running"
+			sendMessage("Status = Running")
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
