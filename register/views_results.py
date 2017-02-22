@@ -1332,8 +1332,7 @@ def mysql_status(request):
 			EmailMsg.send()
 		print "Time is ",datetime.today()
 		try:
-			p = Popen(["mysqladmin", "-u", "root", "-p",Localcart@999123],stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-			get_status=p.communicate()
+			get_status=subprocess.call("service mysql status",shell=True)
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
 			# get_status=subprocess.call("Localcart@999123",shell=False)
 				# p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
@@ -1349,7 +1348,7 @@ def mysql_status(request):
 			print get_status
 		except Exception,e:
 			print "Exception on command process :",e
-		if "mysqld is alive" not in str(get_status):
+		if "Active :active (running)" not in str(get_status):
 			print "Status : Error"
 			sendMessage(get_status)
 			s = sched.scheduler(time.time, time.sleep)
