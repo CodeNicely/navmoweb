@@ -27,7 +27,7 @@ def repeat():
 	print "Time is ",datetime.today()
 	try:
 		p = subprocess.Popen("mysqldump -u root -pLocalcart@999123 navmo > sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
-		p.communicate()		
+		p.communicate()	
 		sendMessage()  # Send backup sql file through email
 		q = subprocess.Popen("rm sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
 		q.communicate()  # now remove the file from the folder

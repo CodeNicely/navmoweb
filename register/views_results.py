@@ -68,7 +68,6 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 	try:	
 		for marks_details in marks_filter:
 			for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
-				# if(rank_details.reference_id==.):
 				try:
 					filename="navmo_spr_"+rank_details.reference_id+".pdf"
 					print rank_details.reference_id
@@ -76,7 +75,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					try:
 						path=url_path+"/media/"+str(user_details.image)
 						json['image']=path
-						if str(user_details.image)==(str(user_details.reference_id)+"/image"):
+						if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
 							path=url_path+"/media/default.png"
 							json['image']=path
 						print "Image Path = ",path
@@ -175,13 +174,13 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					msg.attach(filename,pdf,'application/pdf')
 					msg.send()
 					print "Email Sent for - ",rank_details.reference_id
-					return "success"
 				except Exception,e:
 					print "Exception on SPR Report : \n",e
-					return "Exception Occured"
+					print "Exception occured for "+user_details.refrence_id
 		else:
 			print "No Data Available"
 			return "failure"
+	return "success"
 	except Exception,e:
 		print "Outer Catch ",e
 		return "Exception Occured"
