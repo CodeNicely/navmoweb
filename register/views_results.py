@@ -182,7 +182,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						print "Exception on SPR Report : \n",e
 						print "Exception occured for "+user_details.refrence_id
 			except Exception,e:
-				print e:
+				print e
 		return "success"
 	except Exception,e:
 		print "Outer Catch ",e
