@@ -76,6 +76,10 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					try:
 						path=url_path+"/media/"+str(user_details.image)
 						json['image']=path
+						if str(user_details.image)==(str(user_details.reference_id)+"/image"):
+							path=url_path+"/media/"+str(user_details.image)
+							json['image']=path
+						print "Image Path = ",path
 					except Exception,e:
 						print "Exception on image :",e
 						path=url_path+"/media/"+"default.png"
@@ -1337,10 +1341,10 @@ def mysql_status(request):
 
 def dump_db(request):
 	try:
-		p = subprocess.Popen("chmod +x /navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		p = subprocess.Popen("chmod +x /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
 		p.communicate()
 		print "compiled file"
-		q = subprocess.Popen("python /navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		q = subprocess.Popen("python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
 		get_status=q.communicate()
 		print "Script executed succesfully"
 	except Exception,e:
