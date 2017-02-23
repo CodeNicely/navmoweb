@@ -31,7 +31,7 @@ from register.views_results import national_all_rank_groupwise
 from register.views_results import spr_report,generate_marks
 from register.views_results import send_email,register_raj
 from register.views_results import data_panel_login,data_panel_logout, data_panel_home,send_spr_panel
-from register.views_results import admin_results,scheduler,mysql_status
+from register.views_results import admin_results,scheduler,mysql_status,dump_db
 
 
 urlpatterns = [
@@ -86,6 +86,8 @@ urlpatterns = [
     url(r'^scheduler/$',scheduler),
     url(r'^mysql_status/$',mysql_status),
     url(r'^send_spr_panel/$',send_spr_panel),
+    url(r'^dump_db/$',dump_db),
+
 ]
 from django.conf import settings
 from django.conf.urls.static import static
