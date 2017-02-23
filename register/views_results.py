@@ -18,7 +18,6 @@ from django.contrib.auth import authenticate
 from otp.models import otp_data
 from payment.models import payment_data
 import random
-import os
 from .models import exam_center_data
 from .models import results_data
 from django.core.urlresolvers import reverse
@@ -163,7 +162,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 					subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
 					text_content = 'This is an important message.'
 					template = get_template('email/email_content.html')
-					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com'])
+					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
 					data['url_path']=url_path
 					html_content  = template.render(RequestContext(request,data,))
 					msg.attach_alternative(html_content, "text/html")
@@ -1296,34 +1295,12 @@ def scheduler(request):
 				print "Email Sent"
 			s.enter(3600,1,print_time,argument=())
 		s = sched.scheduler(time.time, time.sleep)
-		delay_seconds = 3600
 		s.enter(0,1,print_time,argument=())
 		s.run()
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
 def mysql_status(request):
-	# def repeat():
-	# 	def sendMessage(errorBuffer):
-	# 		msg = MIMEText("MySQL down.\nError: " + errorBuffer)
-	# 		msg['Subject'] = 'MySQL Down'
-	# 		s.sendmail('noreplycodenicely@gmail.com', ['bhirendra2014@gmail.com','m3gh4l@gmail.com'], msg.as_string())
-	# 	statusProc = subprocess.Popen(['mysqladmin', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	# 	outputBuffer = statusProc.stdout.read().strip()
-	# 	errorBuffer = statusProc.stderr.read().strip()
-	# 	print "Output Buffer = ",str(outputBuffer.lower())
-	# 	if 'uptime' not in outputBuffer.lower() or len(errorBuffer) > 0:
-	# 		print "Status : Error"
-	# 		print "Output Buffer = ",str(outputBuffer.lower())
-	# 		print "Length of Error Buffer =",str(errorBuffer)
-	# 		sendMessage(errorBuffer)
-	# 		s = sched.scheduler(time.time, time.sleep)
-	# 		delay_seconds = 3600
-	# 		s.enter(0,1,repeat,argument=())
-	# 		s.run()
-	# 	else:
-	# 		sendMessage("Status = Running")
-	# 		print "Status : Running"
 	def repeat():
 		def sendMessage(print_status):
 			msg = MIMEText("MySQL Status :-.\n" + print_status)
@@ -1335,22 +1312,9 @@ def mysql_status(request):
 			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE, shell=True) 
 			get_status=p.communicate()[0]
 			print get_status
-			# p.kill()
-			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
-			# get_status=subprocess.call("Localcart@999123",shell=False)
-				# p = Popen(['mysqladmin', '-u','root','-p','ping'], stdout=PIPE, stdin=PIPE, stderr=STDOUT) 
-				# output = p.communicate()[0]
-				# p2 = Popen(, shell=True, stdout=subprocess.PIPE)
-				# get_status = p.communicate("Localcart@999123\n")
-				# p.stdin.write('Localcart@999123\n')
-			#get_status=p.communicate("Localcart@999123\n")
-			#get_status=p.stdin.write('Localcart@999123\n')
-				# p.stdin.flush() 
-			# get_status = p.communicate()[0]
-			#print get_status.decode()
 		except Exception,e:
 			print "Exception on command process :",e
-		status_good=-2
+
 		if "Active: active (running)" in get_status:
 			print "Status : Running"
 			#sendMessage("mysql is alive and running")
@@ -1367,4 +1331,15 @@ def mysql_status(request):
 			s.run()
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
+	return HttpResponse({"success":True})
+
+def dump_db(request):
+	try:
+		p = subprocess.Popen("chmod +x navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		p.communicate()
+		p = subprocess.Popen("python navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		get_status=p.communicate()
+		print "Script executed succesfully"
+	except Exception,e:
+		print "Exception on Main Process :",e	
 	return HttpResponse({"success":True})
