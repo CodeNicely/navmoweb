@@ -77,7 +77,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						path=url_path+"/media/"+str(user_details.image)
 						json['image']=path
 						if str(user_details.image)==(str(user_details.reference_id)+"/image"):
-							path=url_path+"/media/"+str(user_details.image)
+							path=url_path+"/media/default.png"
 							json['image']=path
 						print "Image Path = ",path
 					except Exception,e:
