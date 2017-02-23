@@ -1332,7 +1332,7 @@ def mysql_status(request):
 			EmailMsg.send()
 		print "Time is ",datetime.today()
 		try:
-			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE) 
+			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE, shell=True) 
 			get_status=p.communicate()[0]
 			print get_status
 			# p.kill()
