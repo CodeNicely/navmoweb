@@ -1328,13 +1328,12 @@ def mysql_status(request):
 		def sendMessage(print_status):
 			msg = MIMEText("MySQL Status :-.\n" + print_status)
 			subject = 'MySQL Status Report'
-			EmailMsg=EmailMessage(subject,str(msg),'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com'])
+			EmailMsg=EmailMessage(subject,str(msg),'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com','m3gh4l@gmail.com'])
 			EmailMsg.send()
 		print "Time is ",datetime.today()
 		try:
 			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE, shell=True) 
 			get_status=p.communicate()[0]
-			p.kill()
 			print get_status
 			# p.kill()
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
@@ -1352,16 +1351,20 @@ def mysql_status(request):
 		except Exception,e:
 			print "Exception on command process :",e
 		status_good=-2
-		if "Active: active (running)" not in get_status:
+		if "Active: active (running)" in get_status:
+			print "Status : Running"
+			#sendMessage("mysql is alive and running")
+			s = sched.scheduler(time.time, time.sleep)
+			delay_seconds = 3600
+			s.enter(delay_seconds,1,repeat,argument=())
+			s.run()
+		else:
 			print "Status : Failed"
 			sendMessage("Failed")
 			s = sched.scheduler(time.time, time.sleep)
 			delay_seconds = 3600
 			s.enter(delay_seconds,1,repeat,argument=())
 			s.run()
-		else:
-			print "Status : Running"
-			sendMessage("mysql is alive and running")
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()
 	return HttpResponse({"success":True})
