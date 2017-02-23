@@ -38,7 +38,10 @@ def repeat():
 		s.enter(delay_seconds,1,repeat,argument=())
 		s.run()
 	except Exception,e:
+		exc_type, exc_obj, exc_tb = sys.exc_info()
+		fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
 		print "Exception on command process :",e
+		print "Line no.= ",exc_tb.tb_lineno
 
 email_thread=threading.Thread(target=repeat,args=())
 email_thread.start()
