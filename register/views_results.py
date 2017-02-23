@@ -180,7 +180,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 		else:
 			print "No Data Available"
 			return "failure"
-	return "success"
+		return "success"
 	except Exception,e:
 		print "Outer Catch ",e
 		return "Exception Occured"
