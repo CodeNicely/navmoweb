@@ -1335,10 +1335,11 @@ def mysql_status(request):
 
 def dump_db(request):
 	try:
-		p = subprocess.Popen("chmod +x navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		p = subprocess.Popen("chmod +x /navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
 		p.communicate()
-		p = subprocess.Popen("python navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
-		get_status=p.communicate()
+		print "compiled file"
+		q = subprocess.Popen("python /navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		get_status=q.communicate()
 		print "Script executed succesfully"
 	except Exception,e:
 		print "Exception on Main Process :",e	

@@ -10,7 +10,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def repeat():
-	def sendMessage(print_status):
+	def sendMessage():
 		now=datetime.now()
 		print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
 		new =now+timedelta(hours = 5,minutes=30)
