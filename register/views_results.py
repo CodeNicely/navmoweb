@@ -176,7 +176,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						msg.attach(filename,pdf,'application/pdf')
 						msg.send()
 						print "Email Sent for - ",rank_details.reference_id
-						count++
+						count+=1
 						print "count = ",count
 					except Exception,e:
 						print "Exception on SPR Report : \n",e
