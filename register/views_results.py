@@ -1343,14 +1343,14 @@ def mysql_status(request):
 
 def dump_db(request):
 	try:
-		p = subprocess.Popen("chmod +x /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		p = subprocess.Popen("chmod +x /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py ; python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
 		print "compiled file"
 		p.communicate()
-		print "communication done--1"
-		q = subprocess.Popen("python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
-		print "Script executed succesfully"
-		get_status=q.communicate()
-		print "communication done--2"
+		# print "communication done--1"
+		# q = subprocess.Popen("python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+		# print "Script executed succesfully"
+		# get_status=q.communicate()
+		# print "communication done--2"
 	except Exception,e:
 		exc_type, exc_obj, exc_tb = sys.exc_info()
 		fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
