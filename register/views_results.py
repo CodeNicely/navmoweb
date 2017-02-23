@@ -65,121 +65,124 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 			marks_filter=marks_data.objects.filter(group=get_group_name)
 		else:
 			marks_filter=marks_data.objects.all()
-	try:	
+	try:
+		count=0;
 		for marks_details in marks_filter:
-			for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
-				try:
-					filename="navmo_spr_"+rank_details.reference_id+".pdf"
-					print rank_details.reference_id
-					user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+			try :
+				for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
 					try:
-						path=url_path+"/media/"+str(user_details.image)
-						json['image']=path
-						if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
-							path=url_path+"/media/default.png"
+						filename="navmo_spr_"+rank_details.reference_id+".pdf"
+						print rank_details.reference_id
+						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+						try:
+							path=url_path+"/media/"+str(user_details.image)
 							json['image']=path
-						print "Image Path = ",path
+							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
+								path=url_path+"/media/default.png"
+								json['image']=path
+							print "Image Path = ",path
+						except Exception,e:
+							print "Exception on image :",e
+							path=url_path+"/media/"+"default.png"
+							json['image']=path
+						json['reference_id']=rank_details.reference_id
+						json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
+						if (user_details.last_name).lower() in (user_details.parent_father).lower():
+							father=(user_details.parent_father).title()
+						else:
+							father=(user_details.parent_father+" "+user_details.last_name).title()
+						json['father']=father
+						json['class']=(str(user_details.grade)).title()
+						school=""
+						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+							school="Intelligent Cadet International School"
+						elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
+							school="N H Goel World School"
+						elif "birla" in (user_details.school).lower():
+							school="B K Birla Centre For Education"
+						elif "atelier" in (user_details.school).lower():
+							school="Atelier International Preschool"
+						elif "vibgyor" in (user_details.school).lower():
+							school="Vibgyor High School"
+						elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
+							school="Tree House High School"
+						elif "gumla" in (user_details.school).lower():
+							school="D.A.V.Public School"
+						elif "podar" in (user_details.school).lower():
+							school="Podar International School"
+						else:
+							school=str(user_details.school).title()
+						json['school']=school
 					except Exception,e:
-						print "Exception on image :",e
-						path=url_path+"/media/"+"default.png"
-						json['image']=path
-					json['reference_id']=rank_details.reference_id
-					json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
-					if (user_details.last_name).lower() in (user_details.parent_father).lower():
-						father=(user_details.parent_father).title()
-					else:
-						father=(user_details.parent_father+" "+user_details.last_name).title()
-					json['father']=father
-					json['class']=(str(user_details.grade)).title()
-					school=""
-					if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
-						school="Intelligent Cadet International School"
-					elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
-						school="N H Goel World School"
-					elif "birla" in (user_details.school).lower():
-						school="B K Birla Centre For Education"
-					elif "atelier" in (user_details.school).lower():
-						school="Atelier International Preschool"
-					elif "vibgyor" in (user_details.school).lower():
-						school="Vibgyor High School"
-					elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
-						school="Tree House High School"
-					elif "gumla" in (user_details.school).lower():
-						school="D.A.V.Public School"
-					elif "podar" in (user_details.school).lower():
-						school="Podar International School"
-					else:
-						school=str(user_details.school).title()
-					json['school']=school
-				except Exception,e:
-					print e
-					json['name']="Not Available"
-					json['father']="Not Available"
-					json['class']="Not Available"
-					json['school']="Not Available"
-				json['level']=(rank_details.level).title()
-				marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-				json['round']=marks_details.current_round
-				if marks_details.current_round=='Finals':
-					if marks_details.npi_final!=0:
+						print e
+						json['name']="Not Available"
+						json['father']="Not Available"
+						json['class']="Not Available"
+						json['school']="Not Available"
+					json['level']=(rank_details.level).title()
+					marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+					json['round']=marks_details.current_round
+					if marks_details.current_round=='Finals':
+						if marks_details.npi_final!=0:
+							json['round']=marks_details.current_round
+							json['marks']=marks_details.marks_final
+							json['time']=marks_details.time_final
+							json['npi']=marks_details.npi_final
+						else:
+							json['round']=""
+							json['marks']=marks_details.marks_semi
+							json['time']=marks_details.time_semi
+							json['npi']=marks_details.npi_semi
+					elif marks_details.current_round=='Semi-Finals':
 						json['round']=marks_details.current_round
-						json['marks']=marks_details.marks_final
-						json['time']=marks_details.time_final
-						json['npi']=marks_details.npi_final
-					else:
-						json['round']=""
 						json['marks']=marks_details.marks_semi
 						json['time']=marks_details.time_semi
 						json['npi']=marks_details.npi_semi
-				elif marks_details.current_round=='Semi-Finals':
-					json['round']=marks_details.current_round
-					json['marks']=marks_details.marks_semi
-					json['time']=marks_details.time_semi
-					json['npi']=marks_details.npi_semi
-				elif marks_details.current_round=='First-Round':
-					json['round']=marks_details.current_round
-					json['marks']=marks_details.marks_first
-					json['time']=marks_details.time_first
-					json['npi']=marks_details.npi_first		
+					elif marks_details.current_round=='First-Round':
+						json['round']=marks_details.current_round
+						json['marks']=marks_details.marks_first
+						json['time']=marks_details.time_first
+						json['npi']=marks_details.npi_first		
 
-				marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
-				json['centre_rank']=rank_details.centre_rank
-				json['national_level_rank']=rank_details.national_level_rank
-				json['national_group_rank']=rank_details.national_group_rank
-				try:
-					#===================send html to PDF form =======================
-					options = {
-					# 'page-width':'656.166667',
-					# 'page-height':'928.158333',
-					'margin-left':'0',
-					'margin-right':'0',
-					'margin-top':'0',
-					'margin-bottom':'0'}
-					template=get_template("spr_report/spr_a4.html")
-					context = Context(json)  # data is the context data that is sent to the html file to render the output. 
-					html = template.render(context)  # Renders the template with the context data.
-					pdf=pdfkit.from_string(html, False,options=options)
-					response = HttpResponse(content_type='application/pdf')
-					response['Content-Disposition'] = 'attachment; filename=filename'
-					data={}
-					data['msg']="Group = "+marks_details.group
-					data['msg_head']="Centre = "+marks_details.center
-					subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
-					text_content = 'This is an important message.'
-					template = get_template('email/email_content.html')
-					msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
-					data['url_path']=url_path
-					html_content  = template.render(RequestContext(request,data,))
-					msg.attach_alternative(html_content, "text/html")
-					msg.attach(filename,pdf,'application/pdf')
-					msg.send()
-					print "Email Sent for - ",rank_details.reference_id
-				except Exception,e:
-					print "Exception on SPR Report : \n",e
-					print "Exception occured for "+user_details.refrence_id
-		else:
-			print "No Data Available"
-			return "failure"
+					marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+					json['centre_rank']=rank_details.centre_rank
+					json['national_level_rank']=rank_details.national_level_rank
+					json['national_group_rank']=rank_details.national_group_rank
+					try:
+						#===================send html to PDF form =======================
+						options = {
+						# 'page-width':'656.166667',
+						# 'page-height':'928.158333',
+						'margin-left':'0',
+						'margin-right':'0',
+						'margin-top':'0',
+						'margin-bottom':'0'}
+						template=get_template("spr_report/spr_a4.html")
+						context = Context(json)  # data is the context data that is sent to the html file to render the output. 
+						html = template.render(context)  # Renders the template with the context data.
+						pdf=pdfkit.from_string(html, False,options=options)
+						response = HttpResponse(content_type='application/pdf')
+						response['Content-Disposition'] = 'attachment; filename=filename'
+						data={}
+						data['msg']="Group = "+marks_details.group
+						data['msg_head']="Centre = "+marks_details.center
+						subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
+						text_content = 'This is an important message.'
+						template = get_template('email/email_content.html')
+						msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
+						data['url_path']=url_path
+						html_content  = template.render(RequestContext(request,data,))
+						msg.attach_alternative(html_content, "text/html")
+						msg.attach(filename,pdf,'application/pdf')
+						msg.send()
+						print "Email Sent for - ",rank_details.reference_id
+						count++
+						print "count = ",count
+					except Exception,e:
+						print "Exception on SPR Report : \n",e
+						print "Exception occured for "+user_details.refrence_id
+			except Exception,e:
+				print e:
 		return "success"
 	except Exception,e:
 		print "Outer Catch ",e

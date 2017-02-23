@@ -27,10 +27,12 @@ def repeat():
 	print "Time is ",datetime.today()
 	try:
 		p = subprocess.Popen("mysqldump -u root -pLocalcart@999123 navmo > sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
-		p.communicate()	
+		p.communicate()
 		sendMessage()  # Send backup sql file through email
+		print "1st command done"
 		q = subprocess.Popen("rm sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
 		q.communicate()  # now remove the file from the folder
+		print "2nd command done"
 		s = sched.scheduler(time.time, time.sleep)
 		delay_seconds = 86400
 		s.enter(delay_seconds,1,repeat,argument=())
