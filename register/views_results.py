@@ -1334,6 +1334,7 @@ def mysql_status(request):
 		try:
 			p = subprocess.Popen("service mysql status", stdout=subprocess.PIPE, shell=True) 
 			get_status=p.communicate()[0]
+			p.kill()
 			print get_status
 			# p.kill()
 			# get_status=subprocess.call("mysqladmin -u root -p ping",shell=True)
@@ -1351,7 +1352,7 @@ def mysql_status(request):
 		except Exception,e:
 			print "Exception on command process :",e
 		status_good=-2
-		if get_status!=status_good:
+		if "Active: active (running)" not in get_status:
 			print "Status : Failed"
 			sendMessage("Failed")
 			s = sched.scheduler(time.time, time.sleep)
