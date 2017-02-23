@@ -78,6 +78,8 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						json['image']=path
 					except Exception,e:
 						print "Exception on image :",e
+						path=url_path+"/media/"+"default.png"
+						json['image']=path
 					json['reference_id']=rank_details.reference_id
 					json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
 					if (user_details.last_name).lower() in (user_details.parent_father).lower():
