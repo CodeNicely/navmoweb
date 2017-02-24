@@ -1362,9 +1362,10 @@ def dump_db(request):
 			print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
 			new =now+timedelta(hours = 5,minutes=30)
 			print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
-			current_time=new.day+"-"+new.month+"-"+new.year+"  "+new.hour+":"+new.minute
+			current_time=str(new.day)+"-"+str(new.month)+"-"+str(new.year)+"  "+str(new.hour)+":"+str(new.minute)
 			FILE_NAME="sql_backup.sql"
 			FILE_PATH=BASE_DIR+"/"+FILE_NAME
+			print FILE_PATH
 			msg = MIMEText("MySql Backup is Completed :\n\n sql file is attached.\n Backup Time is "+current_time)
 			subject = 'MySQL Database Backup'
 			EmailMsg=EmailMessage(subject,str(msg),'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com','m3gh4l@gmail.com'])
