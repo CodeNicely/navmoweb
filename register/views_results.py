@@ -1342,18 +1342,53 @@ def mysql_status(request):
 	return HttpResponse({"success":True})
 
 def dump_db(request):
-	try:
-		p = subprocess.Popen("chmod +x /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py ; python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
-		print "compiled file"
-		p.communicate()
-		# print "communication done--1"
-		# q = subprocess.Popen("python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
-		# print "Script executed succesfully"
-		# get_status=q.communicate()
-		# print "communication done--2"
-	except Exception,e:
-		exc_type, exc_obj, exc_tb = sys.exc_info()
-		fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-		print "Exception on Main Process :",e
-		print "Line no.= ",exc_tb.tb_lineno	
+	# try:
+	# 	p = subprocess.Popen("chmod +x /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py ; python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+	# 	print "compiled file"
+	# 	p.communicate()
+	# 	# print "communication done--1"
+	# 	# q = subprocess.Popen("python /root/dev/navmoweb/navmo/templates/data_panel/scripts/dump_db.py", stdout=subprocess.PIPE, shell=True)
+	# 	# print "Script executed succesfully"
+	# 	# get_status=q.communicate()
+	# 	# print "communication done--2"
+	# except Exception,e:
+	# 	exc_type, exc_obj, exc_tb = sys.exc_info()
+	# 	fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+	# 	print "Exception on Main Process :",e
+	# 	print "Line no.= ",exc_tb.tb_lineno
+	def repeat():
+		def sendMessage():
+			now=datetime.now()
+			print "Date-Time = ",now.year, now.month, now.day, now.hour, now.minute
+			new =now+timedelta(hours = 5,minutes=30)
+			print "New Date-Time = ",new.year, new.month, new.day, new.hour, new.minute
+			current_time=new.day+"-"+new.month+"-"+new.year+"  "+new.hour+":"+new.minute
+			FILE_NAME="sql_backup.sql"
+			FILE_PATH=BASE_DIR+"/"+FILE_NAME
+			msg = MIMEText("MySql Backup is Completed :\n\n sql file is attached.\n Backup Time is "+current_time)
+			subject = 'MySQL Database Backup'
+			EmailMsg=EmailMessage(subject,str(msg),'noreplycodenicely@gmail.com',['bhirendra2014@gmail.com','m3gh4l@gmail.com'])
+			EmailMsg.attach_file(FILE_PATH)
+			EmailMsg.send()
+			print "Email Sent"
+		print "Time is ",datetime.today()
+		try:
+			p = subprocess.Popen("mysqldump -u root -pLocalcart@999123 navmo > sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
+			p.communicate()
+			sendMessage()  # Send backup sql file through email
+			print "1st command worked"
+			# q = subprocess.Popen("rm sql_backup.sql", stdout=subprocess.PIPE, shell=True) 
+			# q.communicate()  # now remove the file from the folder
+			# print "2nd command done"
+			s = sched.scheduler(time.time, time.sleep)
+			delay_seconds = 86400
+			s.enter(delay_seconds,1,repeat,argument=())
+			s.run()
+		except Exception,e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			print "Exception on command process :",e
+			print "Line no.= ",exc_tb.tb_lineno
+	email_thread=threading.Thread(target=repeat,args=())
+	email_thread.start()	
 	return HttpResponse({"success":True})
