@@ -271,7 +271,12 @@ def home(request):
 	print str(request.user)
 	if(otp_data.objects.get(refrence_id=str(request.user)).flag==1):
 		if(request.method=="POST"):
-			return HttpResponseRedirect("/payment/")
+			if 'payment' in request.POST:
+				return HttpResponseRedirect("/payment/")
+			if 'level_name' in request.POST:
+				get_level=request.POST.get('level_name')
+				request.session['level_name']=get_level
+				return HttpResponseRedirect("/download_spr/")
 		user_data_row=user_data.objects.get(refrence_id=str(request.user))
 		
 		group_1=str(user_data_row.exam_group_1)
@@ -283,9 +288,6 @@ def home(request):
 			exam_group = group_2
 		else :
 			exam_group =  "%s||\n%s" % (group_1,group_2)
-
-
-
 
 		json={
 		'image':user_data_row.image.url,
@@ -331,6 +333,27 @@ def home(request):
 				json['admit_card']="disabled"
 		except:
 			json['admit_card']="disabled"
+
+		spr_group_count=0
+		for rank_details in rank_data.objects.filter(reference_id=str(request.user)):
+			spr_group_count+=1
+
+		json['spr_group_count']=spr_group_count
+		print "No. of group = ",spr_group_count
+
+		if spr_group_count==1:
+			for rank_details in rank_data.objects.filter(reference_id=str(request.user)):
+				json['group1']=rank_details.level
+		else:
+			count_flag=0
+			for rank_details in rank_data.objects.filter(reference_id=str(request.user)):
+				if count_flag==0:
+					json['group1']=rank_details.level
+					count_flag=1
+				else:
+					json['group2']=rank_details.level
+					count_flag=1
+
 		return render(request,"home/home.html",json)
 	else:
 		return HttpResponseRedirect('/verify_mobile/')

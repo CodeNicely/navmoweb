@@ -47,7 +47,112 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+@login_required
+def download_spr(request):
+	get_ref_id=str(request.user)
+	get_level=request.session.get('level_name')
+	print get_level
+	json={}
+	url_path=str(request.scheme+"://"+request.get_host())
+	json['BASE_DIR']=BASE_DIR
+	json['url_path']=url_path
+	for rank_details in rank_data.objects.filter(reference_id=get_ref_id,level=get_level):
+		try:
+			file_name="navmo_spr_"+rank_details.reference_id+".pdf"
+			print rank_details.reference_id
+			user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+			try:
+				path=url_path+"/media/"+str(user_details.image)
+				json['image']=path
+				if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
+					path=url_path+"/media/default.png"
+					json['image']=path
+				print "Image Path = ",path
+			except Exception,e:
+				print "Exception on image :",e
+				path=url_path+"/media/"+"default.png"
+				json['image']=path
+			json['reference_id']=rank_details.reference_id
+			json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
+			if (user_details.last_name).lower() in (user_details.parent_father).lower():
+				father=(user_details.parent_father).title()
+			else:
+				father=(user_details.parent_father+" "+user_details.last_name).title()
+			json['father']=father
+			json['class']=(str(user_details.grade)).title()
+			school=""
+			if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+				school="Intelligent Cadet International School"
+			elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
+				school="N H Goel World School"
+			elif "birla" in (user_details.school).lower():
+				school="B K Birla Centre For Education"
+			elif "atelier" in (user_details.school).lower():
+				school="Atelier International Preschool"
+			elif "vibgyor" in (user_details.school).lower():
+				school="Vibgyor High School"
+			elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
+				school="Tree House High School"
+			elif "gumla" in (user_details.school).lower():
+				school="D.A.V.Public School"
+			elif "podar" in (user_details.school).lower():
+				school="Podar International School"
+			else:
+				school=str(user_details.school).title()
+			json['school']=school
+		except Exception,e:
+			print e
+			json['name']=json.dumps("Not Availble")
+			json['father']="Not Available"
+			json['class']="Not Available"
+			json['school']="Not Available"
+		json['level']=(rank_details.level).title()
+		marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+		json['round']=marks_details.current_round
+		if marks_details.current_round=='Finals':
+			if marks_details.npi_final!=0:
+				json['round']=marks_details.current_round
+				json['marks']=marks_details.marks_final
+				json['time']=marks_details.time_final
+				json['npi']=marks_details.npi_final
+			else:
+				json['round']=""
+				json['marks']=marks_details.marks_semi
+				json['time']=marks_details.time_semi
+				json['npi']=marks_details.npi_semi
+		elif marks_details.current_round=='Semi-Finals':
+			json['round']=marks_details.current_round
+			json['marks']=marks_details.marks_semi
+			json['time']=marks_details.time_semi
+			json['npi']=marks_details.npi_semi
+		elif marks_details.current_round=='First-Round':
+			json['round']=marks_details.current_round
+			json['marks']=marks_details.marks_first
+			json['time']=marks_details.time_first
+			json['npi']=marks_details.npi_first		
 
+		marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+		json['centre_rank']=rank_details.centre_rank
+		json['national_level_rank']=rank_details.national_level_rank
+		json['national_group_rank']=rank_details.national_group_rank
+		try:
+			#===================send html to PDF form =======================
+			options = {
+			# 'page-width':'656.166667',
+			# 'page-height':'928.158333',
+			'margin-left':'0',
+			'margin-right':'0',
+			'margin-top':'0',
+			'margin-bottom':'0'}
+			template=get_template("spr_report/spr_a4.html")
+			context = Context(json)  # data is the context data that is sent to the html file to render the output. 
+			html = template.render(context)  # Renders the template with the context data.
+			pdf=pdfkit.from_string(html, False,options=options)
+			response = HttpResponse(pdf,content_type='application/pdf')
+			response['Content-Disposition'] = 'attachment; filename='+file_name
+		except Exception,e:
+			print "Exception on PDF",e
+	return response
 def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 	filename=""
 	json={}
@@ -1393,3 +1498,102 @@ def dump_db(request):
 	email_thread=threading.Thread(target=repeat,args=())
 	email_thread.start()	
 	return HttpResponse({"success":True})
+
+def graphs(request):
+	data=[]
+	count=0
+	def put_point(ref_id,level):
+		if str(ref_id)=="1600198":
+			element.append(ref_id)
+			element.append('Your Point for level '+level)
+		else:
+			element.append(None)
+			element.append(None)
+	for marks_details in marks_data.objects.order_by('-marks_first').order_by('time_first'):
+		element=[]
+		if marks_details.current_round=="Finals":
+			if marks_details.time_final!=0.0:
+				element.append(float(marks_details.time_first))
+				element.append(float(marks_details.marks_first))
+				try:	
+					user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+					put_point(user_details.refrence_id,marks_details.level)
+				except Exception,e:
+					element.append(None)
+					element.append(None)
+				data.append(element)
+				count+=1
+		elif marks_details.current_round=="Semi-Finals":
+			if marks_details.time_semi!=0.0:
+				element.append(float(marks_details.time_first))
+				element.append(float(marks_details.marks_first))
+				try:	
+					user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+					put_point(user_details.refrence_id,marks_details.level)
+				except Exception,e:
+					element.append(None)
+					element.append(None)
+				data.append(element)
+				count+=1
+		if marks_details.current_round=="First-Round":
+			if marks_details.time_first!=0.0:
+				element.append(float(marks_details.time_first))
+				element.append(float(marks_details.marks_first))
+				try:	
+					user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+					put_point(user_details.refrence_id,marks_details.level)
+				except Exception,e:
+					element.append(None)
+					element.append(None)
+				data.append(element)
+				count+=1
+	#print json.dumps(data)
+	print "Total = ",count
+	return render(request,"data_panel/graph1.html",{"data":json.dumps(data)})
+	# data=[]
+	# data.append(['Student','Time','Marks'])
+	# count=0
+	# for marks_details in marks_data.objects.filter(level="alpha1").order_by('-marks_first'):
+	# 	element=[]
+	# 	if marks_details.current_round=="Finals":
+	# 		if marks_details.time_final!=0.0:
+	# 			try:
+	# 				user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+	# 				element.append(str(marks_details.reference_id)+"("+user_details.first_name+")")
+	# 				# element.append(marks_details.reference_id)
+	# 			except Exception,e:
+	# 				element.append(marks_details.reference_id)
+	# 				print e
+	# 			element.append(float(marks_details.time_first))
+	# 			element.append(float(marks_details.marks_first))
+	# 			data.append(element)
+	# 			count+=1
+	# 	elif marks_details.current_round=="Semi-Finals":
+	# 		if marks_details.time_semi!=0.0:
+	# 			try:
+	# 				user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+	# 				element.append(str(marks_details.reference_id)+"("+user_details.first_name+")")
+	# 				# element.append(marks_details.reference_id)
+	# 			except Exception,e:
+	# 				element.append(marks_details.reference_id)
+	# 				print e
+	# 			element.append(float(marks_details.time_first))
+	# 			element.append(float(marks_details.marks_first))
+	# 			data.append(element)
+	# 			count+=1
+	# 	if marks_details.current_round=="First-Round":
+	# 		if marks_details.time_first!=0.0:
+	# 			try:
+	# 				user_details=user_data.objects.get(refrence_id=marks_details.reference_id)
+	# 				element.append(str(marks_details.reference_id)+"("+user_details.first_name+")")
+	# 				# element.append(marks_details.reference_id)
+	# 			except Exception,e:
+	# 				element.append(marks_details.reference_id)
+	# 				print e
+	# 			element.append(float(marks_details.time_first))
+	# 			element.append(float(marks_details.marks_first))
+	# 			data.append(element)
+	# 			count+=1
+	# print data
+	# print "Total = ",count
+	# return render(request,"data_panel/graph2.html",{"data1":json.dumps(data)})
