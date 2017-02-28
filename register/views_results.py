@@ -48,6 +48,54 @@ import zipfile,cStringIO,StringIO
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+def download_spr_into(request,get_centre_name,get_group_name,url_path):
+	json={}
+	zip_file_name="SPR_"+get_centre_name+"_"+get_group_name+".zip"
+	buffer= StringIO.StringIO()
+	z = zipfile.ZipFile(buffer, "w")
+	if get_centre_name!="all":
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(center=get_centre_name,group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.filter(center=get_centre_name)
+	else:
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.all()
+	try:
+		count=0;
+		for marks_details in marks_filter:
+			for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):				
+				try:
+					filepath=url_path+"/media/"
+					# filename="navmo_spr_"+rank_details.reference_id+"_"+rank_details.level+".pdf"
+					filename="navmo_spr_"+rank_details.reference_id+"_"+rank_details.level+".pdf"
+					print "File Path = ",filepath
+					# working_folder=url_path+"/media/"+rank_details.reference_id+"/"
+					# files = os.listdir(working_folder)
+					# for f in files:
+					# 	if f[-3:] == 'pdf':
+					# z.write(filename,zipfile.ZIP_DEFLATED)
+					z.write(str(filename),str(filepath),compress_type = zipfile.ZIP_DEFLATED)
+					print "successfully added",rank_details.reference_id," into zip"
+					print z.namelist()
+					count+=1
+					print "Count = ",count
+				except Exception,e:
+					print "Exception on adding file into zip",e
+		response = HttpResponse(z, content_type='application/zip')
+		response['Content-Disposition'] = 'attachment; filename='+zip_file_name
+		z.close()
+		return response
+	except Exception,e:
+		print "Outer Catch ",e
+		return "Exception Occured"
+
+
+#==============Method is not in use anyhere==========================
+#-------------It is Used to save generated pdf to server folder---------
+#def save_spr_to_sever(request,get_centre_name,get_group_name,url_path):
 def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 	filename=""
 	json={}
@@ -79,7 +127,8 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						print rank_details.reference_id
 						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 						try:
-							path=url_path+"/media/"+str(user_details.image)
+							image_name=str(user_details.image).replace(" ","")
+							path=url_path+"/media/"+image_name
 							json['image']=path
 							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
 								path=url_path+"/media/default.png"
@@ -155,8 +204,6 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 					try:
 						#===================send html to PDF form =======================
 						options = {
-						# 'page-width':'656.166667',
-						# 'page-height':'928.158333',
 						'margin-left':'0',
 						'margin-right':'0',
 						'margin-top':'0',
@@ -167,30 +214,44 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						pdf=pdfkit.from_string(html, False,options=options)
 						response = HttpResponse(pdf,content_type='application/pdf')
 						response['Content-Disposition'] = 'attachment; filename='+filename
+						# try:
+						# 	folder = 'media/'+rank_details.reference_id+'/'
+						# 	fout = open(folder+filename, 'w')
+						# 	fout.write(pdf)
+						# 	fout.close()
+						# except Exception,e:
+						# 	if "No such file or directory" in e:
+						# 		print "Folder Created"
+						# 		while True:
+						# 			try:
+						# 				folder = 'media/'+rank_details.reference_id+'/'
+						# 				os.mkdir(os.path.join(folder))
+						# 				break
+						# 			except Exception,e:
+						# 				print e
+						# 		folder = 'media/'+rank_details.reference_id+'/'		
+						# 		fout = open(folder+filename, 'w')
+						# 		fout.write(pdf)
+						# 		fout.close()
+						# 	else:
+						# 		print "Exception on exporting pdf : ",e
 						try:
-							folder = 'media/'+rank_details.reference_id+'/'
-							fout = open(folder+filename, 'w')
-							# pdf=open(filename)
-							# file_content = pdf
-							fout.write(pdf)
-							fout.close()
-						except Exception,e:
-							if "No such file or directory" in e:
-								print "Folder Created"
+							folder = 'media/'+get_centre_name+'/'
+							if not os.path.exists(folder):
 								while True:
 									try:
-										folder = 'media/'+rank_details.reference_id+'/'
 										os.mkdir(os.path.join(folder))
+										print "Folder Created"
 										break
 									except Exception,e:
-										print e
-								folder = 'media/'+rank_details.reference_id+'/'		
-								fout = open(folder+filename, 'w')
-								fout.write(pdf)
-								fout.close()
-							else:
-								print "Exception on exporting pdf : ",e
-						# print pdf
+										print "Exception on folder creation : ",e
+							fout = open(folder+filename, 'w')
+							fout.write(pdf)
+							fout.close()
+							print "successfully Added",rank_details.reference_id
+						except Exception,e:
+							print "Exception on write file into Folder : ",e
+							
 						# response = HttpResponse(pdf.read(), content_type='application/pdf')  # Generates the response as pdf response
 						# js=response.read().decode('utf-8')s
 						# buffer_response=json.loads(response.content.decode('utf-8'))
@@ -200,7 +261,6 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						# print z.getinfo()
 						# print z.namelist()
 						# print "successfully added",rank_details.reference_id," into zip"
-						print "successfully Generated",rank_details.reference_id
 						count+=1
 						print count
 					except Exception,e:
@@ -211,7 +271,7 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 		# z.close()
 		# response = HttpResponse(z, content_type='application/zip')
 		# response['Content-Disposition'] = 'attachment; filename='+zip_file_name
-		return response
+		return HttpResponseRedirect('/download_spr_panel')
 	except Exception,e:
 		print "Outer Catch ",e
 		return "Exception Occured"
