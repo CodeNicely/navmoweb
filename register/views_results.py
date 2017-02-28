@@ -169,7 +169,6 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						response['Content-Disposition'] = 'attachment; filename='+filename
 						try:
 							folder = 'media/'+rank_details.reference_id+'/'
-							folder = 'media/170001/'
 							fout = open(folder+filename, 'w')
 							# pdf=open(filename)
 							# file_content = pdf
@@ -180,12 +179,12 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 								print "Folder Created"
 								while True:
 									try:
-										folder = 'media/170001/'
+										folder = 'media/'+rank_details.reference_id+'/'
 										os.mkdir(os.path.join(folder))
 										break
 									except Exception,e:
 										print e
-								folder = 'media/170001/'
+								folder = 'media/'+rank_details.reference_id+'/'		
 								fout = open(folder+filename, 'w')
 								fout.write(pdf)
 								fout.close()
