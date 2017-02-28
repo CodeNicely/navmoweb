@@ -167,6 +167,30 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						pdf=pdfkit.from_string(html, False,options=options)
 						response = HttpResponse(pdf,content_type='application/pdf')
 						response['Content-Disposition'] = 'attachment; filename='+filename
+						try:
+							folder = 'media/'+rank_details.reference_id+'/'
+							folder = 'media/170001/'
+							fout = open(folder+filename, 'w')
+							# pdf=open(filename)
+							# file_content = pdf
+							fout.write(pdf)
+							fout.close()
+						except Exception,e:
+							if "No such file or directory" in e:
+								print "Folder Created"
+								while True:
+									try:
+										folder = 'media/170001/'
+										os.mkdir(os.path.join(folder))
+										break
+									except Exception,e:
+										print e
+								folder = 'media/170001/'
+								fout = open(folder+filename, 'w')
+								fout.write(pdf)
+								fout.close()
+							else:
+								print "Exception on exporting pdf : ",e
 						# print pdf
 						# response = HttpResponse(pdf.read(), content_type='application/pdf')  # Generates the response as pdf response
 						# js=response.read().decode('utf-8')s
