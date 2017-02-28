@@ -276,7 +276,7 @@ def home(request):
 			if 'level_name' in request.POST:
 				get_level=request.POST.get('level_name')
 				request.session['level_name']=get_level
-				return HttpResponseRedirect("/download_spr/")
+				return HttpResponseRedirect("/download_spr_user/")
 		user_data_row=user_data.objects.get(refrence_id=str(request.user))
 		
 		group_1=str(user_data_row.exam_group_1)

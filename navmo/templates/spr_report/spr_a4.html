@@ -62,21 +62,26 @@ p.address{
   height: 2px; 
   background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
 } */
+div.content_part{
+  border-style: solid;
+  border-width: 7px;
+  border-color: #286169;
+}
   
 </style>
 </head>
 <!-- <body style="background-image: url('{{BASE_DIR}}/media/pattern1.jpg'); -->
     <!-- background-repeat: repeat;" width="793px" height="1122px"> -->
 <body bgcolor="#FFFFFF">
+  <div class="content_part">
 <form action="#" method="POST">{% csrf_token %}
   <!-- <img src="{{BASE_DIR}}/media/header_spr_low.jpg" style=" width: 100%;"> -->
   <div class="row" width="100%" style="background-color: #FAC80F;" align="center">
-    <img src="{{url_path}}/media/navmo_main.png" width="480px" style="vertical-align: middle;display: inline-block;"></img>
-    <img src="{{url_path}}/media/SPR.png" width="480px" style="vertical-align: middle;display: inline-block;"></img>
+    <img src="{{url_path}}/media/navmo_main.png" width="460px" style="vertical-align: middle;display: inline-block;"></img>
+    <img src="{{url_path}}/media/SPR.png" width="460px" style="vertical-align: middle;display: inline-block;"></img>
   </div>
-  <br>
   <div class="table1">
-    <table  width="94%" align="center" cellpadding="0px" cellspacing="0px" style="border:1px; outline-style: solid;">
+    <table  width="94%" align="center" cellpadding="0px" cellspacing="0px" style="border: 1px; outline-style: solid; outline-color: #454545;outline-width: 2px">
       <tr>
         <td width="30%" align="center"><img src="{{image}}" style="height:270px;width: 220px"></td>
         <td width="70%" style="vertical-align: text-top;">
@@ -152,5 +157,6 @@ p.address{
   <br>www.mindpowereducation.com&nbsp;|&nbsp;www.mpenavmo.com
   </p></center>
 </form>
+</div>
 </body>
 </html>

@@ -43,12 +43,155 @@ from subprocess import Popen, PIPE, STDOUT
 import smtplib
 from email.mime.text import MIMEText
 import sys
+import zipfile,cStringIO,StringIO
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
+	filename=""
+	json={}
+	json['BASE_DIR']=BASE_DIR
+	json['url_path']=url_path
+	# zip_file_name="SPR_"+get_centre_name+"_"+get_group_name+".zip"
+	# buffer= StringIO.StringIO()
+	# z = zipfile.ZipFile(buffer, "w")
+
+	#===putting data in html====
+	#for rank_details in rank_data.objects.order_by('group','national_group_rank'):
+	if get_centre_name!="all":
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(center=get_centre_name,group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.filter(center=get_centre_name)
+	else:
+		if get_group_name!="all":
+			marks_filter=marks_data.objects.filter(group=get_group_name)
+		else:
+			marks_filter=marks_data.objects.all()
+	try:
+		count=0;
+		for marks_details in marks_filter:
+			try :
+				for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
+					try:
+						filename="navmo_spr_"+rank_details.reference_id+"_"+rank_details.level+".pdf"
+						print rank_details.reference_id
+						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+						try:
+							path=url_path+"/media/"+str(user_details.image)
+							json['image']=path
+							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
+								path=url_path+"/media/default.png"
+								json['image']=path
+							print "Image Path = ",path
+						except Exception,e:
+							print "Exception on image :",e
+							path=url_path+"/media/"+"default.png"
+							json['image']=path
+						json['reference_id']=rank_details.reference_id
+						json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
+						if (user_details.last_name).lower() in (user_details.parent_father).lower():
+							father=(user_details.parent_father).title()
+						else:
+							father=(user_details.parent_father+" "+user_details.last_name).title()
+						json['father']=father
+						json['class']=(str(user_details.grade)).title()
+						school=""
+						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+							school="Intelligent Cadet International School"
+						elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
+							school="N H Goel World School"
+						elif "birla" in (user_details.school).lower():
+							school="B K Birla Centre For Education"
+						elif "atelier" in (user_details.school).lower():
+							school="Atelier International Preschool"
+						elif "vibgyor" in (user_details.school).lower():
+							school="Vibgyor High School"
+						elif "tree" in (user_details.school).lower() or "house" in (user_details.school).lower():
+							school="Tree House High School"
+						elif "gumla" in (user_details.school).lower():
+							school="D.A.V.Public School"
+						elif "podar" in (user_details.school).lower():
+							school="Podar International School"
+						else:
+							school=str(user_details.school).title()
+						json['school']=school
+					except Exception,e:
+						print e
+						json['name']="Not Available"
+						json['father']="Not Available"
+						json['class']="Not Available"
+						json['school']="Not Available"
+					json['level']=(rank_details.level).title()
+					marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+					json['round']=marks_details.current_round
+					if marks_details.current_round=='Finals':
+						if marks_details.npi_final!=0:
+							json['round']=marks_details.current_round
+							json['marks']=marks_details.marks_final
+							json['time']=marks_details.time_final
+							json['npi']=marks_details.npi_final
+						else:
+							json['round']=""
+							json['marks']=marks_details.marks_semi
+							json['time']=marks_details.time_semi
+							json['npi']=marks_details.npi_semi
+					elif marks_details.current_round=='Semi-Finals':
+						json['round']=marks_details.current_round
+						json['marks']=marks_details.marks_semi
+						json['time']=marks_details.time_semi
+						json['npi']=marks_details.npi_semi
+					elif marks_details.current_round=='First-Round':
+						json['round']=marks_details.current_round
+						json['marks']=marks_details.marks_first
+						json['time']=marks_details.time_first
+						json['npi']=marks_details.npi_first		
+
+					marks_details=marks_data.objects.get(reference_id=rank_details.reference_id, level=rank_details.level)
+					json['centre_rank']=rank_details.centre_rank
+					json['national_level_rank']=rank_details.national_level_rank
+					json['national_group_rank']=rank_details.national_group_rank
+					try:
+						#===================send html to PDF form =======================
+						options = {
+						# 'page-width':'656.166667',
+						# 'page-height':'928.158333',
+						'margin-left':'0',
+						'margin-right':'0',
+						'margin-top':'0',
+						'margin-bottom':'0'}
+						template=get_template("spr_report/spr_a4.html")
+						context = Context(json)  # data is the context data that is sent to the html file to render the output. 
+						html = template.render(context)  # Renders the template with the context data.
+						pdf=pdfkit.from_string(html, False,options=options)
+						response = HttpResponse(pdf,content_type='application/pdf')
+						response['Content-Disposition'] = 'attachment; filename='+filename
+						# print pdf
+						# response = HttpResponse(pdf.read(), content_type='application/pdf')  # Generates the response as pdf response
+						# js=response.read().decode('utf-8')s
+						# buffer_response=json.loads(response.content.decode('utf-8'))
+						# buffer_response=response.content.decode('UTF-8')
+						# print buffer_response
+						# z.writestr(filename,pdf)
+						# print z.getinfo()
+						# print z.namelist()
+						# print "successfully added",rank_details.reference_id," into zip"
+						print "successfully Generated",rank_details.reference_id
+					except Exception,e:
+						print "Exception on SPR Report : \n",e
+						print "Exception occured for "+user_details.refrence_id
+			except Exception,e:
+				print e
+		# z.close()
+		# response = HttpResponse(z, content_type='application/zip')
+		# response['Content-Disposition'] = 'attachment; filename='+zip_file_name
+		return response
+	except Exception,e:
+		print "Outer Catch ",e
+		return "Exception Occured"
 @login_required
-def download_spr(request):
+def download_spr_for_user(request):
 	get_ref_id=str(request.user)
 	get_level=request.session.get('level_name')
 	print get_level
@@ -1157,6 +1300,9 @@ def data_panel_home(request):
 		elif 'send_spr_report' in request.POST:
 			print "Redirect to spr_report"
 			return HttpResponseRedirect('/send_spr_panel')
+		elif 'download_spr_report' in request.POST:
+			print "Redirect for Download spr_report"
+			return HttpResponseRedirect('/download_spr_panel')
 
 @csrf_exempt
 def send_spr_panel(request):
@@ -1180,7 +1326,25 @@ def send_spr_panel(request):
 			result="No Data Availbale."
 		else:
 			result="Exception Occured."
-		return render(request,'data_panel/panel_send_spr.html',{"done":True,"result":result})	
+		return render(request,'data_panel/panel_send_spr.html',{"done":True,"result":result})
+
+@csrf_exempt
+def download_spr_panel(request):
+	if(request.method=="GET"):
+		if request.user.is_authenticated():
+			return render(request,'data_panel/panel_send_spr.html')
+		else:
+			return HttpResponseRedirect('/data_panel')
+
+	if (request.method=="POST"):
+		get_centre=str(request.POST.get('centre'))
+		print get_centre
+		get_group=str(request.POST.get('group'))
+		print get_group		
+		url_path=str(request.scheme+"://"+request.get_host())
+		print url_path
+		get_result=download_spr_into_pc(request,get_centre,get_group,url_path)
+		return get_result	
 
 def admin_results(request):
 	if request.user.is_authenticated():
