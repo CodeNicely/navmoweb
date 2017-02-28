@@ -202,6 +202,8 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						# print z.namelist()
 						# print "successfully added",rank_details.reference_id," into zip"
 						print "successfully Generated",rank_details.reference_id
+						count+=1
+						print count
 					except Exception,e:
 						print "Exception on SPR Report : \n",e
 						print "Exception occured for "+user_details.refrence_id
