@@ -95,7 +95,7 @@ def download_spr_into(request,get_centre_name,get_group_name,url_path):
 
 #==============Method is not in use anyhere==========================
 #-------------It is Used to save generated pdf to server folder---------
-#def save_spr_to_sever(request,get_centre_name,get_group_name,url_path):
+# def save_spr_to_sever(request,get_centre_name,get_group_name,url_path):
 def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 	filename=""
 	json={}
@@ -182,7 +182,7 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 							json['time']=marks_details.time_final
 							json['npi']=marks_details.npi_final
 						else:
-							json['round']=""
+							json['round']="Semi-Finals"
 							json['marks']=marks_details.marks_semi
 							json['time']=marks_details.time_semi
 							json['npi']=marks_details.npi_semi
