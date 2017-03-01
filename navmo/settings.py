@@ -145,8 +145,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = "media/"
-MEDIA_ROOT = os.path.join(BASE_DIR,"/media/")
+MEDIA_ROOT = "media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR,"/media/")
 #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'noreplycodenicely@gmail.com'
