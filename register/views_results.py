@@ -127,7 +127,7 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						print rank_details.reference_id
 						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 						try:
-							image_name=str(user_details.image).replace(" ","")
+							image_name=str(user_details.image).replace(" ","%20")
 							path=url_path+"/media/"+image_name
 							json['image']=path
 							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
