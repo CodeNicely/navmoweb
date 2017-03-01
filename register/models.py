@@ -26,7 +26,7 @@ class user_data(models.Model):
     flag_exam_group_2=models.PositiveSmallIntegerField(default=0)
     flag_workshop=models.PositiveSmallIntegerField(default=0)
     flag_mpe_student=models.PositiveSmallIntegerField(default=0)
-    image=models.ImageField(upload_to='/media/user_images/',default="/media/default.png")
+    image=models.ImageField(upload_to='/media/',default="/default.png")
 
 class exam_center_data(models.Model):
     exam_center=models.CharField(max_length=100,blank=True,null=True)

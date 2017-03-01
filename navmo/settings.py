@@ -26,7 +26,7 @@ SECRET_KEY = '-pvvmb(2t%tfvxhkqftpt%u4&bihrow!+ic9&$3k42yi_lmtg='
 DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.116']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
-#ALLOWED_HOSTS = ['127.0.0.1']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
+#ALLOWED_HOSTS = [u'127.0.0.1']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
 #ALLOWED_HOSTS = ['192.168.0.105']#'139.59.17.151','mpenavmo.com','www.mpenavmo.com','www.mpenavmo.com/static','mpenavmo.com/static']
 
 INSTALLED_APPS = [
@@ -145,7 +145,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = "media/"
+# MEDIA_ROOT = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR,"/media/")
 #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'noreplycodenicely@gmail.com'
