@@ -129,6 +129,8 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						try:
 							image_name=str(user_details.image).replace(" ","%20")
 							path=url_path+"/media/"+image_name
+							if "media" in image_name:
+								path=url_path+image_name	
 							json['image']=path
 							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
 								path=url_path+"/media/default.png"
