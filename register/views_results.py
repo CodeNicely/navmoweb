@@ -102,6 +102,8 @@ def mail_spr_for_id(request):
 					school="D.A.V.Public School"
 				elif "podar" in (user_details.school).lower():
 					school="Podar International School"
+				elif "dps" in (user_details.school).lower():
+					school="Delhi Public School"
 				else:
 					school=str(user_details.school).title()
 				json['school']=school
