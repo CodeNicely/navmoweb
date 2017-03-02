@@ -31,7 +31,7 @@ from register.views_results import national_all_rank_groupwise
 from register.views_results import spr_report,generate_marks
 from register.views_results import send_email,register_raj
 from register.views_results import data_panel_login,data_panel_logout, data_panel_home,send_spr_panel
-from register.views_results import admin_results,scheduler,mysql_status,dump_db,graphs,download_spr_for_user,download_spr_panel
+from register.views_results import admin_results,scheduler,mysql_status,dump_db,graphs,download_spr_for_user,download_spr_panel,mail_spr_for_id
 
 
 urlpatterns = [
@@ -90,6 +90,7 @@ urlpatterns = [
     url(r'^graphs/$',graphs),
     url(r'^download_spr_user/$',download_spr_for_user),
     url(r'^download_spr_panel/$',download_spr_panel),
+    url(r'^get_spr/$',mail_spr_for_id),
 
 ]
 from django.conf import settings
