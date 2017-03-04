@@ -286,7 +286,7 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						json['father']=father
 						json['class']=(str(user_details.grade)).title()
 						school=""
-						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower() or "i c i" in (user_details.school).lower() or "ici school" in (user_details.school).lower():
 							school="Intelligent Cadet International School"
 						elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
 							school="N H Goel World School"
