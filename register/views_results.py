@@ -644,7 +644,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						response = HttpResponse(content_type='application/pdf')
 						response['Content-Disposition'] = 'attachment; filename='+filename
 						data={}
-						data['msg']="Dear "+str(user_details.first_name)+",\n"+"Thank You for participating in NAVMO 2016-17. We would like to congratulate you on your achievement and we hope that you enjoyed NAVMO and learn something.\n We are proud to launch Student Performance Report for NAVMO 2016-17. Report can be downloaded by login into your account at www.mpenavmo.com and we are also attaching a copy of your SPR Report along with this mail.\n\n We hope that you will be a part of NAVMO 2017-18. For any further updates please visit www.mpenavmo.com\n\n\nThanks\n Team NAVMO\n MIND POWER EDUCATION Family"
+						data['msg']="Dear "+str(user_details.first_name)+",<br>"+"Thank You for participating in NAVMO 2016-17. We would like to congratulate you on your achievement and we hope that you enjoyed NAVMO and learn something.<br> We are proud to launch Student Performance Report for NAVMO 2016-17. Report can be downloaded by login into your account at www.mpenavmo.com and we are also attaching a copy of your SPR Report along with this mail.<br><br> We hope that you will be a part of NAVMO 2017-18. For any further updates please visit www.mpenavmo.com<br><br><br>Thanks<br> Team NAVMO<br> MIND POWER EDUCATION Family"
 						data['msg_head']="NAVMO 2016-17"
 						text_content ='This is an important message.'
 						from_email='noreplycodenicely@gmail.com'
