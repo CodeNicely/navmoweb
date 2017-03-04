@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title></title>
+	<title>Home-NAVMO</title>
 	
      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--Import materialize.css-->
@@ -40,14 +40,10 @@
     <div class="card horizontal">
       <div class="card-stacked">
         <div class="card-content">
-          <p>   Mobile Verification - Done Successfully</p>
-            <br> 
-         <p>    <form method="post" action=".">{% csrf_token %}
-        Payment : <!-- 
-        <button class="btn waves-effect waves-light" value="{{payment_status}}" type="submit">
-     -->
-        <input class="btn waves-effect waves-light green" name="payment" type="submit" value="{{payment_status}}"/>
-    </form>
+        <p align="center">Hello {{first_name}}, NAVMO 2016-17 was a great event and arround 1500 students from over 50 schools participated in the event.\n We are proud to launch SPR Report that is downloadable in pdf format.\n
+        \nThanks\nTeam Navmo 
+         <p align="center">   Mobile Verification - Done Successfully</p>
+
 </p>
         </div>
       </div>
@@ -55,28 +51,28 @@
   </div>
   </div>
 
-  <div class="row">
+<!--   <div class="row">
 <div class="col s12 m3"></div>
  
  <div class="col s12 m6">
     <div class="card horizontal">
       <div class="card-stacked">
         <div class="card-content">
-         <p>    
+         <p>  -->   
          <!-- <form method="get" action="#">{% csrf_token %}
           --><!-- 
         <button class="btn waves-effect waves-light" value="{{payment_status}}" type="submit">
      -->
-        <input class="btn waves-effect waves-light green {{admit_card}}" type="submit" value="Download Admit Card" 
+<!--         <input class="btn waves-effect waves-light green {{admit_card}}" type="submit" value="Download Admit Card" 
         onclick="window.open('/admit_card')" />
    
-    <!-- </form> -->
+     </form>
 </p>
         </div>
       </div>
     </div>
   </div>
-  </div>
+  </div> --> -->
     <div class="row">
 <div class="col s12 m3"></div>
  <div class="col s12 m6">
@@ -87,29 +83,18 @@
          <input type="hidden" type="submit" name="level_name" value={{group1}}>
         <input class="btn waves-effect waves-light green" type="submit" name={{group1}} value="Download SPR for {{group1}}"  />
         </form>
+         {%  ifequal 2 spr_group_count %}
+        <form method="POST" action="." target="_blank">{% csrf_token %}
+             <input type="hidden"  type="submit" name="level_name" value={{group2}}>
+            <input class="btn waves-effect waves-light green" type="submit" name="{{group2}}" value="Download SPR for {{group2}}" />
+          </form>
+    {%endifequal%}
+
         </div>
       </div>
     </div>
   </div>
   </div>
-
-  {%  ifequal 2 spr_group_count %}
-    <div class="row">
-    <div class="col s12 m3"></div>
-     <div class="col s12 m6">
-        <div class="card horizontal">
-          <div class="card-stacked">
-            <div class="card-content">
-             <form method="POST" action="." target="_blank">{% csrf_token %}
-             <input type="hidden"  type="submit" name="level_name" value={{group2}}>
-            <input class="btn waves-effect waves-light green" type="submit" name="{{group2}}" value="Download SPR for {{group2}}" />
-          </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-  {%endifequal%}
 
     <div class="row">
 <div class="col s12 m3"></div>
