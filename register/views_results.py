@@ -425,19 +425,23 @@ def download_spr_for_user(request):
 	json['url_path']=url_path
 	for rank_details in rank_data.objects.filter(reference_id=get_ref_id,level=get_level):
 		try:
-			file_name="navmo_spr_"+rank_details.reference_id+".pdf"
+			filename="navmo_spr_"+rank_details.reference_id+"_"+rank_details.level+".pdf"
 			print rank_details.reference_id
 			user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 			try:
-				path=url_path+"/media/"+str(user_details.image)
+				image_name=str(user_details.image).replace(" ","%20")
+				path=url_path+"/media/"+image_name
 				json['image']=path
-				if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
-					path=url_path+"/media/default.png"
+				if "media" in image_name and "default" not in image_name:
+					path=url_path+image_name
+					json['image']=path
+				if str(user_details.image)==(str(user_details.refrence_id)+"/image") or str(user_details.image)=="/media/default.png":
+					path=url_path+"/media/icon.png"
 					json['image']=path
 				print "Image Path = ",path
 			except Exception,e:
 				print "Exception on image :",e
-				path=url_path+"/media/"+"default.png"
+				path=url_path+"/media/"+"icon.png"
 				json['image']=path
 			json['reference_id']=rank_details.reference_id
 			json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
@@ -448,7 +452,7 @@ def download_spr_for_user(request):
 			json['father']=father
 			json['class']=(str(user_details.grade)).title()
 			school=""
-			if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+			if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower() or "i c i" in (user_details.school).lower() or "ici school" in (user_details.school).lower():
 				school="Intelligent Cadet International School"
 			elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
 				school="N H Goel World School"
@@ -469,7 +473,7 @@ def download_spr_for_user(request):
 			json['school']=school
 		except Exception,e:
 			print e
-			json['name']=json.dumps("Not Availble")
+			json['name']="Not Available"
 			json['father']="Not Available"
 			json['class']="Not Available"
 			json['school']="Not Available"
@@ -483,7 +487,7 @@ def download_spr_for_user(request):
 				json['time']=marks_details.time_final
 				json['npi']=marks_details.npi_final
 			else:
-				json['round']=""
+				json['round']="Semi-Finals"
 				json['marks']=marks_details.marks_semi
 				json['time']=marks_details.time_semi
 				json['npi']=marks_details.npi_semi
@@ -543,19 +547,23 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 			try :
 				for rank_details in rank_data.objects.filter(reference_id=marks_details.reference_id,group=marks_details.group):
 					try:
-						filename="navmo_spr_"+rank_details.reference_id+".pdf"
+						filename="navmo_spr_"+rank_details.reference_id+"_"+rank_details.level+".pdf"
 						print rank_details.reference_id
 						user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 						try:
-							path=url_path+"/media/"+str(user_details.image)
+							image_name=str(user_details.image).replace(" ","%20")
+							path=url_path+"/media/"+image_name
 							json['image']=path
-							if str(user_details.image)==(str(user_details.refrence_id)+"/image"):
-								path=url_path+"/media/default.png"
+							if "media" in image_name and "default" not in image_name:
+								path=url_path+image_name
+								json['image']=path
+							if str(user_details.image)==(str(user_details.refrence_id)+"/image") or str(user_details.image)=="/media/default.png":
+								path=url_path+"/media/icon.png"
 								json['image']=path
 							print "Image Path = ",path
 						except Exception,e:
 							print "Exception on image :",e
-							path=url_path+"/media/"+"default.png"
+							path=url_path+"/media/"+"icon.png"
 							json['image']=path
 						json['reference_id']=rank_details.reference_id
 						json['name']=(str(user_details.first_name+' '+user_details.last_name)).title()
@@ -566,7 +574,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						json['father']=father
 						json['class']=(str(user_details.grade)).title()
 						school=""
-						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower():
+						if "icis" in (user_details.school).lower() or "cadet" in (user_details.school).lower() or "i c i" in (user_details.school).lower() or "ici school" in (user_details.school).lower():
 							school="Intelligent Cadet International School"
 						elif "goel" in (user_details.school).lower() or "n h" in (user_details.school).lower() or "nh" in (user_details.school).lower() or "n.h." in (user_details.school).lower():
 							school="N H Goel World School"
@@ -601,7 +609,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 							json['time']=marks_details.time_final
 							json['npi']=marks_details.npi_final
 						else:
-							json['round']=""
+							json['round']="Semi-Finals"
 							json['marks']=marks_details.marks_semi
 							json['time']=marks_details.time_semi
 							json['npi']=marks_details.npi_semi
@@ -634,14 +642,23 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						html = template.render(context)  # Renders the template with the context data.
 						pdf=pdfkit.from_string(html, False,options=options)
 						response = HttpResponse(content_type='application/pdf')
-						response['Content-Disposition'] = 'attachment; filename=filename'
+						response['Content-Disposition'] = 'attachment; filename='+filename
 						data={}
-						data['msg']="Group = "+marks_details.group
-						data['msg_head']="Centre = "+marks_details.center
-						subject, from_email = 'NAVMO Student Performance Report', 'noreplycodenicely@gmail.com'
-						text_content = 'This is an important message.'
+						data['msg']="Message"
+						data['msg_head']="Heading"
+						text_content ='This is an important message.'
+						from_email='noreplycodenicely@gmail.com'
+						try:
+							user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
+							user_email=user_details.email
+							to_email=['bhirendra2014@gmail.com','m3gh4l@gmail.com']
+							subject='NAVMO Student Performance Report'
+						except Exception,e:
+							print "Exception on Email-Id : ",user_details.refrence_id
+							to_email=['bhirendra2014@gmail.com','m3gh4l@gmail.com']
+							subject='SPR : Error in Email'
 						template = get_template('email/email_content.html')
-						msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','ritu.agrawal@mindpowereducation.com','m3gh4l@gmail.com'])
+						msg = EmailMultiAlternatives(subject, text_content, from_email,to_email)
 						data['url_path']=url_path
 						html_content  = template.render(RequestContext(request,data,))
 						msg.attach_alternative(html_content, "text/html")
