@@ -651,7 +651,7 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						try:
 							user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 							user_email=user_details.email
-							to_email=['bhirendra2014@gmail.com','m3gh4l@gmail.com','educate1996@gmail.com']
+							to_email=[user_email,'bhirendra2014@gmail.com','m3gh4l@gmail.com','ritu.agrawal@mindpowereducation.com']
 							subject='NAVMO 2016-17 Student Performance Report'
 						except Exception,e:
 							print "Exception on Email-Id : ",user_details.refrence_id
