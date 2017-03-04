@@ -80,6 +80,8 @@
       <div class="card-stacked">
         <div class="card-content">
         <center>
+        <p>Download SPR Report</p>
+
           <form method="POST" action="" target="_blank">{% csrf_token %}
          <input type="hidden" type="submit" name="level_name" value={{group1}}>
         <input class="btn waves-effect waves-light green" type="submit" name={{group1}} value="Download SPR for {{group1}}"  />
