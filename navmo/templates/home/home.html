@@ -40,8 +40,8 @@
     <div class="card horizontal">
       <div class="card-stacked">
         <div class="card-content">
-        <p align="center">Hello {{first_name}}, NAVMO 2016-17 was a great event and arround 1500 students from over 50 schools participated in the event.\n We are proud to launch SPR Report that is downloadable in pdf format.\n
-        \nThanks\nTeam Navmo 
+        <p align="center">Hello {{first_name}}, NAVMO 2016-17 was a great event and arround 1500 students from over 50 schools participated in the event.<br> We are proud to launch SPR Report that is downloadable in pdf format.<br>
+        <br>Thanks<br>Team Navmo 
          <p align="center">   Mobile Verification - Done Successfully</p>
 
 </p>
@@ -79,15 +79,20 @@
     <div class="card horizontal">
       <div class="card-stacked">
         <div class="card-content">
+        <center>
           <form method="POST" action="" target="_blank">{% csrf_token %}
          <input type="hidden" type="submit" name="level_name" value={{group1}}>
         <input class="btn waves-effect waves-light green" type="submit" name={{group1}} value="Download SPR for {{group1}}"  />
         </form>
+        </center>
+        <center>
          {%  ifequal 2 spr_group_count %}
+         <br>
         <form method="POST" action="." target="_blank">{% csrf_token %}
              <input type="hidden"  type="submit" name="level_name" value={{group2}}>
             <input class="btn waves-effect waves-light green" type="submit" name="{{group2}}" value="Download SPR for {{group2}}" />
           </form>
+          </center>
     {%endifequal%}
 
         </div>
