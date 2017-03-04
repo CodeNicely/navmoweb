@@ -644,15 +644,15 @@ def convert_to_pdf(request,get_centre_name,get_group_name,url_path):
 						response = HttpResponse(content_type='application/pdf')
 						response['Content-Disposition'] = 'attachment; filename='+filename
 						data={}
-						data['msg']="Message"
-						data['msg_head']="Heading"
+						data['msg']="Dear "+str(user_details.firstname)+",\n"+"Thank You for participating in NAVMO 2016-17. We would like to congratulate you on your achievement and we hope that you enjoyed NAVMO and learn something.\n We are proud to launch Student Performance Report for NAVMO 2016-17. Report can be downloaded by login into your account at www.mpenavmo.com and we are also attaching a copy of your SPR Report along with this mail.\n\n We hope that you will be a part of NAVMO 2017-18. For any further updates please visit www.mpenavmo.com\n\n\nThanks\n Team NAVMO\n MIND POWER EDUCATION Family"
+						data['msg_head']="NAVMO 2016-17"
 						text_content ='This is an important message.'
 						from_email='noreplycodenicely@gmail.com'
 						try:
 							user_details=user_data.objects.get(refrence_id=rank_details.reference_id)
 							user_email=user_details.email
-							to_email=[user_email,'bhirendra2014@gmail.com','m3gh4l@gmail.com']
-							subject='NAVMO Student Performance Report'
+							to_email=['bhirendra2014@gmail.com','m3gh4l@gmail.com','educate1996@gmail.com']
+							subject='NAVMO 2016-17 Student Performance Report'
 						except Exception,e:
 							print "Exception on Email-Id : ",user_details.refrence_id
 							to_email=['bhirendra2014@gmail.com','m3gh4l@gmail.com']
