@@ -164,7 +164,7 @@ def mail_spr_for_id(request):
 				subject, from_email = subject_mail, 'noreplycodenicely@gmail.com'
 				text_content = 'This is an important message.'
 				template = get_template('email/email_content.html')
-				msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com','noreplycodenicely@gmail.com','m3gh4l@gmail.com'])
+				msg = EmailMultiAlternatives(subject, text_content, from_email, ['bhirendra2014@gmail.com'])
 				data['url_path']=url_path
 				html_content  = template.render(RequestContext(request,data,))
 				msg.attach_alternative(html_content, "text/html")
@@ -347,7 +347,7 @@ def download_spr_into_pc(request,get_centre_name,get_group_name,url_path):
 						'margin-right':'0',
 						'margin-top':'0',
 						'margin-bottom':'0'}
-						template=get_template("spr_report/spr_a4.html")
+						template=get_template("spr_report/spr_a4_noPic.html")
 						context = Context(json)  # data is the context data that is sent to the html file to render the output. 
 						html = template.render(context)  # Renders the template with the context data.
 						pdf=pdfkit.from_string(html, False,options=options)
